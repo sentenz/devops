@@ -28,6 +28,14 @@ run-continuous-integration: ## Perform task in continuous integration pipeline
 	$(MAKE) run-lint-ci
 .PHONY: run-continuous-integration
 
+setup-continuous-testing: ## Setup dependencies and tools for the continuous testing pipeline
+	# TODO(AK)
+.PHONY: setup-continuous-testing
+
+run-continuous-testing: ## Perform task in continuous testing pipeline
+	# TODO(AK)
+.PHONY: run-continuous-testing
+
 setup-continuous-release: ## Setup dependencies and tools for the continuous release pipeline
 	$(MAKE) setup-release
 .PHONY: setup-continuous-release
