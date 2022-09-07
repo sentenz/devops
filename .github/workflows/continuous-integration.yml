@@ -18,13 +18,6 @@ jobs:
           ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 0
           submodules: recursive
-          # ssh-key: ${{ secrets.SSH_KEY }}
-          # token: ${{ secrets.ACCESS_TOKEN }}
-          # persist-credentials: true
-      - name: Setup Go
-        uses: actions/setup-go@v3
-        with:
-          go-version: 1.18
       - name: Setup Integration
         run: |
           make setup-continuous-integration
@@ -36,5 +29,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: continuous-integration-artifact
-          path: tools/validate/analyzer/**/*.log
+          path: logs/**/*.log
           retention-days: 1
