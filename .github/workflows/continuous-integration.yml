@@ -1,0 +1,40 @@
+---
+name: Continuous-Integration
+on:
+  workflow_run:
+    workflows:
+      - Continuous-Security
+    types:
+      - completed
+jobs:
+  integration:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: continuous-integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+          fetch-depth: 0
+          submodules: recursive
+          # ssh-key: ${{ secrets.SSH_KEY }}
+          # token: ${{ secrets.ACCESS_TOKEN }}
+          # persist-credentials: true
+      - name: Setup Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+      - name: Setup Integration
+        run: |
+          make setup-continuous-integration
+      - name: Run Integration
+        run: |
+          make run-continuous-integration
+        continue-on-error: true
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: continuous-integration-artifact
+          path: tools/validate/analyzer/**/*.log
+          retention-days: 1

@@ -1,0 +1,57 @@
+#!/bin/bash
+#
+# Enforce commit via commit-msg:
+#
+# - Enforce commit conventions via commitlint.
+# TODO(AK) Perform commit spelling check.
+
+# -x: print a trace (debug)
+# -u: treat unset variables
+# -o pipefail: return value of a pipeline
+# -o posix: match the standard
+# -e: exit immediately if a pipeline returns a non-zero status
+set -uo pipefail
+
+# Include libraries
+
+. ./scripts/utils/log.sh
+. ./scripts/utils/fs.sh
+. ./scripts/utils/git.sh
+
+# Constant variables
+
+LOG_FILE="$(get_root_dir)/logs/githooks/commit-msg.log"
+readonly LOG_FILE
+COMMIT_MESSAGE="${1}"
+readonly COMMIT_MESSAGE
+
+# Internal functions
+
+enforce_commit_lint() {
+    local message="${1:?message is missing}"
+
+    readonly CMD="commitlint --edit"
+    eval "${CMD}" "${message}"
+
+    return "${?}"
+}
+
+commit_msg() {
+    local -i result=0
+
+    create_empty_file "${LOG_FILE}"
+
+    enforce_commit_lint "${COMMIT_MESSAGE}" >>"${LOG_FILE}"
+    ((result |= $?))
+
+    remove_empty_file "${LOG_FILE}"
+
+    monitor "githooks" "commit-msg" "${result}"
+
+    return "${result}"
+}
+
+# Control flow logic
+
+commit_msg
+exit "${?}"

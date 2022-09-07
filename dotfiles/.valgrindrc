@@ -1,0 +1,8 @@
+--memcheck:leak-check=full
+--show-reachable=yes
+--leak-check=full
+--show-leak-kinds=all
+--track-origins=yes
+--error-limit=no
+--suppressions=/home/david/devel/wxGTK-2.8.12.supp
+--suppressions=/home/david/devel/wxGTK-2.9.supp

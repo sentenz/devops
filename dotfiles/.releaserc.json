@@ -1,0 +1,25 @@
+{
+  "branches": [
+    "main"
+  ],
+  "plugins": [
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    "@semantic-release/git",
+    "semantic-release-ado",
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "verifyRelease": [
+          "semantic-commitlint"
+        ]
+      }
+    ],
+    [
+      "@semantic-release/exec",
+      {
+        "publishCmd": "git tag ${nextRelease.version}"
+      }
+    ]
+  ]
+}

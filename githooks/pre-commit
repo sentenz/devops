@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# Enforce code style guides via linters.
+
+# Include libraries
+
+. ./scripts/utils/log.sh
+
+# Internal functions
+
+pre_commit() {
+    local -i result=0
+
+    make run-githooks-pre-commit
+    ((result |= $?))
+
+    monitor "githooks" "pre-commit" "${result}"
+
+    return "${result}"
+}
+
+# Control flow logic
+
+pre_commit
+exit "${?}"

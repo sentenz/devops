@@ -1,0 +1,25 @@
+---
+name: Continuous-Testing
+on:
+  workflow_run:
+    workflows:
+      - Continuous-Security
+    types:
+      - completed
+jobs:
+  testing:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: continuous-testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+      - name: Setup Testing
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.18
+      - name: Run Testing
+        run: |
+          make run-continuous-testing
