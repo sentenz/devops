@@ -17,6 +17,7 @@ set -uo pipefail
 
 readonly -a APT_PACKAGES=(
   nodejs
+  npm
 )
 readonly -a NPM_PACKAGES=(
   semantic-release
@@ -43,7 +44,7 @@ install_apt_packages() {
     install_apt "${package}"
     ((result |= $?))
 
-    monitor "install" "${package}" "${result}"
+    monitor "setup" "${package}" "${result}"
   done
 
   return "${result}"
@@ -57,7 +58,7 @@ install_npm_packages() {
     install_npm "${package}"
     ((result |= $?))
 
-    monitor "install" "${package}" "${result}"
+    monitor "setup" "${package}" "${result}"
   done
 
   return "${result}"

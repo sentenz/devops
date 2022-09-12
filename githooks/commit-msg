@@ -27,7 +27,7 @@ readonly COMMIT_MESSAGE
 
 # Internal functions
 
-enforce_commit_lint() {
+enforce_commit_message_convention() {
     local message="${1:?message is missing}"
 
     readonly CMD="commitlint --edit"
@@ -41,7 +41,7 @@ commit_msg() {
 
     create_empty_file "${LOG_FILE}"
 
-    enforce_commit_lint "${COMMIT_MESSAGE}" >>"${LOG_FILE}"
+    enforce_commit_message_convention "${COMMIT_MESSAGE}" >>"${LOG_FILE}"
     ((result |= $?))
 
     remove_empty_file "${LOG_FILE}"

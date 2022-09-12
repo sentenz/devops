@@ -17,6 +17,7 @@ set -uo pipefail
 
 # Constant variables
 
+readonly GO_DEPENDENY="https://dl.google.com/go/go1.18.linux-amd64.tar.gz"
 readonly -a APT_REPOS=(
   "ppa:git-core/ppa"
 )
@@ -78,18 +79,22 @@ readonly -a CURL_PACKAGES=(
 # Internal functions
 
 install_go_dependency() {
-  local -i result=0
+  local dependency="${1:?dependency is missing}"
 
+  name="$(basename "${dependency}")"
+
+  local -i result=0
   if is_file "$(get_root_dir)/go.mod"; then
     if ! command -v go &>/dev/null; then
-      wget https://dl.google.com/go/go1.18.linux-amd64.tar.gz
-      sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.18.linux-amd64.tar.gz && sudo rm -f go1.17.linux-amd64.tar.gz
+      wget "${dependency}"
+      ((result |= $?))
+      sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf "${name}" && sudo rm -f "${name}"
       ((result |= $?))
     fi
     export PATH=/usr/local/go/bin:"${PATH}"
   fi
 
-  monitor "setup - devops" "golang" "${result}"
+  monitor "setup" "${name}" "${result}"
 
   return "${result}"
 }
@@ -102,7 +107,7 @@ install_apt_packages() {
     install_apt "${package}"
     ((result |= $?))
 
-    monitor "setup - devops" "${package}" "${result}"
+    monitor "setup" "${package}" "${result}"
   done
 
   return "${result}"
@@ -116,7 +121,7 @@ install_pip_packages() {
     install_pip "${package}"
     ((result |= $?))
 
-    monitor "setup - devops" "${package}" "${result}"
+    monitor "setup" "${package}" "${result}"
   done
 
   return "${result}"
@@ -130,7 +135,7 @@ install_npm_packages() {
     install_npm "${package}"
     ((result |= $?))
 
-    monitor "setup - devops" "${package}" "${result}"
+    monitor "setup" "${package}" "${result}"
   done
 
   return "${result}"
@@ -150,7 +155,7 @@ install_go_packages() {
         ((result = $?))
       fi
 
-      monitor "setup - devops" "${package}" "${result}"
+      monitor "setup" "${package}" "${result}"
     done
 
     go mod vendor
@@ -172,7 +177,7 @@ install_curl_packages() {
       export PATH="${HOME}"/.local/bin:"${PATH}"
     fi
 
-    monitor "setup - devops" "${name}" "${result}"
+    monitor "setup" "${name}" "${result}"
   done
 
   return "${result}"
@@ -190,7 +195,7 @@ add_apt_repositories() {
     add_apt_ppa "${repo}"
     ((result |= $?))
 
-    monitor "setup - devops" "update ${repo}" "${result}"
+    monitor "setup" "update ${repo}" "${result}"
   done
 
   sudo apt update
@@ -217,7 +222,7 @@ post_cleanup() {
   npm cache clean --force
   ((result |= $?))
 
-  monitor "setup - devops" "post-cleanup" "${result}"
+  monitor "setup" "post-cleanup" "${result}"
 
   return "${result}"
 }
@@ -225,7 +230,7 @@ post_cleanup() {
 continuous_integration() {
   local -i result=0
 
-  install_go_dependency
+  install_go_dependency "${GO_DEPENDENY}"
   ((result |= $?))
 
   add_apt_repositories "${APT_REPOS[@]}"
@@ -244,6 +249,9 @@ continuous_integration() {
   ((result |= $?))
 
   install_go_packages "${GO_PACKAGES[@]}"
+  ((result |= $?))
+
+  post_cleanup
   ((result |= $?))
 
   return "${result}"

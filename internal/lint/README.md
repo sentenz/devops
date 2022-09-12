@@ -1,4 +1,4 @@
-# `/linter`
+# `/lint`
 
 - [1. Clang-Tidy](#1-clang-tidy)
   - [1.1. Requirements](#11-requirements)

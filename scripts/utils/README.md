@@ -1,7 +1,7 @@
 # `/util`
 
-- cs.sh
-  > An internal library for command substitution actions.
+- git.sh
+  > An internal library for git actions.
 
 - fs.sh
   > An external library for file system actions from [bash-libraries](https://github.com/juan131/bash-libraries) repository.

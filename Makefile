@@ -11,9 +11,37 @@ setup-devops: ## Setup dependencies and tools for the devops service
 	cd scripts && chmod +x setup_devops.sh && ./setup_devops.sh
 .PHONY: setup-devops
 
-cleanup-devops: ## Cleanup dependencies and tools for the devops service
+cleanup-devops: ## Cleanup dependencies and tools of the devops service
 	# TODO(AK)
 .PHONY: setup-devops
+
+setup-integration: ## Setup dependencies and tools for the integration service
+	cd scripts/pipeline && chmod +x continuous_integration.sh && ./continuous_integration.sh
+.PHONY: setup-integration
+
+run-validate-staged: ## Perform validation of local staged files
+	cd cmd && chmod +x validate.sh && ./validate.sh -l staged
+.PHONY: run-validate-staged
+
+run-validate-diff: ## Perform validation of local modified files
+	cd cmd && chmod +x validate.sh && ./validate.sh -l diff
+.PHONY: run-validate-diff
+
+run-validate-ci: ## Perform validation of modified files in continuous integration pipeline
+	cd cmd && chmod +x validate.sh && ./validate.sh -l ci
+.PHONY: run-validate-ci
+
+setup-testing: ## Setup dependencies and tools for the testing service
+	cd scripts/pipeline && chmod +x continuous_testing.sh && ./continuous_testing.sh
+.PHONY: setup-testing
+
+setup-release: ## Setup dependencies and tools for the release service
+	cd scripts/pipeline && chmod +x continuous_release.sh && ./continuous_release.sh
+.PHONY: setup-release
+
+run-release: ## Perform release service task
+	npx semantic-release
+.PHONY: run-release
 
 setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
 	$(MAKE) setup
@@ -25,11 +53,11 @@ setup-continuous-integration: ## Setup dependencies and tools for the continuous
 .PHONY: setup-continuous-integration
 
 run-continuous-integration: ## Perform task in continuous integration pipeline
-	$(MAKE) run-lint-ci
+	$(MAKE) run-validate-ci
 .PHONY: run-continuous-integration
 
 setup-continuous-testing: ## Setup dependencies and tools for the continuous testing pipeline
-	# TODO(AK)
+	$(MAKE) setup-testing
 .PHONY: setup-continuous-testing
 
 run-continuous-testing: ## Perform task in continuous testing pipeline
@@ -45,29 +73,5 @@ run-continuous-release: ## Perform task in continuous release pipeline
 .PHONY: run-continuous-release
 
 run-githooks-pre-commit: ## Perform task in githooks pre-commit event
-	$(MAKE) run-lint-staged
+	$(MAKE) run-validate-staged
 .PHONY: run-githooks-pre-commit
-
-run-lint-staged: ## Perform linting local staged files
-	cd cmd && chmod +x validate.sh && ./validate.sh -l staged
-.PHONY: run-lint-staged
-
-run-lint-diff: ## Perform linting local changed files
-	cd cmd && chmod +x validate.sh && ./validate.sh -l diff
-.PHONY: run-lint-diff
-
-run-lint-ci: ## Perform linting changed files in continuous integration pipeline
-	cd cmd && chmod +x validate.sh && ./validate.sh -l ci
-.PHONY: run-lint-ci
-
-setup-integration: ## Setup dependencies and tools for the integration service
-	cd scripts/pipeline && chmod +x continuous_integration.sh && ./continuous_integration.sh
-.PHONY: setup-integration
-
-setup-release: ## Setup dependencies and tools for the release service
-	cd scripts/pipeline && chmod +x continuous_release.sh && ./continuous_release.sh
-.PHONY: setup-release
-
-run-release: ## Perform release service task
-	npx semantic-release
-.PHONY: run-release
