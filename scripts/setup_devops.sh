@@ -91,8 +91,6 @@ run_scripts() {
 setup_devops() {
   local -i result=0
 
-  owned_by "$(get_root_dir)" "${USER}"
-
   initialize_scripts
   initialize_dotfiles
   initialize_githooks

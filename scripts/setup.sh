@@ -14,11 +14,8 @@ set -uo pipefail
 . ./../scripts/utils/util.sh
 
 # Constant variables
-
-readonly -a APT_REPOS=(
-  "ppa:git-core/ppa"
-)
 readonly -a APT_PACKAGES=(
+  software-properties-common
   build-essential
   git
   automake
@@ -53,27 +50,6 @@ install_apt_packages() {
   return "${result}"
 }
 
-add_apt_repositories() {
-  local -a repos=("$@")
-
-  local -i result=0
-
-  install_apt_packages "software-properties-common"
-  ((result |= $?))
-
-  for repo in "${repos[@]}"; do
-    add_apt_ppa "${repo}"
-    ((result |= $?))
-
-    monitor "install" "update ${repo}" "${result}"
-  done
-
-  sudo apt update
-  ((result |= $?))
-
-  return "${result}"
-}
-
 post_cleanup() {
   local -i result=0
 
@@ -96,9 +72,6 @@ post_cleanup() {
 
 setup() {
   local -i result=0
-
-  add_apt_repositories "${APT_REPOS[@]}"
-  ((result |= $?))
 
   install_apt_packages "${APT_PACKAGES[@]}"
   ((result |= $?))

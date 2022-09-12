@@ -18,10 +18,8 @@ set -uo pipefail
 # Constant variables
 
 readonly GO_DEPENDENY="https://dl.google.com/go/go1.18.linux-amd64.tar.gz"
-readonly -a APT_REPOS=(
-  "ppa:git-core/ppa"
-)
 readonly -a APT_PACKAGES=(
+  software-properties-common
   build-essential
   git
   automake
@@ -186,27 +184,6 @@ install_curl_packages() {
   return "${result}"
 }
 
-add_apt_repositories() {
-  local -a repos=("$@")
-
-  local -i result=0
-
-  install_apt_packages "software-properties-common"
-  ((result |= $?))
-
-  for repo in "${repos[@]}"; do
-    add_apt_ppa "${repo}"
-    ((result |= $?))
-
-    monitor "setup" "update ${repo}" "${result}"
-  done
-
-  sudo apt update
-  ((result |= $?))
-
-  return "${result}"
-}
-
 post_cleanup() {
   local -i result=0
 
@@ -234,9 +211,6 @@ continuous_integration() {
   local -i result=0
 
   install_go_dependency "${GO_DEPENDENY}"
-  ((result |= $?))
-
-  add_apt_repositories "${APT_REPOS[@]}"
   ((result |= $?))
 
   install_apt_packages "${APT_PACKAGES[@]}"
