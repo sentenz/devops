@@ -48,8 +48,5 @@
   "onCreateCommand": "apt-get update && apt-get install -y make",
   "postCreateCommand": "make setup-devcontainer",
   "forwardPorts": [],
-  "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-        "version": "latest"
-    }
-}}
+  "features": {}
+}
