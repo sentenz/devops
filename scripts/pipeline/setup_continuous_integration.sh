@@ -23,7 +23,7 @@ readonly -a APT_PACKAGES=(
   build-essential
   git
   automake
-  python3.8
+  python3
   python-is-python3
   python3-pip
   make
@@ -100,11 +100,10 @@ install_go_dependency() {
 install_apt_packages() {
   local -a packages=("$@")
 
-  sudo apt update
-  ((result |= $?))
-
   local -i result=0
   for package in "${packages[@]}"; do
+    update_apt
+
     install_apt "${package}"
     ((result |= $?))
 
@@ -187,19 +186,10 @@ install_curl_packages() {
 post_cleanup() {
   local -i result=0
 
-  sudo apt install -y -f
+  cleanup_apt
   ((result |= $?))
 
-  sudo apt autoremove -y
-  ((result |= $?))
-
-  sudo apt clean
-  ((result |= $?))
-
-  sudo rm -rf /var/lib/apt/lists/*
-  ((result |= $?))
-
-  npm cache clean --force
+  cleanup_npm
   ((result |= $?))
 
   monitor "setup" "post-cleanup" "${result}"
@@ -213,6 +203,9 @@ continuous_integration() {
   install_go_dependency "${GO_DEPENDENY}"
   ((result |= $?))
 
+  install_curl_packages "${CURL_PACKAGES[@]}"
+  ((result |= $?))
+
   install_apt_packages "${APT_PACKAGES[@]}"
   ((result |= $?))
 
@@ -220,9 +213,6 @@ continuous_integration() {
   ((result |= $?))
 
   install_npm_packages "${NPM_PACKAGES[@]}"
-  ((result |= $?))
-
-  install_curl_packages "${CURL_PACKAGES[@]}"
   ((result |= $?))
 
   install_go_packages "${GO_PACKAGES[@]}"

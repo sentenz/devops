@@ -45,16 +45,7 @@ install_go_dependency() {
 post_cleanup() {
   local -i result=0
 
-  sudo apt install -y -f
-  ((result |= $?))
-
-  sudo apt autoremove -y
-  ((result |= $?))
-
-  sudo apt clean
-  ((result |= $?))
-
-  sudo rm -rf /var/lib/apt/lists/*
+  cleanup_apt
   ((result |= $?))
 
   monitor "setup" "post-cleanup" "${result}"
