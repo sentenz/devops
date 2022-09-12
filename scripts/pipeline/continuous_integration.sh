@@ -31,6 +31,7 @@ readonly -a APT_PACKAGES=(
   make
   curl
   nodejs
+  npm
 
   licensecheck
   shellcheck
@@ -100,6 +101,9 @@ install_go_dependency() {
 
 install_apt_packages() {
   local -a packages=("$@")
+
+  sudo apt update
+  ((result |= $?))
 
   local -i result=0
   for package in "${packages[@]}"; do
