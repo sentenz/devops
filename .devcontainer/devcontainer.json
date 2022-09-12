@@ -4,7 +4,7 @@
   "build": {
     "dockerfile": "../build/container/devcontainer.dockerfile",
     "args": {
-      "VARIANT": "hirsute"
+      "VARIANT": "jammy"
     },
     "context": ".."
   },
@@ -44,8 +44,8 @@
     "tht13.html-preview-vscode",
     "editorconfig.editorconfig",
     "VisualStudioExptTeam.intellicode-api-usage-examples"
-],
-  "onCreateCommand": "apt-get update && apt-get install -y make",
+  ],
+  "onCreateCommand": "apt update && apt install -y make",
   "postCreateCommand": "make setup-devcontainer",
   "forwardPorts": [],
   "features": {}

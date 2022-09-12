@@ -16,7 +16,7 @@ cleanup-devops: ## Cleanup dependencies and tools of the devops service
 .PHONY: setup-devops
 
 setup-integration: ## Setup dependencies and tools for the integration service
-	cd scripts/pipeline && chmod +x continuous_integration.sh && ./continuous_integration.sh
+	cd scripts/pipeline && chmod +x setup_continuous_integration.sh && ./setup_continuous_integration.sh
 .PHONY: setup-integration
 
 run-validate-staged: ## Perform validation of local staged files
@@ -32,11 +32,11 @@ run-validate-ci: ## Perform validation of modified files in continuous integrati
 .PHONY: run-validate-ci
 
 setup-testing: ## Setup dependencies and tools for the testing service
-	cd scripts/pipeline && chmod +x continuous_testing.sh && ./continuous_testing.sh
+	cd scripts/pipeline && chmod +x setup_continuous_testing.sh && ./setup_continuous_testing.sh
 .PHONY: setup-testing
 
 setup-release: ## Setup dependencies and tools for the release service
-	cd scripts/pipeline && chmod +x continuous_release.sh && ./continuous_release.sh
+	cd scripts/pipeline && chmod +x setup_continuous_release.sh && ./setup_continuous_release.sh
 .PHONY: setup-release
 
 run-release: ## Perform release service task

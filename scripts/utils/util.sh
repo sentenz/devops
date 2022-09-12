@@ -32,7 +32,7 @@ install_apt() {
   local package="${1:?package is missing}"
 
   local -i result=0
-  if ! command -v "${package}" &>/dev/null; then
+  if ! dpkg -l "${package}" &>/dev/null; then
     sudo apt install -y -qq "${package}"
     ((result = $?))
   fi
@@ -51,7 +51,7 @@ install_npm() {
   local package="${1:?package is missing}"
 
   local -i result=0
-  if ! npm list "${package}"@latest -g --depth=0 &>/dev/null; then
+  if ! npm list "${package}" -g --depth=0 &>/dev/null; then
     sudo npm i --silent -g "${package}"@latest
     ((result |= $?))
   fi
@@ -70,7 +70,7 @@ install_pip() {
   local package="${1:?package is missing}"
 
   local -i result=0
-  if ! command -v "${package}" &>/dev/null; then
+  if ! dpkg -l "${package}" &>/dev/null; then
     sudo pip install -q "${package}"
     ((result = $?))
   fi
