@@ -8,6 +8,7 @@ Supported operations:
 - [x] Git Hooks
 - [x] Code Analysis
 - [x] Containers
+- [x] Makefile
 
 ## Setup
 

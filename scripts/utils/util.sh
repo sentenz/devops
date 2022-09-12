@@ -52,7 +52,7 @@ install_npm() {
 
   local -i result=0
   if ! npm list "${package}"@latest -g --depth=0 &>/dev/null; then
-    sudo -H npm i --silent -g "${package}"@latest --unsafe-perm
+    sudo npm i --silent -g "${package}"@latest
     ((result |= $?))
   fi
 

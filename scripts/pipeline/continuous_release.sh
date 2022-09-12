@@ -17,6 +17,7 @@ set -uo pipefail
 
 readonly -a APT_PACKAGES=(
   nodejs
+  npm
 )
 readonly -a NPM_PACKAGES=(
   semantic-release
@@ -37,6 +38,9 @@ readonly -a NPM_PACKAGES=(
 
 install_apt_packages() {
   local -a packages=("$@")
+
+  sudo apt update
+  ((result |= $?))
 
   local -i result=0
   for package in "${packages[@]}"; do
