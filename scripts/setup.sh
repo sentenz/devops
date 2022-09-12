@@ -31,22 +31,6 @@ readonly -a APT_PACKAGES=(
 
 # Internal functions
 
-install_apt_packages() {
-  local -a packages=("$@")
-
-  local -i result=0
-  for package in "${packages[@]}"; do
-    update_apt
-
-    install_apt "${package}"
-    ((result |= $?))
-
-    monitor "install" "${package}" "${result}"
-  done
-
-  return "${result}"
-}
-
 post_cleanup() {
   local -i result=0
 
@@ -61,7 +45,7 @@ post_cleanup() {
 setup() {
   local -i result=0
 
-  install_apt_packages "${APT_PACKAGES[@]}"
+  setup_apt_packages "${APT_PACKAGES[@]}"
   ((result |= $?))
 
   post_cleanup

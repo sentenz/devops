@@ -36,43 +36,30 @@ readonly -a NPM_PACKAGES=(
 
 # Internal functions
 
-install_apt_packages() {
-  local -a packages=("$@")
-
-  local -i result=0
-  for package in "${packages[@]}"; do
-    update_apt
-
-    install_apt "${package}"
-    ((result |= $?))
-
-    monitor "setup" "${package}" "${result}"
-  done
-
-  return "${result}"
-}
-
-install_npm_packages() {
-  local -a packages=("$@")
-
-  local -i result=0
-  for package in "${packages[@]}"; do
-    install_npm "${package}"
-    ((result |= $?))
-
-    monitor "setup" "${package}" "${result}"
-  done
-
-  return "${result}"
-}
-
-continuous_release() {
+post_cleanup() {
   local -i result=0
 
-  install_apt_packages "${APT_PACKAGES[@]}"
+  cleanup_apt
   ((result |= $?))
 
-  install_npm_packages "${NPM_PACKAGES[@]}"
+  cleanup_npm
+  ((result |= $?))
+
+  monitor "setup" "post-cleanup" "${result}"
+
+  return "${result}"
+}
+
+setup_continuous_release() {
+  local -i result=0
+
+  setup_apt_packages "${APT_PACKAGES[@]}"
+  ((result |= $?))
+
+  setup_npm_packages "${NPM_PACKAGES[@]}"
+  ((result |= $?))
+
+  post_cleanup
   ((result |= $?))
 
   return "${result}"
@@ -80,5 +67,5 @@ continuous_release() {
 
 # Control flow logic
 
-continuous_release
+setup_continuous_release
 exit "${?}"
