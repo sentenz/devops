@@ -39,11 +39,10 @@ readonly -a NPM_PACKAGES=(
 install_apt_packages() {
   local -a packages=("$@")
 
-  sudo apt update
-  ((result |= $?))
-
   local -i result=0
   for package in "${packages[@]}"; do
+    update_apt
+
     install_apt "${package}"
     ((result |= $?))
 

@@ -32,8 +32,63 @@ install_apt() {
   local package="${1:?package is missing}"
 
   local -i result=0
-  if ! dpkg -l "${package}" &>/dev/null; then
-    sudo apt install -y -qq "${package}"
+  if ! command -v "${package}" &>/dev/null; then
+    sudo apt install -y -qqq "${package}"
+    ((result = $?))
+  fi
+
+  return "${result}"
+}
+
+########################
+# Update apt package dependencies.
+# Arguments:
+#   None
+# Returns:
+#   None
+#########################
+update_apt() {
+  sudo apt update -qqq
+}
+
+########################
+# Cleanup apt package dependencies.
+# Arguments:
+#   None
+# Returns:
+#   Boolean
+#########################
+cleanup_apt() {
+  local -i result=0
+
+  sudo apt install -y -f -qqq
+  ((result |= $?))
+
+  sudo apt autoremove -y -qqq
+  ((result |= $?))
+
+  sudo apt clean -qqq
+  ((result |= $?))
+
+  sudo rm -rf /var/lib/apt/lists/*
+  ((result |= $?))
+
+  return "${result}"
+}
+
+########################
+# Install pip package dependencies.
+# Arguments:
+#   $1 - package
+# Returns:
+#   Boolean
+#########################
+install_pip() {
+  local package="${1:?package is missing}"
+
+  local -i result=0
+  if ! command -v "${package}" &>/dev/null; then
+    sudo pip install -q "${package}"
     ((result = $?))
   fi
 
@@ -60,20 +115,17 @@ install_npm() {
 }
 
 ########################
-# Install pip package dependencies.
+# Cleanup npm package dependencies.
 # Arguments:
-#   $1 - package
+#   None
 # Returns:
 #   Boolean
 #########################
-install_pip() {
-  local package="${1:?package is missing}"
-
+cleanup_npm() {
   local -i result=0
-  if ! dpkg -l "${package}" &>/dev/null; then
-    sudo pip install -q "${package}"
-    ((result = $?))
-  fi
+
+  npm cache clean --force --silent
+  ((result |= $?))
 
   return "${result}"
 }

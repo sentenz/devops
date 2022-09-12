@@ -25,10 +25,8 @@ readonly -a APT_PACKAGES=(
   gcc
   cmake
   make
-  apt-transport-https
-  lsb-release
-  ca-certificates
   dirmngr
+  lsb-release
 )
 
 # Internal functions
@@ -36,11 +34,10 @@ readonly -a APT_PACKAGES=(
 install_apt_packages() {
   local -a packages=("$@")
 
-  sudo apt update
-  ((result |= $?))
-
   local -i result=0
   for package in "${packages[@]}"; do
+    update_apt
+
     install_apt "${package}"
     ((result |= $?))
 
@@ -53,16 +50,7 @@ install_apt_packages() {
 post_cleanup() {
   local -i result=0
 
-  sudo apt install -y -f
-  ((result |= $?))
-
-  sudo apt autoremove -y
-  ((result |= $?))
-
-  sudo apt clean
-  ((result |= $?))
-
-  sudo rm -rf /var/lib/apt/lists/*
+  cleanup_apt
   ((result |= $?))
 
   monitor "install" "post-cleanup" "${result}"
