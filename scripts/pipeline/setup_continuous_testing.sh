@@ -17,30 +17,13 @@ set -uo pipefail
 
 # Constant variables
 
-readonly GO_DEPENDENY="https://dl.google.com/go/go1.18.linux-amd64.tar.gz"
+readonly -a APT_PACKAGES=(
+  software-properties-common
+  build-essential
+  golang-go
+)
 
 # Internal functions
-
-install_go_dependency() {
-  local dependency="${1:?dependency is missing}"
-
-  local -i result=0
-  if is_file "$(get_root_dir)/go.mod"; then
-    name="$(basename "${dependency}")"
-
-    if ! command -v go &>/dev/null; then
-      wget "${dependency}"
-      ((result |= $?))
-      sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf "${name}" && sudo rm -f "${name}"
-      ((result |= $?))
-    fi
-    export PATH=/usr/local/go/bin:"${PATH}"
-
-    monitor "setup" "${name}" "${result}"
-  fi
-
-  return "${result}"
-}
 
 post_cleanup() {
   local -i result=0
@@ -53,10 +36,10 @@ post_cleanup() {
   return "${result}"
 }
 
-continuous_testing() {
+setup_continuous_testing() {
   local -i result=0
 
-  install_go_dependency "${GO_DEPENDENY}"
+  setup_apt_packages "${APT_PACKAGES[@]}"
   ((result |= $?))
 
   post_cleanup
@@ -67,5 +50,5 @@ continuous_testing() {
 
 # Control flow logic
 
-continuous_testing
+setup_continuous_testing
 exit "${?}"

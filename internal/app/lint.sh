@@ -36,8 +36,7 @@ readonly -a SCRIPTS=(
   cppcheck
   cpplint
   dockerfilelint
-  # gofmt
-  # golangci_lint
+  golangci_lint
   jsonlint
   licensecheck
   # markdown_link_check

@@ -22,7 +22,7 @@ add_apt_ppa() {
 }
 
 ########################
-# Install apt package dependencies.
+# Install apt package dependency.
 # Arguments:
 #   $1 - package
 # Returns:
@@ -38,6 +38,32 @@ install_apt() {
   fi
 
   return "${result}"
+}
+
+########################
+# Setup apt package dependencies.
+# Arguments:
+#   $@ - packages
+# Returns:
+#   Boolean
+#########################
+setup_apt_packages() {
+  local -a packages=("$@")
+
+  local -i retval=0
+  for package in "${packages[@]}"; do
+    local -i result=0
+
+    update_apt
+
+    install_apt "${package}"
+    ((result = $?))
+    ((retval |= "${result}"))
+
+    monitor "setup" "${package}" "${result}"
+  done
+
+  return "${retval}"
 }
 
 ########################
@@ -77,7 +103,7 @@ cleanup_apt() {
 }
 
 ########################
-# Install pip package dependencies.
+# Install pip package dependency.
 # Arguments:
 #   $1 - package
 # Returns:
@@ -96,7 +122,122 @@ install_pip() {
 }
 
 ########################
-# Install npm package dependencies.
+# Setup pip package dependencies.
+# Arguments:
+#   $@ - packages
+# Returns:
+#   Boolean
+#########################
+setup_pip_packages() {
+  local -a packages=("$@")
+
+  local -i retval=0
+  for package in "${packages[@]}"; do
+    local -i result=0
+
+    install_pip "${package}"
+    ((result = $?))
+    ((retval |= "${result}"))
+
+    monitor "setup" "${package}" "${result}"
+  done
+
+  return "${retval}"
+}
+
+########################
+# Install go package dependency.
+# Arguments:
+#   $1 - package
+# Returns:
+#   Boolean
+#########################
+install_go() {
+  local package="${1:?package is missing}"
+
+  local -i result=0
+  if ! command -v "${package}" &>/dev/null; then
+    go install "${package}"
+    ((result = $?))
+  fi
+
+  return "${result}"
+}
+
+########################
+# Setup go package dependencies.
+# Arguments:
+#   $@ - packages
+# Returns:
+#   Boolean
+#########################
+setup_go_packages() {
+  local -a packages=("$@")
+
+  local -i retval=0
+  for package in "${packages[@]}"; do
+    local -i result=0
+
+    # HACK(AK) https://github.com/actions/setup-go/issues/14
+    export PATH="${HOME}"/go/bin:/usr/local/go/bin:"${PATH}"
+
+    install_go "${package}"
+    ((result = $?))
+    ((retval |= "${result}"))
+
+    monitor "setup" "${package}" "${result}"
+  done
+
+  return "${retval}"
+}
+
+########################
+# Install curl package dependency.
+# Arguments:
+#   $1 - package
+# Returns:
+#   Boolean
+#########################
+install_curl() {
+  local package="${1:?package is missing}"
+
+  local -i result=0
+  if ! command -v "$(basename "${package}")" &>/dev/null; then
+    curl -sS "${package}" | bash
+    ((result = $?))
+  fi
+
+  return "${result}"
+}
+
+########################
+# Setup curl package dependencies.
+# Arguments:
+#   $@ - packages
+# Returns:
+#   Boolean
+#########################
+setup_curl_packages() {
+  local -a packages=("$@")
+
+  local -i retval=0
+  for package in "${packages[@]}"; do
+    local -i result=0
+
+    export PATH="${HOME}"/.local/bin:"${PATH}"
+
+    install_curl "${package}"
+    ((result = $?))
+    ((retval |= "${result}"))
+
+    monitor "setup" "$(basename "${package}")" "${result}"
+  done
+
+  return "${retval}"
+}
+
+########################
+# Install npm package dependency.
 # Arguments:
 #   $1 - package
 # Returns:
@@ -112,6 +253,30 @@ install_npm() {
   fi
 
   return "${result}"
+}
+
+########################
+# Setup npm package dependencies.
+# Arguments:
+#   $@ - packages
+# Returns:
+#   Boolean
+#########################
+setup_npm_packages() {
+  local -a packages=("$@")
+
+  local -i retval=0
+  for package in "${packages[@]}"; do
+    local -i result=0
+
+    install_npm "${package}"
+    ((result = $?))
+    ((retval |= "${result}"))
+
+    monitor "setup" "${package}" "${result}"
+  done
+
+  return "${retval}"
 }
 
 ########################
