@@ -17,7 +17,7 @@ jobs:
         run: |
           make setup-continuous-release
       - name: Run Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN  }}
         run: |
           make run-continuous-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN  }}
