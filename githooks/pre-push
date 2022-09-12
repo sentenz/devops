@@ -34,7 +34,7 @@ readonly -a SUPPORT_BRANCHES=(
 
 # Internal functions
 
-function prevent_push_base_branches() {
+prevent_push_to_base_branches() {
 	local local_branch="${1:?local branch is missing}"
 	local -a base_branches=("${@:2}")
 
@@ -56,7 +56,7 @@ END
 	done
 }
 
-function enforce_support_branch_name() {
+enforce_naming_convention_of_support_branch() {
 	local local_branch="${1:?local branch is missing}"
 	local -a support_branches=("${@:2}")
 
@@ -66,7 +66,11 @@ function enforce_support_branch_name() {
 	))\/[0-9]+[-][a-z-]+$"
 	readonly regex_patterns
 
-	if [[ ! "${local_branch}" =~ ${regex_patterns} ]]; then
+	if [[ "${local_branch}" =~ ${regex_patterns} ]]; then
+		git checkout "${local_branch}"
+
+		true
+	else
 		cat <<END
 ___________________________________________________________________________________________________
 Branching strategy - Enforce naming convention for support branches.
@@ -86,7 +90,7 @@ ________________________________________________________________________________
 
 END
 
-		return 1
+		false
 	fi
 }
 
@@ -95,10 +99,10 @@ pre_push() {
 
 	create_empty_file "${LOG_FILE}"
 
-	prevent_push_base_branches "${LOCAL_BRANCH}" "${BASE_BRANCHES[@]}" >>"${LOG_FILE}"
+	prevent_push_to_base_branches "${LOCAL_BRANCH}" "${BASE_BRANCHES[@]}" >>"${LOG_FILE}"
 	((result |= $?))
 
-	enforce_support_branch_name "${LOCAL_BRANCH}" "${SUPPORT_BRANCHES[@]}" >>"${LOG_FILE}"
+	enforce_naming_convention_of_support_branch "${LOCAL_BRANCH}" "${SUPPORT_BRANCHES[@]}" >>"${LOG_FILE}"
 	((result |= $?))
 
 	remove_empty_file "${LOG_FILE}"

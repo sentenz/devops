@@ -22,7 +22,58 @@ readonly -a SCRIPTS=(
 
 # Internal functions
 
-call_scripts() {
+initialize_scripts() {
+  if is_dir "$(get_sript_dir)/pipeline"; then
+    copy_files "$(get_sript_dir)/pipeline" "$(get_root_dir)/scripts"
+  fi
+
+  if is_dir "$(get_sript_dir)/utils"; then
+    copy_files "$(get_sript_dir)/utils" "$(get_root_dir)/scripts"
+  fi
+}
+
+initialize_githooks() {
+  if is_dir "$(get_sript_dir)/../githooks"; then
+    copy_files "$(get_sript_dir)/../githooks" "$(get_root_dir)"
+    chmod +x "$(get_root_dir)"/githooks/*
+    git config core.hooksPath githooks
+  fi
+}
+
+initialize_dotfiles() {
+  if is_dir "$(get_sript_dir)/../dotfiles"; then
+    copy_files "$(get_sript_dir)/../dotfiles" "$(get_root_dir)"
+    copy_files "$(get_sript_dir)/../dotfiles/." "$(get_root_dir)"
+  fi
+}
+
+initialize_pipelines() {
+  if is_dir "$(get_sript_dir)/../.azure"; then
+    copy_files "$(get_sript_dir)/../.azure" "$(get_root_dir)"
+  fi
+
+  if is_dir "$(get_sript_dir)/../.github"; then
+    copy_files "$(get_sript_dir)/../.github" "$(get_root_dir)"
+  fi
+}
+
+initialize_container() {
+  if is_dir "$(get_sript_dir)/../.devcontainer"; then
+    copy_files "$(get_sript_dir)/../.devcontainer" "$(get_root_dir)"
+  fi
+
+  if is_dir "$(get_sript_dir)/../build/container"; then
+    copy_files "$(get_sript_dir)/../build/container" "$(get_root_dir)/build"
+  fi
+}
+
+initialize_makefile() {
+  if is_file "$(get_sript_dir)/../Makefile"; then
+    merge_file "$(get_sript_dir)/../Makefile" "$(get_root_dir)/Makefile"
+  fi
+}
+
+run_scripts() {
   local -a scripts=("$@")
 
   cd "$(get_sript_dir)/pipeline" || exit
@@ -37,24 +88,17 @@ call_scripts() {
   return "${result}"
 }
 
-initialize_githooks() {
-  create_dir "$(get_root_dir)/githooks"
-  find "$(get_sript_dir)/../githooks" -type f -name '*' -exec cp -n {} "$(get_root_dir)/githooks" \;
-  git config core.hooksPath githooks
-  chmod +x "$(get_root_dir)"/githooks/*
-}
-
-initialize_dotfiles() {
-  find "$(get_sript_dir)/../dotfiles" -type f -name '.??*' -exec cp -n {} "$(get_root_dir)" \;
-}
-
 setup_devops() {
   local -i result=0
 
-  initialize_githooks
+  initialize_scripts
   initialize_dotfiles
+  initialize_githooks
+  initialize_pipelines
+  initialize_container
+  initialize_makefile
 
-  call_scripts "${SCRIPTS[@]}"
+  run_scripts "${SCRIPTS[@]}"
   ((result |= $?))
 
   return "${result}"

@@ -18,21 +18,72 @@ owned_by() {
 }
 
 ########################
-# Ensure a file exists.
+# Check if a file exists.
 # Arguments:
-#   $1 - directory
+#   $1 - file
 #   $2 - owner
 # Returns:
 #   Boolean
 #########################
 is_file() {
-  local file="${1:?file missing directory}"
+  local file="${1:?file is missing}"
 
   if [[ -f "$file" ]]; then
     true
   else
     false
   fi
+}
+
+########################
+# Check if a directory exists.
+# Arguments:
+#   $1 - directory
+#   $2 - owner
+# Returns:
+#   Boolean
+#########################
+is_dir() {
+  local dir="${1:?directory is missing}"
+
+  if [[ -d "$dir" ]]; then
+    true
+  else
+    false
+  fi
+}
+
+########################
+# Copy file or directory that prevents accidentally overwriting any files.
+# Arguments:
+#   $1 - source file or directory
+#   $2 - destination directory
+# Returns:
+#   None
+#########################
+copy_files() {
+  local src="${1:?source is missing}"
+  local dest="${2:?destination is missing}"
+
+  cp -rn "${src}" "${dest}"
+}
+
+########################
+# Merge a source file into a destination file.
+# Arguments:
+#   $1 - source file
+#   $2 - destination file
+# Returns:
+#   None
+#########################
+merge_file() {
+  local src="${1:?source is missing}"
+  local dest="${2:?destination is missing}"
+
+  local tmp="diff.txt"
+
+  diff --line-format %L -D MERGE -B "${src}" "${dest}" >"${tmp}"
+  mv "${tmp}" "${dest}"
 }
 
 ########################

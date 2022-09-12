@@ -23,3 +23,9 @@ jobs:
       - name: Run Testing
         run: |
           make run-continuous-testing
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: continuous-testing-artifact
+          path: logs/**/*.log
+          retention-days: 1

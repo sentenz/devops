@@ -30,7 +30,7 @@ readonly FLAG_CHECKOUT
 
 # Internal functions
 
-enforce_checkout_major_branches() {
+enforce_checkout_from_base_branches() {
 	local local_branch="${1:?local branch is missing}"
 	local flag_checkout="${2:?checkout flag is missing}"
 	local -a base_branches=("${@:3}")
@@ -61,7 +61,7 @@ enforce_checkout_major_branches() {
 
 	cat <<END
 ___________________________________________________________________________________________________
-Branching strategy - Enforce the creation of support branches from the base branches.
+Branching strategy - Enforce to create the support branches from the base branches.
 
 Branch "${local_branch}" is created from "${parant_branch}".
 Though, support branches should be created from a base branch, e.g. "${base_branches[@]}".
@@ -77,7 +77,7 @@ post_checkout() {
 
 	create_empty_file "${LOG_FILE}"
 
-	enforce_checkout_major_branches "${LOCAL_BRANCH}" "${FLAG_CHECKOUT}" "${BASE_BRANCHES[@]}" >>"${LOG_FILE}"
+	enforce_checkout_from_base_branches "${LOCAL_BRANCH}" "${FLAG_CHECKOUT}" "${BASE_BRANCHES[@]}" >>"${LOG_FILE}"
 	((result |= $?))
 
 	remove_empty_file "${LOG_FILE}"

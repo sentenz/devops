@@ -1,53 +1,52 @@
-// For format details, see https://aka.ms/devcontainer.json.
-// For config options, see the README at: https://github.com/microsoft/vscode-dev-containers/tree/v0.202.5/containers/ubuntu
 {
   "name": "Ubuntu",
   "runArgs": ["--init"],
   "build": {
     "dockerfile": "../build/container/devcontainer.dockerfile",
-    // Update 'VARIANT' to pick an Ubuntu version: hirsute, focal, bionic. Use hirsute or bionic on
-    // local arm64/Apple Silicon.
     "args": {
       "VARIANT": "focal"
     },
     "context": ".."
   },
-  // Set *default* container specific settings.json values on container create.
   "settings": {},
-  // Add the IDs of extensions you want installed when the container is created.
   "extensions": [
-	"ms-vscode.cpptools",
-	"ms-vscode.cmake-tools",
-	"cheshirekow.cmake-format",
-	"mhutchie.git-graph",
-	"eamodio.gitlens",
-	"austin.code-gnu-global",
-	"twxs.cmake",
-	"foxundermoon.shell-format",
-	"lfurzewaddock.vscode-wsl-workspacefolder",
-	"ms-azuretools.vscode-docker",
-	"esbenp.prettier-vscode",
-	"xaver.clang-format",
-	"mine.cpplint",
-	"vivaxy.vscode-conventional-commits",
-	"timonwong.shellcheck",
-	"qiumingge.cpp-check-lint",
-	"yzhang.markdown-all-in-one",
-	"VisualStudioExptTeam.intellicode-api-usage-examples"
+    "ms-vscode.cpptools",
+    "ms-vscode.cmake-tools",
+    "austin.code-gnu-global",
+    "twxs.cmake",
+    "ms-azuretools.vscode-docker",
+    "cheshirekow.cmake-format",
+    "foxundermoon.shell-format",
+    "vivaxy.vscode-conventional-commits",
+    "xaver.clang-format",
+    "notskm.clang-tidy",
+    "cheshirekow.cmake-format",
+    "sleistner.vscode-fileutils",
+    "donjayamanne.git-extension-pack",
+    "mhutchie.git-graph",
+    "donjayamanne.githistory",
+    "github.vscode-pull-request-github",
+    "codezombiech.gitignore",
+    "eamodio.gitlens",
+    "golang.go",
+    "zainchen.json",
+    "yzhang.markdown-all-in-one",
+    "yzane.markdown-pdf",
+    "davidanson.vscode-markdownlint",
+    "christian-kohler.path-intellisense",
+    "esbenp.prettier-vscode",
+    "timonwong.shellcheck",
+    "tabnine.tabnine-vscode",
+    "pflannery.vscode-versionlens",
+    "visualstudioexptteam.vscodeintellicode",
+    "redhat.vscode-yaml",
+    "alefragnani.project-manager",
+    "tht13.html-preview-vscode",
+    "editorconfig.editorconfig",
+    "VisualStudioExptTeam.intellicode-api-usage-examples"
 ],
-  // Execute command on first execution of the newly built container
   "onCreateCommand": "apt-get update && apt-get install -y make",
-  // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "make setup-devcontainer"
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  // "forwardPorts": [
-  //   4840, // OPC UA Server default port
-  //   1883 // MQTT Broker port
-  // ],
-  // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-  // "remoteUser": "vscode",
-  // See https://github.com/devcontainers/features/tree/main/src
-  // "features": {
-  //   "make": "latest"
-  // }
+  "postCreateCommand": "make setup-devcontainer",
+  "forwardPorts": [],
+  "features": {}
 }
