@@ -9,7 +9,7 @@
   > Contains the commands:
   >
   > - `dockerfile`: Set the docker container file for the devcontainer.
-  > - `args`: Update *VARIANT* to pick an Ubuntu version: hirsute, focal, bionic, use hirsute or bionic on local arm64/Apple Silicon.
+  > - `args`: Update `VARIANT` to pick an Ubsion: hirsute, ubuntu-21.04, focal, ubuntu-20.04, bionic, ubuntu-18.04 on local arm64/Apple Silicon.
   > - `settings`: Set default container specific settings.json values on container create.
   > - `extensions`: Add the IDs of extensions you want installed when the container is created.
   > - `onCreateCommand`: Run command on first of the newly built container.
