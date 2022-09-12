@@ -17,7 +17,7 @@ set -uo pipefail
 # Constant variables
 
 readonly -a SCRIPTS=(
-  continuous_integration
+  setup_continuous_integration.sh
 )
 
 # Internal functions
@@ -80,8 +80,8 @@ run_scripts() {
 
   local -i result=0
   for script in "${scripts[@]}"; do
-    chmod +x "${script}.sh"
-    ./"${script}.sh"
+    chmod +x "${script}"
+    ./"${script}"
     ((result |= $?))
   done
 
@@ -90,6 +90,8 @@ run_scripts() {
 
 setup_devops() {
   local -i result=0
+
+  owned_by "$(get_root_dir)" "${USER}"
 
   initialize_scripts
   initialize_dotfiles

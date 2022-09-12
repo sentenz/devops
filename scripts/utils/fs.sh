@@ -14,7 +14,7 @@ owned_by() {
   local path="${1:?path is missing}"
   local owner="${2:?owner is missing}"
 
-  chown "$owner":"$owner" "$path"
+  chown -R "$owner":"$owner" "$path"
 }
 
 ########################
@@ -196,6 +196,7 @@ get_sript_dir() {
 #########################
 configure_permissions_ownership() {
   local -r paths="${1:?paths is missing}"
+
   local dir_mode=""
   local file_mode=""
   local user=""

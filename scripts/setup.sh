@@ -22,11 +22,10 @@ readonly -a APT_PACKAGES=(
   build-essential
   git
   automake
-  python3.8
+  python3
   python-is-python3
   python3-pip
-  gcc-9
-  snapd
+  gcc
   cmake
   make
   apt-transport-https

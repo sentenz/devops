@@ -1,10 +1,10 @@
 # `/pipeline`
 
-- continuous_integration.sh
+- setup_continuous_integration.sh
   > An internal script to perform dependency setup for continuous integration pipeline.
 
-- continuous_testing.sh
+- setup_continuous_testing.sh
   > An internal script to perform dependency setup for continuous testing pipeline.
 
-- continuous_testing.sh
-  > An internal script to perform dependency setup for continuous testing pipeline.
+- setup_continuous_release.sh
+  > An internal script to perform dependency setup for continuous release pipeline.
