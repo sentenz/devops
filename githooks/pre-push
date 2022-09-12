@@ -66,11 +66,7 @@ enforce_naming_convention_of_support_branch() {
 	))\/[0-9]+[-][a-z-]+$"
 	readonly regex_patterns
 
-	if [[ "${local_branch}" =~ ${regex_patterns} ]]; then
-		git checkout "${local_branch}"
-
-		true
-	else
+	if [[ ! "${local_branch}" =~ ${regex_patterns} ]]; then
 		cat <<END
 ___________________________________________________________________________________________________
 Branching strategy - Enforce naming convention for support branches.
@@ -90,7 +86,7 @@ ________________________________________________________________________________
 
 END
 
-		false
+		return 1
 	fi
 }
 
