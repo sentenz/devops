@@ -31,7 +31,6 @@ readonly -a APT_PACKAGES=(
   make
   curl
   nodejs
-  npm
 
   licensecheck
   shellcheck

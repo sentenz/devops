@@ -17,7 +17,6 @@ set -uo pipefail
 
 readonly -a APT_PACKAGES=(
   nodejs
-  npm
 )
 readonly -a NPM_PACKAGES=(
   semantic-release
