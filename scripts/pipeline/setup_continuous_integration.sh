@@ -17,9 +17,6 @@ set -uo pipefail
 
 # Constant variables
 
-readonly -a GO_PACKAGES=(
-  github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-)
 readonly -a APT_PACKAGES=(
   software-properties-common
   build-essential
@@ -70,36 +67,25 @@ readonly -a NPM_PACKAGES=(
   remark-lint-emphasis-marker
   remark-lint-strong-marker
 )
+readonly -a GO_PACKAGES=(
+  github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+)
 readonly -a CURL_PACKAGES=(
   "https://webinstall.dev/shfmt"
 )
 
 # Internal functions
 
-post_cleanup() {
-  local -i result=0
-
-  cleanup_apt
-  ((result |= $?))
-
-  cleanup_npm
-  ((result |= $?))
-
-  monitor "setup" "post-cleanup" "${result}"
-
-  return "${result}"
-}
-
 setup_continuous_integration() {
   local -i result=0
+
+  setup_apt_packages "${APT_PACKAGES[@]}"
+  ((result |= $?))
 
   setup_go_packages "${GO_PACKAGES[@]}"
   ((result |= $?))
 
   setup_curl_packages "${CURL_PACKAGES[@]}"
-  ((result |= $?))
-
-  setup_apt_packages "${APT_PACKAGES[@]}"
   ((result |= $?))
 
   setup_pip_packages "${PIP_PACKAGES[@]}"
@@ -108,7 +94,10 @@ setup_continuous_integration() {
   setup_npm_packages "${NPM_PACKAGES[@]}"
   ((result |= $?))
 
-  post_cleanup
+  cleanup_apt
+  ((result |= $?))
+
+  cleanup_npm
   ((result |= $?))
 
   return "${result}"
