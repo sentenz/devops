@@ -3,9 +3,9 @@
 # the v1.0.0 specification:
 # https://www.conventionalcommits.org/en/v1.0.0/#specification
 #
-# You can remove them and uncomment the config below when the following issue is fixed:
+# Remove them and uncomment the config below when the following issue is fixed:
 # https://github.com/conventional-changelog/commitlint/issues/613
-
+#
 # extends:
 #   - '@commitlint/config-conventional'
 rules:

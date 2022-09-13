@@ -10,9 +10,6 @@ set -uo pipefail
 
 # Include libraries
 
-. ./../../scripts/utils/log.sh
-. ./../../scripts/utils/fs.sh
-. ./../../scripts/utils/git.sh
 . ./../../scripts/utils/util.sh
 
 # Constant variables

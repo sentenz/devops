@@ -10,7 +10,6 @@ set -uo pipefail
 
 # Include libraries
 
-. ./../scripts/utils/log.sh
 . ./../scripts/utils/fs.sh
 . ./../scripts/utils/git.sh
 
@@ -91,15 +90,15 @@ run_scripts() {
 setup_devops() {
   local -i result=0
 
+  run_scripts "${SCRIPTS[@]}"
+  ((result |= $?))
+
   initialize_scripts
   initialize_dotfiles
   initialize_githooks
   initialize_pipelines
   initialize_container
   initialize_makefile
-
-  run_scripts "${SCRIPTS[@]}"
-  ((result |= $?))
 
   return "${result}"
 }

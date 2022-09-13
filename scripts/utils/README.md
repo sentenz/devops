@@ -1,10 +1,12 @@
 # `/util`
 
-- git.sh
-  > An internal library for git actions.
-
 - utils.sh
   > An internal library for utility actions (e.g. package management).
+  >
+  > NOTE Depends on `log.sh`.
+
+- git.sh
+  > An internal library for git actions.
 
 - fs.sh
   > An external library for file system actions from [bash-libraries](https://github.com/juan131/bash-libraries) repository.
