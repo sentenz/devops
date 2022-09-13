@@ -31,24 +31,13 @@ readonly -a APT_PACKAGES=(
 
 # Internal functions
 
-post_cleanup() {
-  local -i result=0
-
-  cleanup_apt
-  ((result |= $?))
-
-  monitor "install" "post-cleanup" "${result}"
-
-  return "${result}"
-}
-
 setup() {
   local -i result=0
 
   setup_apt_packages "${APT_PACKAGES[@]}"
   ((result |= $?))
 
-  post_cleanup
+  cleanup_apt
   ((result |= $?))
 
   return "${result}"

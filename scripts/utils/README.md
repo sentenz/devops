@@ -4,7 +4,7 @@
   > An internal library for git actions.
 
 - utils.sh
-  > An internal library for package management actions.
+  > An internal library for utility actions (e.g. package management).
 
 - fs.sh
   > An external library for file system actions from [bash-libraries](https://github.com/juan131/bash-libraries) repository.

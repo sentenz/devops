@@ -36,20 +36,6 @@ readonly -a NPM_PACKAGES=(
 
 # Internal functions
 
-post_cleanup() {
-  local -i result=0
-
-  cleanup_apt
-  ((result |= $?))
-
-  cleanup_npm
-  ((result |= $?))
-
-  monitor "setup" "post-cleanup" "${result}"
-
-  return "${result}"
-}
-
 setup_continuous_release() {
   local -i result=0
 
@@ -59,7 +45,10 @@ setup_continuous_release() {
   setup_npm_packages "${NPM_PACKAGES[@]}"
   ((result |= $?))
 
-  post_cleanup
+  cleanup_apt
+  ((result |= $?))
+
+  cleanup_npm
   ((result |= $?))
 
   return "${result}"
