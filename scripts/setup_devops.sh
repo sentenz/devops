@@ -66,9 +66,13 @@ initialize_container() {
   fi
 }
 
-initialize_makefile() {
+initialize_merge() {
   if is_file "$(get_sript_dir)/../Makefile"; then
     merge_file "$(get_sript_dir)/../Makefile" "$(get_root_dir)/Makefile"
+  fi
+
+  if is_file "$(get_sript_dir)/../.vscode/extensions.json"; then
+    merge_file "$(get_sript_dir)/../.vscode/extensions.json" "$(get_root_dir)/.vscode/extensions.json"
   fi
 }
 
@@ -98,7 +102,7 @@ setup_devops() {
   initialize_githooks
   initialize_pipelines
   initialize_container
-  initialize_makefile
+  initialize_merge
 
   return "${result}"
 }
