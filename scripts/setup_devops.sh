@@ -78,16 +78,19 @@ initialize_merge() {
 run_scripts() {
   local -a scripts=("$@")
 
-  cd "$(get_sript_dir)/pipeline" || exit
+  (
+    local -i result=0
 
-  local -i result=0
-  for script in "${scripts[@]}"; do
-    chmod +x "${script}"
-    ./"${script}"
-    ((result |= $?))
-  done
+    cd "$(get_sript_dir)/pipeline" || return 1
 
-  return "${result}"
+    for script in "${scripts[@]}"; do
+      chmod +x "${script}"
+      ./"${script}"
+      ((result |= $?))
+    done
+
+    return "${result}"
+  )
 }
 
 setup_devops() {

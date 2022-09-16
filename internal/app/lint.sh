@@ -76,7 +76,7 @@ lint() {
 
   create_dir "$(get_root_dir)/logs/validate"
 
-  cd "$(get_sript_dir)/../lint" || exit
+  cd "$(get_sript_dir)/../lint" || return 1
 
   local -i result=0
   for script in "${scripts[@]}"; do
