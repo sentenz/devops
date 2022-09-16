@@ -5,7 +5,6 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 # Include libraries
@@ -19,7 +18,7 @@ L_FLAG="all"
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
-    *) "[error] Unexpected option: ${flag}" ;;
+    *) "error: unexpected option: ${flag}" ;;
   esac
 done
 readonly L_FLAG
@@ -39,7 +38,7 @@ pre_cleanup() {
 lint() {
   local flag="${1}"
 
-  cd "$(get_sript_dir)/../internal/app" || exit
+  cd "$(get_sript_dir)/../internal/app" || return 2
 
   local -i result=0
   chmod +x lint.sh

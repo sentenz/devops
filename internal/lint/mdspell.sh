@@ -5,7 +5,6 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 # Include libraries
@@ -27,52 +26,83 @@ L_FLAG="all"
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
-    *) "[error] Unexpected option: ${flag}" ;;
+    *) "error: unexpected option: ${flag}" ;;
   esac
 done
 readonly L_FLAG
 
-# Control flow logic
+# Internal functions
 
-LIST=""
-if [[ "${L_FLAG}" == "ci" ]]; then
-  LIST=$(get_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-elif [[ "${L_FLAG}" == "diff" ]]; then
-  LIST=$(get_diff_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-elif [[ "${L_FLAG}" == "staged" ]]; then
-  LIST=$(get_staged_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-else
-  echo "[error] unexpected option: ${L_FLAG}" &>"${LOG_FILE}"
-  exit 2
-fi
-readonly LIST
+analyzer() {
+  local -a filepaths
 
-# Run analyzer
-if [[ -n "${LIST}" ]]; then
-  readonly SORT="sort < ${PATH_ROOT_DIR}/${RC_FILE} | sort | uniq | tee ${RC_FILE}.tmp > /dev/null && mv ${RC_FILE}.tmp ${PATH_ROOT_DIR}/${RC_FILE}"
-  readonly CMD="mdspell -n -a -r -d --en-us --en-gb '!**/node_modules/**/*.md' '!**/vendor/**/*.md' '!**/.github/**/*.md' '!**/translations/**/*.md'"
+  # Get files
+  if [[ "${L_FLAG}" == "ci" ]]; then
+    filepaths=$(get_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+  elif [[ "${L_FLAG}" == "diff" ]]; then
+    filepaths=$(get_diff_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+  elif [[ "${L_FLAG}" == "staged" ]]; then
+    filepaths=$(get_staged_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+  else
+    echo "error: unexpected option: ${L_FLAG}" &>"${LOG_FILE}"
 
-  eval "${SORT}"
+    return 2
+  fi
+
+  # Run linter
+  if [[ -z "${filepaths}" ]]; then
+    return 255
+  fi
+
+  local -r sortrc="sort < ${RC_FILE} | sort | uniq | tee ${RC_FILE}.tmp > /dev/null && mv ${RC_FILE}.tmp ${RC_FILE}"
 
   (
-    cd "${PATH_ROOT_DIR}" || exit
+    cd "${PATH_ROOT_DIR}" || return 1
 
-    for line in ${LIST}; do
-      eval "${CMD}" "${line}"
+    eval "${sortrc}"
+  )
+
+  local -r cmd="mdspell -n -a -r --en-us --en-gb '!**/vendor/**/*.md' '!**/translations/**/*.md'"
+
+  (
+    cd "${PATH_ROOT_DIR}" || return 1
+
+    for filepath in "${filepaths[@]}"; do
+      eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
-else
-  exit 255
-fi
+}
 
-# Analyze log
-if [[ -f "${LOG_FILE}" ]]; then
-  ERRORS=$(grep -i -c -E 'spelling errors found' "${LOG_FILE}" || true)
-  readonly ERRORS
+logger() {
+  local -i retval=0
+  local -i errors=0
 
-  if [[ "${ERRORS}" -ne 0 ]]; then
-    exit 1
-  else
-    rm -f "${LOG_FILE}"
+  if is_file "${LOG_FILE}"; then
+    errors=$(grep -i -c -E 'spelling errors found' "${LOG_FILE}" || true)
+
+    if ((errors != 0)); then
+      ((retval |= 1))
+    else
+      remove_file "${LOG_FILE}"
+    fi
   fi
-fi
+
+  return "${retval}"
+}
+
+lint() {
+  local -i result=0
+
+  analyzer
+  ((result |= $?))
+
+  logger
+  ((result |= $?))
+
+  return "${result}"
+}
+
+# Control flow logic
+
+lint
+exit "${?}"

@@ -5,7 +5,6 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 # Include libraries
@@ -20,7 +19,7 @@ L_FLAG="diff"
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
-    *) "[error] Unexpected option: ${flag}" ;;
+    *) "error: unexpected option: ${flag}" ;;
   esac
 done
 readonly L_FLAG
@@ -58,6 +57,7 @@ analyze() {
   local flag="${2}"
 
   local -i result=0
+
   chmod +x "${script}.sh"
   ./"${script}.sh" -l "${flag}"
   ((result = $?))

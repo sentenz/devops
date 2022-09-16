@@ -5,32 +5,75 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
-PATH_BINARY="."
+# Include libraries
 
+. ./../../scripts/utils/fs.sh
+. ./../../scripts/utils/git.sh
+
+# Constant variables
+
+PATH_ROOT_DIR="$(get_root_dir)"
+readonly PATH_ROOT_DIR
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/valgrind.log"
+
+PATH_BINARY="."
 while getopts 'p:' flag; do
   case "${flag}" in
     p) PATH_BINARY="${OPTARG}" ;;
-    *) "[error] Unexpected option: ${flag}" ;;
+    *) "error: unexpected option: ${flag}" ;;
   esac
 done
-
 readonly PATH_BINARY
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/valgrind.log"
 
-# Run valgrind
-valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes --error-limit=no -q --log-file="${LOG_FILE}" ./"${PATH_BINARY}"
+# Internal functions
 
-# Analyze log
-if [[ -f "${LOG_FILE}" ]]; then
-  ERRORS=$(grep -c "ERROR SUMMARY" "${LOG_FILE}" || true)
-  readonly ERRORS
-
-  if [[ "${ERRORS}" -ne 0 ]]; then
-    exit 1
-  else
-    rm -f "${LOG_FILE}"
+analyzer() {
+  if ! is_file "${PATH_BINARY}"; then
+    return 255
   fi
-fi
+
+  local -r cmd="valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes --error-limit=no -q --log-file=${LOG_FILE} ./${PATH_BINARY}"
+
+  (
+    cd "${PATH_ROOT_DIR}" || return 1
+
+    eval "${cmd}"
+  )
+
+}
+
+logger() {
+  local -i retval=0
+  local -i errors=0
+
+  if is_file "${LOG_FILE}"; then
+    errors=$(grep -i -c -E 'ERROR SUMMARY' "${LOG_FILE}" || true)
+
+    if ((errors != 0)); then
+      ((retval |= 1))
+    else
+      remove_file "${LOG_FILE}"
+    fi
+  fi
+
+  return "${retval}"
+}
+
+lint() {
+  local -i result=0
+
+  analyzer
+  ((result |= $?))
+
+  logger
+  ((result |= $?))
+
+  return "${result}"
+}
+
+# Control flow logic
+
+lint
+exit "${?}"

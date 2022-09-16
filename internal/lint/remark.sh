@@ -5,7 +5,6 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 # Include libraries
@@ -17,7 +16,7 @@ set -uo pipefail
 
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
-readonly RC_FILE=".remarkrc.json"
+# readonly RC_FILE=".remarkrc.json"
 # readonly RC_IGNORE_FILE=".remarkignore"
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/remark.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(md)$"
@@ -28,51 +27,75 @@ L_FLAG="all"
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
-    *) "[error] Unexpected option: ${flag}" ;;
+    *) "error: unexpected option: ${flag}" ;;
   esac
 done
 readonly L_FLAG
 
-# Control flow logic
+# Internal functions
 
-LIST=""
-if [[ "${L_FLAG}" == "ci" ]]; then
-  LIST=$(get_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-elif [[ "${L_FLAG}" == "diff" ]]; then
-  LIST=$(get_diff_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-elif [[ "${L_FLAG}" == "staged" ]]; then
-  LIST=$(get_staged_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-else
-  echo "[error] unexpected option: ${L_FLAG}" &>"${LOG_FILE}"
-  exit 2
-fi
-readonly LIST
+analyzer() {
+  local -a filepaths
 
-# Run analyzer
-if [[ -n "${LIST}" ]]; then
-  readonly CMD="remark --no-stdout --no-color --silent -r ${PATH_ROOT_DIR}/${RC_FILE}"
+  # Get files
+  if [[ "${L_FLAG}" == "ci" ]]; then
+    filepaths=$(get_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+  elif [[ "${L_FLAG}" == "diff" ]]; then
+    filepaths=$(get_diff_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+  elif [[ "${L_FLAG}" == "staged" ]]; then
+    filepaths=$(get_staged_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+  else
+    echo "error: unexpected option: ${L_FLAG}" &>"${LOG_FILE}"
+
+    return 2
+  fi
+
+  # Run linter
+  if [[ -z "${filepaths}" ]]; then
+    return 255
+  fi
+
+  local -r cmd="remark --no-stdout --no-color --silent"
 
   (
-    cd "${PATH_ROOT_DIR}" || exit
+    cd "${PATH_ROOT_DIR}" || return 1
 
-    for line in ${LIST}; do
-      eval "${CMD}" "${line}"
+    for filepath in "${filepaths[@]}"; do
+      eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
-else
-  exit 255
-fi
+}
 
-# Analyze log
-if [[ -f "${LOG_FILE}" ]]; then
-  ERRORS=$(grep -i -c -E 'error' "${LOG_FILE}" || true)
-  readonly ERRORS
-  WARNINGS=$(grep -i -c -E 'warning' "${LOG_FILE}" || true)
-  readonly WARNINGS
+logger() {
+  local -i retval=0
+  local -i errors=0
 
-  if [[ "${ERRORS}" -ne 0 || "${WARNINGS}" -ne 0 ]]; then
-    exit 1
-  else
-    rm -f "${LOG_FILE}"
+  if is_file "${LOG_FILE}"; then
+    errors=$(grep -i -c -E 'error|warning' "${LOG_FILE}" || true)
+
+    if ((errors != 0)); then
+      ((retval |= 1))
+    else
+      remove_file "${LOG_FILE}"
+    fi
   fi
-fi
+
+  return "${retval}"
+}
+
+lint() {
+  local -i result=0
+
+  analyzer
+  ((result |= $?))
+
+  logger
+  ((result |= $?))
+
+  return "${result}"
+}
+
+# Control flow logic
+
+lint
+exit "${?}"

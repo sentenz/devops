@@ -5,7 +5,6 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 # Include libraries
@@ -27,44 +26,70 @@ L_FLAG="all"
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
-    *) "[error] Unexpected option: ${flag}" ;;
+    *) "error: unexpected option: ${flag}" ;;
   esac
 done
 readonly L_FLAG
 
-# Control flow logic
+# Internal functions
 
-LIST=""
-if [[ "${L_FLAG}" == "ci" ]]; then
-  LIST=$(get_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-elif [[ "${L_FLAG}" == "diff" ]]; then
-  LIST=$(get_diff_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-elif [[ "${L_FLAG}" == "staged" ]]; then
-  LIST=$(get_staged_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-else
-  echo "[error] unexpected option: ${L_FLAG}" &>"${LOG_FILE}"
-  exit 2
-fi
-readonly LIST
+analyzer() {
+  local -a filepaths
 
-# Run analyzer
-if [[ -n "${LIST}" ]]; then
-  readonly CMD="codespell"
+  # Get files
+  if [[ "${L_FLAG}" == "ci" ]]; then
+    filepaths=$(get_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+  elif [[ "${L_FLAG}" == "diff" ]]; then
+    filepaths=$(get_diff_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+  elif [[ "${L_FLAG}" == "staged" ]]; then
+    filepaths=$(get_staged_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+  else
+    echo "error: unexpected option: ${L_FLAG}" &>"${LOG_FILE}"
+
+    return 2
+  fi
+
+  # Run linter
+  if [[ -z "${filepaths}" ]]; then
+    return 255
+  fi
+
+  local -r cmd="codespell"
 
   (
-    cd "${PATH_ROOT_DIR}" || exit
+    cd "${PATH_ROOT_DIR}" || return 1
 
-    for line in ${LIST}; do
-      eval "${CMD}" "${line}"
+    for filepath in "${filepaths[@]}"; do
+      eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
-else
-  exit 255
-fi
+}
 
-# Analyze log
-if is_file_empty "${LOG_FILE}"; then
-  rm -f "${LOG_FILE}"
-else
-  exit 1
-fi
+logger() {
+  local -i retval=0
+
+  if ! is_file_empty "${LOG_FILE}"; then
+    ((retval |= 1))
+  else
+    remove_file "${LOG_FILE}"
+  fi
+
+  return "${retval}"
+}
+
+lint() {
+  local -i result=0
+
+  analyzer
+  ((result |= $?))
+
+  logger
+  ((result |= $?))
+
+  return "${result}"
+}
+
+# Control flow logic
+
+lint
+exit "${?}"

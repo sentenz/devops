@@ -10,6 +10,7 @@
 #   Name
 #########################
 get_os_name() {
+  local retval
   retval="$(uname | tr '[:upper:]' '[:lower:]')"
   echo "${retval}"
 
@@ -133,12 +134,14 @@ retry_while() {
   local -r cmd="${1:?cmd is missing}"
   local -r retries="${2:-12}"
   local -r sleep_time="${3:-5}"
-  local return_value=1
 
-  read -r -a command <<<"$cmd"
+  local retval=1
+
+  read -r -a commands <<<"$cmd"
   for ((i = 1; i <= retries; i += 1)); do
-    "${command[@]}" && return_value=0 && break
+    "${commands[@]}" && retval=0 && break
     sleep "$sleep_time"
   done
-  return $return_value
+
+  return "${retval}"
 }

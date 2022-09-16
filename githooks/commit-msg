@@ -8,8 +8,6 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
-# -e: exit immediately if a pipeline returns a non-zero status
 set -uo pipefail
 
 # Include libraries
@@ -28,27 +26,49 @@ readonly COMMIT_MESSAGE
 # Internal functions
 
 enforce_commit_message_convention() {
-    local message="${1:?message is missing}"
+  local message="${1:?message is missing}"
 
-    readonly CMD="commitlint --edit"
-    eval "${CMD}" "${message}"
+  local -i result=0
 
-    return "${?}"
+  make run-validate-commit
+  ((result = $?))
+
+  if ((result != 0)); then
+    cat <<END
+___________________________________________________________________________________________________
+Commit Message Convention - Enforce the conventional commits specification to commit messages.
+
+There is something wrong with the commit message:
+
+  "$(cat "${message}")"
+
+A commit message that is compliant with Conventional Commits consists of the format:
+
+  <type>(<scope>): <short summary>
+
+See https://sentenz.github.io/guide/guideline/commit-message-guide.html
+___________________________________________________________________________________________________
+END
+  fi
+
+  return "${result}"
 }
 
 commit_msg() {
-    local -i result=0
+  local -i result=0
 
-    create_empty_file "${LOG_FILE}"
+  create_file "${LOG_FILE}"
 
-    enforce_commit_message_convention "${COMMIT_MESSAGE}" >>"${LOG_FILE}"
-    ((result |= $?))
+  enforce_commit_message_convention "${COMMIT_MESSAGE}" >>"${LOG_FILE}"
+  ((result |= $?))
 
-    remove_empty_file "${LOG_FILE}"
+  if ((result == 0)); then
+    remove_file "${LOG_FILE}"
+  fi
 
-    monitor "githooks" "commit-msg" "${result}"
+  monitor "githooks" "commit-msg" "${result}"
 
-    return "${result}"
+  return "${result}"
 }
 
 # Control flow logic

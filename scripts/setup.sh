@@ -5,7 +5,6 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 # Include libraries
@@ -21,7 +20,6 @@ readonly -a APT_PACKAGES=(
   python3
   python-is-python3
   python3-pip
-  gcc
   cmake
   make
   dirmngr

@@ -5,7 +5,6 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 # Include libraries
@@ -17,7 +16,7 @@ set -uo pipefail
 
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
-readonly RC_FILE=".commitlintrc.js"
+# readonly RC_FILE=".commitlintrc.yml"
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/commitlint.log"
 
 # Options
@@ -26,51 +25,75 @@ L_FLAG="all"
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
-    *) "[error] Unexpected option: ${flag}" ;;
+    *) "error: unexpected option: ${flag}" ;;
   esac
 done
 readonly L_FLAG
 
+# Internal functions
+
+analyzer() {
+  local -a filepaths
+
+  # Get files
+  if [[ "${L_FLAG}" == "ci" ]]; then
+    return 0
+  elif [[ "${L_FLAG}" == "diff" ]]; then
+    return 0
+  elif [[ "${L_FLAG}" == "staged" ]]; then
+    filepaths="$(get_root_dir/.git/COMMIT_EDITMSG)"
+  else
+    echo "error: unexpected option: ${L_FLAG}" &>"${LOG_FILE}"
+
+    return 2
+  fi
+
+  # Run linter
+  if [[ -z "${filepaths}" ]]; then
+    return 255
+  fi
+
+  local -r cmd="commitlint --edit"
+
+  (
+    cd "${PATH_ROOT_DIR}" || return 1
+
+    for filepath in "${filepaths[@]}"; do
+      eval "${cmd}" "${filepath}"
+    done
+  ) &>"${LOG_FILE}"
+}
+
+logger() {
+  local -i retval=0
+  local -i errors=0
+
+  if is_file "${LOG_FILE}"; then
+    errors=$(grep -i -c -E '[1-9]{1,} problems|warnings' "${LOG_FILE}" || true)
+
+    if ((errors != 0)); then
+      ((retval |= 1))
+    else
+      remove_file "${LOG_FILE}"
+    fi
+  fi
+
+  return "${retval}"
+}
+
+lint() {
+  local -i result=0
+
+  analyzer
+  ((result |= $?))
+
+  logger
+  ((result |= $?))
+
+  return "${result}"
+}
+
 # Control flow logic
 
-LIST=""
-if [[ "${L_FLAG}" == "ci" ]]; then
-  LIST=$(commitlint --from "$(git rev-parse --abbrev-ref remotes/origin/main)" --to "$(git rev-parse --abbrev-ref HEAD)" --config "${PATH_ROOT_DIR}/${RC_FILE}")
-elif [[ "${L_FLAG}" == "diff" || "${L_FLAG}" == "repo" ]]; then
-  LIST=$(commitlint --from "$(git rev-parse --abbrev-ref remotes/origin/HEAD)" --to "$(git rev-parse --abbrev-ref HEAD)" --config "${PATH_ROOT_DIR}/${RC_FILE}")
-elif [[ "${L_FLAG}" == "staged" ]]; then
-  # TODO(AK) currently husky commit-msg and run_commitlint.sh do not work together
-  #EDITMSG_FILE=$(git rev-parse --git-path COMMIT_EDITMSG)
-  #if [[ -z "${EDITMSG_FILE}" ]]; then
-  #  exit 255
-  #fi
-  #LIST=$(commitlint --edit --config "${PATH_ROOT_DIR}/${RC_FILE}")
-  exit 255
-elif [[ "${L_FLAG}" == "all" ]]; then
-  LIST=$(commitlint --to "$(git rev-parse --short HEAD)" --config "${PATH_ROOT_DIR}/${RC_FILE}")
-else
-  echo "[error] Unexpected option: ${L_FLAG}" &>"${LOG_FILE}"
-  exit 2
-fi
-readonly LIST
-
-# Run analyzer
-if [[ -n "${LIST}" ]]; then
-  echo "${LIST}" &>"${LOG_FILE}"
-else
-  exit 255
-fi
-
-# Analyze log
-if [[ -f "${LOG_FILE}" ]]; then
-  PROBLEMS=$(grep -i -c -E '[1-9]{1,} problems' "${LOG_FILE}" || true)
-  readonly PROBLEMS
-  WARNINGS=$(grep -i -c -E '[1-9]{1,} warnings' "${LOG_FILE}" || true)
-  readonly WARNINGS
-
-  if [[ "${PROBLEMS}" -ne 0 || "${WARNINGS}" -ne 0 ]]; then
-    exit 1
-  else
-    rm -f "${LOG_FILE}"
-  fi
-fi
+lint
+exit "${?}"

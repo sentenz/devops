@@ -5,7 +5,6 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 # Include libraries
@@ -27,55 +26,75 @@ L_FLAG="all"
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
-    *) "[error] Unexpected option: ${flag}" ;;
+    *) "error: unexpected option: ${flag}" ;;
   esac
 done
 readonly L_FLAG
 
-# Control flow logic
+# Internal functions
 
-LIST=""
-if [[ "${L_FLAG}" == "ci" ]]; then
-  LIST=$(git diff --submodule=diff --diff-filter=d --name-only --line-prefix="${PATH_ROOT_DIR}/" remotes/origin/main... | grep -P "${REGEX_PATTERNS}" | xargs)
-elif [[ "${L_FLAG}" == "diff" ]]; then
-  LIST=$(git diff --submodule=diff --diff-filter=d --name-only --line-prefix="${PATH_ROOT_DIR}/" remotes/origin/HEAD... | grep -P "${REGEX_PATTERNS}" | xargs)
-elif [[ "${L_FLAG}" == "staged" ]]; then
-  LIST=$(git diff --submodule=diff --diff-filter=d --name-only --line-prefix="${PATH_ROOT_DIR}/" --cached | grep -P "${REGEX_PATTERNS}" | xargs)
-elif [[ "${L_FLAG}" == "repo" ]]; then
-  LIST=$(git ls-tree --full-tree -r --name-only HEAD | grep -P "${REGEX_PATTERNS}" | xargs -r printf -- "${PATH_ROOT_DIR}/%s ")
-elif [[ "${L_FLAG}" == "all" ]]; then
-  LIST=$(git ls-files --recurse-submodules | grep -P "${REGEX_PATTERNS}" | xargs -r printf -- "${PATH_ROOT_DIR}/%s ")
-else
-  echo "[error] Unexpected option: ${L_FLAG}" &>"${LOG_FILE}"
-  exit 2
-fi
-#readonly LIST
+analyzer() {
+  local -a filepaths
 
-# Run analyzer
-if [[ -n "${LIST}" ]]; then
-  readonly CMD="yamllint --no-warnings"
+  # Get files
+  if [[ "${L_FLAG}" == "ci" ]]; then
+    filepaths=$(get_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+  elif [[ "${L_FLAG}" == "diff" ]]; then
+    filepaths=$(get_diff_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+  elif [[ "${L_FLAG}" == "staged" ]]; then
+    filepaths=$(get_staged_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+  else
+    echo "error: unexpected option: ${L_FLAG}" &>"${LOG_FILE}"
+
+    return 2
+  fi
+
+  # Run linter
+  if [[ -z "${filepaths}" ]]; then
+    return 255
+  fi
+
+  local -r cmd="yamllint --no-warnings"
 
   (
-    cd "${PATH_ROOT_DIR}" || exit
+    cd "${PATH_ROOT_DIR}" || return 1
 
-    for line in ${LIST}; do
-      eval "${CMD}" "${line}"
+    for filepath in "${filepaths[@]}"; do
+      eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
-else
-  exit 255
-fi
+}
 
-# Analyze log
-if [[ -f "${LOG_FILE}" ]]; then
-  ERRORS=$(grep -c "error" "${LOG_FILE}" || true)
-  readonly ERRORS
-  WARNINGS=$(grep -c "warning" "${LOG_FILE}" || true)
-  readonly WARNINGS
+logger() {
+  local -i retval=0
+  local -i errors=0
 
-  if [[ "${ERRORS}" -ne 0 || "${WARNINGS}" -ne 0 ]]; then
-    exit 1
-  else
-    rm -f "${LOG_FILE}"
+  if is_file "${LOG_FILE}"; then
+    errors=$(grep -i -c -E 'error|warning' "${LOG_FILE}" || true)
+
+    if ((errors != 0)); then
+      ((retval |= 1))
+    else
+      remove_file "${LOG_FILE}"
+    fi
   fi
-fi
+
+  return "${retval}"
+}
+
+lint() {
+  local -i result=0
+
+  analyzer
+  ((result |= $?))
+
+  logger
+  ((result |= $?))
+
+  return "${result}"
+}
+
+# Control flow logic
+
+lint
+exit "${?}"

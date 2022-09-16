@@ -31,6 +31,10 @@ run-validate-ci: ## Perform validation of modified files in continuous integrati
 	cd cmd && chmod +x validate.sh && ./validate.sh -l ci
 .PHONY: run-validate-ci
 
+run-validate-commit: ## Perform validation of modified files in continuous integration pipeline
+	commitlint --edit .git/COMMIT_EDITMSG
+.PHONY: run-validate-commit
+
 setup-testing: ## Setup dependencies and tools for the testing service
 	cd scripts/pipeline && chmod +x setup_continuous_testing.sh && ./setup_continuous_testing.sh
 .PHONY: setup-testing
@@ -71,7 +75,3 @@ setup-continuous-release: ## Setup dependencies and tools for the continuous rel
 run-continuous-release: ## Perform task in continuous release pipeline
 	$(MAKE) run-release
 .PHONY: run-continuous-release
-
-run-githooks-pre-commit: ## Perform task in githooks pre-commit event
-	$(MAKE) run-validate-staged
-.PHONY: run-githooks-pre-commit

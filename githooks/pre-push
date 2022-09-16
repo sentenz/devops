@@ -8,7 +8,6 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 # Include libraries
@@ -47,8 +46,9 @@ Branching strategy - Prevent a direct push to the base branches.
 Noting that contributions to base branches are not compliant with the branching strategy.
 Contributing to a base branch can only be made via pull requests (PR). Create a support branch
 from and merge back to a base branch.
-___________________________________________________________________________________________________
 
+See https://sentenz.github.io/guide/guideline/branching-strategies-guide.html
+___________________________________________________________________________________________________
 END
 
 			return 1
@@ -71,8 +71,8 @@ enforce_naming_convention_of_support_branch() {
 ___________________________________________________________________________________________________
 Branching strategy - Enforce naming convention for support branches.
 
-There is something wrong with the name of your branch "${local_branch}". Rename your branch
-according to the naming convention for support branches.
+There is something wrong with the name of the local branch "${local_branch}". Rename the local
+branch according to the naming convention for support branches.
 
 The naming rule is: [support-branch]/[issue-id]-[short-description].
 
@@ -82,8 +82,9 @@ The naming rule is: [support-branch]/[issue-id]-[short-description].
   4. short-description: only lowercase letters, separated by hyphens
 
 Example: feature/158-enforce-policy
-___________________________________________________________________________________________________
 
+See https://sentenz.github.io/guide/guideline/branching-strategies-guide.html
+___________________________________________________________________________________________________
 END
 
 		return 1
@@ -93,7 +94,7 @@ END
 pre_push() {
 	local -i result=0
 
-	create_empty_file "${LOG_FILE}"
+	create_file "${LOG_FILE}"
 
 	prevent_push_to_base_branches "${LOCAL_BRANCH}" "${BASE_BRANCHES[@]}" >>"${LOG_FILE}"
 	((result |= $?))
@@ -101,7 +102,9 @@ pre_push() {
 	enforce_naming_convention_of_support_branch "${LOCAL_BRANCH}" "${SUPPORT_BRANCHES[@]}" >>"${LOG_FILE}"
 	((result |= $?))
 
-	remove_empty_file "${LOG_FILE}"
+	if ((result == 0)); then
+		remove_file "${LOG_FILE}"
+	fi
 
 	monitor "githooks" "pre-push" "${result}"
 
