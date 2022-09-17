@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform the validation of the codebase.
+# Perform static application security testing (SAST).
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -9,8 +9,8 @@ set -uo pipefail
 
 # Include libraries
 
-. ./../scripts/utils/fs.sh
-. ./../scripts/utils/git.sh
+. ./../../scripts/utils/fs.sh
+. ./../../scripts/utils/git.sh
 
 # Options
 
@@ -38,7 +38,7 @@ pre_cleanup() {
 lint() {
   local flag="${1}"
 
-  cd "$(get_sript_dir)/../internal/app" || return 2
+  cd "$(get_sript_dir)/../../internal/app" || return 2
 
   local -i result=0
   chmod +x lint.sh
@@ -48,7 +48,7 @@ lint() {
   return "${result}"
 }
 
-validate() {
+sast() {
   local -i result=0
 
   pre_cleanup
@@ -62,5 +62,5 @@ validate() {
 
 # Control flow logic
 
-validate
+sast
 exit "${?}"

@@ -20,18 +20,18 @@ setup-integration: ## Setup dependencies and tools for the integration service
 .PHONY: setup-integration
 
 run-validate-staged: ## Perform validation of local staged files
-	cd cmd && chmod +x validate.sh && ./validate.sh -l staged
+	cd cmd/app && chmod +x sast.sh && ./sast.sh -l staged
 .PHONY: run-validate-staged
 
 run-validate-diff: ## Perform validation of local modified files
-	cd cmd && chmod +x validate.sh && ./validate.sh -l diff
+	cd cmd/app && chmod +x sast.sh && ./sast.sh -l diff
 .PHONY: run-validate-diff
 
 run-validate-ci: ## Perform validation of modified files in continuous integration pipeline
-	cd cmd && chmod +x validate.sh && ./validate.sh -l ci
+	cd cmd/app && chmod +x sast.sh && ./sast.sh -l ci
 .PHONY: run-validate-ci
 
-run-validate-commit: ## Perform validation of modified files in continuous integration pipeline
+run-validate-commit: ## Perform validation of the commit message
 	commitlint --edit .git/COMMIT_EDITMSG
 .PHONY: run-validate-commit
 

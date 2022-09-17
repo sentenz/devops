@@ -17,6 +17,12 @@ set -uo pipefail
 readonly -a SCRIPTS=(
   setup_continuous_integration.sh
 )
+readonly -a PIPELINES=(
+  continuous-integration.yml
+  continuous-release.yml
+  continuous-security.yml
+  continuous-testing.yml
+)
 
 # Internal functions
 
@@ -70,9 +76,21 @@ initialize_merge() {
     merge_file "$(get_sript_dir)/../Makefile" "$(get_root_dir)/Makefile"
   fi
 
-  if is_file "$(get_sript_dir)/../.vscode/extensions.json"; then
+  if is_dir "$(get_sript_dir)/../.vscode"; then
     merge_file "$(get_sript_dir)/../.vscode/extensions.json" "$(get_root_dir)/.vscode/extensions.json"
   fi
+
+  for pipeline in "${PIPELINES[@]}"; do
+    if is_file "$(get_sript_dir)/../.azure/${pipeline}"; then
+      merge_file "$(get_sript_dir)/../.azure/${pipeline}" "$(get_root_dir)/.azure/${pipeline}"
+    fi
+  done
+
+  for pipeline in "${PIPELINES[@]}"; do
+    if is_file "$(get_sript_dir)/../.github/workflows/${pipeline}"; then
+      merge_file "$(get_sript_dir)/../.github/workflows/${pipeline}" "$(get_root_dir)/.github/workflows/${pipeline}"
+    fi
+  done
 }
 
 run_scripts() {
