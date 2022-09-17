@@ -39,7 +39,7 @@ END
     return "${result}"
 }
 
-pre_commit() {
+run_pre_commit() {
     local -i result=0
 
     create_file "${LOG_FILE}"
@@ -58,5 +58,5 @@ pre_commit() {
 
 # Control flow logic
 
-pre_commit
+run_pre_commit
 exit "${?}"

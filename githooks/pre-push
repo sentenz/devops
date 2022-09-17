@@ -91,7 +91,7 @@ END
 	fi
 }
 
-pre_push() {
+run_pre_push() {
 	local -i result=0
 
 	create_file "${LOG_FILE}"
@@ -113,5 +113,5 @@ pre_push() {
 
 # Control flow logic
 
-pre_push
+run_pre_push
 exit "${?}"

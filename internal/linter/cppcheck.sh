@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform a static analysis of the codebase by running cpplint.
+# Perform checks of c/c++ files by running cppcheck.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -16,13 +16,13 @@ set -uo pipefail
 
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
-# readonly RC_FILE="CPPLINT.cfg"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/cpplint.log"
+readonly RC_FILE=".cppcheck-suppressions"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/cppcheck.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(h|hpp|hxx|c|cc|cpp|cxx)$"
 
 # Options
 
-L_FLAG="all"
+L_FLAG=""
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
@@ -49,12 +49,12 @@ analyzer() {
     return 2
   fi
 
-  # Run linter
   if [[ -z "${filepaths}" ]]; then
     return 255
   fi
 
-  local -r cmd="cpplint --quiet --recursive"
+  # Run linter
+  local -r cmd="cppcheck --enable=warning --suppressions-list=${PATH_ROOT_DIR}/${RC_FILE} --template='[{file}:{line}]:({severity}),{id},{message}' --force -q"
 
   (
     cd "${PATH_ROOT_DIR}" || return 1
@@ -63,21 +63,28 @@ analyzer() {
       eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
+
+  return 0
 }
 
 logger() {
-  local -i retval=0
+  local -i result=0
+  local -i errors=0
 
-  if ! is_file_empty "${LOG_FILE}"; then
-    ((retval |= 1))
-  else
-    remove_file "${LOG_FILE}"
+  if is_file "${LOG_FILE}"; then
+    errors=$(grep -i -c -E '(error)|(warning)' "${LOG_FILE}" || true)
+
+    if ((errors != 0)); then
+      ((result = 1))
+    else
+      remove_file "${LOG_FILE}"
+    fi
   fi
 
-  return "${retval}"
+  return "${result}"
 }
 
-lint() {
+run_cppcheck() {
   local -i result=0
 
   analyzer
@@ -91,5 +98,5 @@ lint() {
 
 # Control flow logic
 
-lint
+run_cppcheck
 exit "${?}"

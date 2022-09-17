@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform C/C++ checks of the codebase by running cppcheck.
+# Perform checks of go files by running golangci-lint.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -16,13 +16,14 @@ set -uo pipefail
 
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
-readonly RC_FILE=".cppcheck-suppressions"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/cppcheck.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(h|hpp|hxx|c|cc|cpp|cxx)$"
+# readonly RC_FILE=".golangci.yml"
+# readonly FILE_RC_LICENSE=".golangci-licenses"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/golangci-lint.log"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(go)$"
 
 # Options
 
-L_FLAG="all"
+L_FLAG=""
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
@@ -49,12 +50,15 @@ analyzer() {
     return 2
   fi
 
-  # Run linter
   if [[ -z "${filepaths}" ]]; then
     return 255
   fi
 
-  local -r cmd="cppcheck --enable=warning --suppressions-list=${PATH_ROOT_DIR}/${RC_FILE} --template='[{file}:{line}]:({severity}),{id},{message}' --force -q"
+  # Run linter
+  local -r cmd="golangci-lint run --fast"
+
+  # FIXME(AK) https://github.com/actions/setup-go/issues/14
+  export PATH="${HOME}"/go/bin:/usr/local/go/bin:"${PATH}"
 
   (
     cd "${PATH_ROOT_DIR}" || return 1
@@ -63,26 +67,23 @@ analyzer() {
       eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
+
+  return 0
 }
 
 logger() {
-  local -i retval=0
-  local -i errors=0
+  local -i result=0
 
-  if is_file "${LOG_FILE}"; then
-    errors=$(grep -i -c -E '(error)|(warning)' "${LOG_FILE}" || true)
-
-    if ((errors != 0)); then
-      ((retval |= 1))
-    else
-      remove_file "${LOG_FILE}"
-    fi
+  if ! is_file_empty "${LOG_FILE}"; then
+    ((result = 1))
+  else
+    remove_file "${LOG_FILE}"
   fi
 
-  return "${retval}"
+  return "${result}"
 }
 
-lint() {
+run_golangci_lint() {
   local -i result=0
 
   analyzer
@@ -96,5 +97,5 @@ lint() {
 
 # Control flow logic
 
-lint
+run_golangci_lint
 exit "${?}"

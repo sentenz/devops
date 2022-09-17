@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform a check of yaml files by running yamllint.
+# Perform checks of markdown files by running remark.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -16,13 +16,14 @@ set -uo pipefail
 
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
-# readonly RC_FILE=".yamllint.yml"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/yamllint.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(yml|yaml)$"
+# readonly RC_FILE=".remarkrc.json"
+# readonly RC_IGNORE_FILE=".remarkignore"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/remark.log"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(md)$"
 
 # Options
 
-L_FLAG="all"
+L_FLAG=""
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
@@ -49,12 +50,12 @@ analyzer() {
     return 2
   fi
 
-  # Run linter
   if [[ -z "${filepaths}" ]]; then
     return 255
   fi
 
-  local -r cmd="yamllint --no-warnings"
+  # Run linter
+  local -r cmd="remark --no-stdout --no-color --silent"
 
   (
     cd "${PATH_ROOT_DIR}" || return 1
@@ -63,26 +64,28 @@ analyzer() {
       eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
+
+  return 0
 }
 
 logger() {
-  local -i retval=0
+  local -i result=0
   local -i errors=0
 
   if is_file "${LOG_FILE}"; then
     errors=$(grep -i -c -E 'error|warning' "${LOG_FILE}" || true)
 
     if ((errors != 0)); then
-      ((retval |= 1))
+      ((result = 1))
     else
       remove_file "${LOG_FILE}"
     fi
   fi
 
-  return "${retval}"
+  return "${result}"
 }
 
-lint() {
+run_remark() {
   local -i result=0
 
   analyzer
@@ -96,5 +99,5 @@ lint() {
 
 # Control flow logic
 
-lint
+run_remark
 exit "${?}"

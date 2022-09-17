@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform a check of the markdown link check by running markdown-link-check.
+# Perform checks of markdown links by running markdown-link-check.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -22,7 +22,7 @@ readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(md
 
 # Options
 
-L_FLAG="all"
+L_FLAG=""
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
@@ -61,11 +61,11 @@ analyzer() {
     return 2
   fi
 
-  # Run linter
   if [[ -z "${filepaths}" ]]; then
     return 255
   fi
 
+  # Run linter
   local -r cmd="markdown-link-check -r -q"
 
   (
@@ -75,26 +75,28 @@ analyzer() {
       eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
+
+  return 0
 }
 
 logger() {
-  local -i retval=0
+  local -i result=0
   local -i errors=0
 
   if is_file "${LOG_FILE}"; then
     errors=$(grep -i -c -E 'ERROR:|[✖]' "${LOG_FILE}" || true)
 
     if ((errors != 0)); then
-      ((retval |= 1))
+      ((result = 1))
     else
       remove_file "${LOG_FILE}"
     fi
   fi
 
-  return "${retval}"
+  return "${result}"
 }
 
-lint() {
+run_markdown_link_check() {
   local -i result=0
 
   analyzer
@@ -108,5 +110,5 @@ lint() {
 
 # Control flow logic
 
-lint
+run_markdown_link_check
 exit "${?}"

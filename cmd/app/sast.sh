@@ -14,7 +14,7 @@ set -uo pipefail
 
 # Options
 
-L_FLAG="all"
+L_FLAG=""
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
@@ -35,26 +35,29 @@ pre_cleanup() {
   find "$(get_root_dir)/logs" -type f -regextype posix-egrep -regex "${regex_patterns}" -delete
 }
 
-lint() {
-  local flag="${1}"
+linter() {
+  local l_flag="${1:?linter flag is missing}"
 
-  cd "$(get_sript_dir)/../../internal/app" || return 2
+  (
+    local -i result=0
 
-  local -i result=0
-  chmod +x lint.sh
-  ./lint.sh -l "${L_FLAG}"
-  ((result |= $?))
+    cd "$(get_sript_dir)/../../internal/app" || return 2
 
-  return "${result}"
+    chmod +x linter.sh
+    ./linter.sh -l "${l_flag}"
+    ((result |= $?))
+
+    return "${result}"
+  )
 }
 
-sast() {
+run_sast() {
   local -i result=0
 
   pre_cleanup
   ((result |= $?))
 
-  lint "${L_FLAG}"
+  linter "${L_FLAG}"
   ((result |= $?))
 
   return "${result}"
@@ -62,5 +65,5 @@ sast() {
 
 # Control flow logic
 
-sast
+run_sast
 exit "${?}"

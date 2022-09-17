@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform a conventional-changelog check of the commit messages by running commitlint.
+# Perform checks of commit messages by running commitlint.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -21,7 +21,7 @@ readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/commitlint.log"
 
 # Options
 
-L_FLAG="all"
+L_FLAG=""
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
@@ -48,11 +48,11 @@ analyzer() {
     return 2
   fi
 
-  # Run linter
   if [[ -z "${filepaths}" ]]; then
     return 255
   fi
 
+  # Run linter
   local -r cmd="commitlint --edit"
 
   (
@@ -62,26 +62,28 @@ analyzer() {
       eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
+
+  return 0
 }
 
 logger() {
-  local -i retval=0
+  local -i result=0
   local -i errors=0
 
   if is_file "${LOG_FILE}"; then
     errors=$(grep -i -c -E '[1-9]{1,} problems|warnings' "${LOG_FILE}" || true)
 
     if ((errors != 0)); then
-      ((retval |= 1))
+      ((result = 1))
     else
       remove_file "${LOG_FILE}"
     fi
   fi
 
-  return "${retval}"
+  return "${result}"
 }
 
-lint() {
+run_commitlint() {
   local -i result=0
 
   analyzer
@@ -95,5 +97,5 @@ lint() {
 
 # Control flow logic
 
-lint
+run_commitlint
 exit "${?}"

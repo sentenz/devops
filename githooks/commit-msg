@@ -54,7 +54,7 @@ END
   return "${result}"
 }
 
-commit_msg() {
+run_commit_msg() {
   local -i result=0
 
   create_file "${LOG_FILE}"
@@ -73,5 +73,5 @@ commit_msg() {
 
 # Control flow logic
 
-commit_msg
+run_commit_msg
 exit "${?}"

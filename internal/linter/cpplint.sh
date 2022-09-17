@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform checking misspelled words in codebase by running codespell.
+# Perform checks of c/c++ files by running cpplint.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -16,13 +16,13 @@ set -uo pipefail
 
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
-# readonly RC_FILE=".codespellrc"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/codespell.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.*$"
+# readonly RC_FILE="CPPLINT.cfg"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/cpplint.log"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(h|hpp|hxx|c|cc|cpp|cxx)$"
 
 # Options
 
-L_FLAG="all"
+L_FLAG=""
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
@@ -49,12 +49,12 @@ analyzer() {
     return 2
   fi
 
-  # Run linter
   if [[ -z "${filepaths}" ]]; then
     return 255
   fi
 
-  local -r cmd="codespell"
+  # Run linter
+  local -r cmd="cpplint --quiet --recursive"
 
   (
     cd "${PATH_ROOT_DIR}" || return 1
@@ -63,21 +63,23 @@ analyzer() {
       eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
+
+  return 0
 }
 
 logger() {
-  local -i retval=0
+  local -i result=0
 
   if ! is_file_empty "${LOG_FILE}"; then
-    ((retval |= 1))
+    ((result = 1))
   else
     remove_file "${LOG_FILE}"
   fi
 
-  return "${retval}"
+  return "${result}"
 }
 
-lint() {
+run_cpplint() {
   local -i result=0
 
   analyzer
@@ -91,5 +93,5 @@ lint() {
 
 # Control flow logic
 
-lint
+run_cpplint
 exit "${?}"

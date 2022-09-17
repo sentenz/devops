@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform a lint of the docker files by running dockerfilelint.
+# Perform checks of the shell/bash scripts by running shellcheck.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -16,13 +16,13 @@ set -uo pipefail
 
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
-# readonly RC_FILE=".dockerfilelintrc"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/dockerfilelint.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*(Dockerfile)$"
+# readonly RC_FILE=".shellcheckrc"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/shellcheck.log"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(sh)$"
 
 # Options
 
-L_FLAG="all"
+L_FLAG=""
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
@@ -49,12 +49,12 @@ analyzer() {
     return 2
   fi
 
-  # Run linter
   if [[ -z "${filepaths}" ]]; then
     return 255
   fi
 
-  local -r cmd="dockerfilelint"
+  # Run linter
+  local -r cmd="shellcheck -s bash"
 
   (
     cd "${PATH_ROOT_DIR}" || return 1
@@ -63,26 +63,23 @@ analyzer() {
       eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
+
+  return 0
 }
 
 logger() {
-  local -i retval=0
-  local -i errors=0
+  local -i result=0
 
-  if is_file "${LOG_FILE}"; then
-    errors=$(grep -i -c -E 'Possible Bug|Optimization|Clarity' "${LOG_FILE}" || true)
-
-    if ((errors != 0)); then
-      ((retval |= 1))
-    else
-      remove_file "${LOG_FILE}"
-    fi
+  if ! is_file_empty "${LOG_FILE}"; then
+    ((result = 1))
+  else
+    remove_file "${LOG_FILE}"
   fi
 
-  return "${retval}"
+  return "${result}"
 }
 
-lint() {
+run_shellcheck() {
   local -i result=0
 
   analyzer
@@ -96,5 +93,5 @@ lint() {
 
 # Control flow logic
 
-lint
+run_shellcheck
 exit "${?}"

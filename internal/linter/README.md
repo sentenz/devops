@@ -1,4 +1,4 @@
-# `/lint`
+# `/linter`
 
 - [1. Clang-Tidy](#1-clang-tidy)
   - [1.1. Requirements](#11-requirements)
@@ -126,7 +126,7 @@
 
 ## 1. Clang-Tidy
 
-[clang-tidy](https://clang.llvm.org/extra/clang-tidy/) is a clang-based C++ **linter** tool. Its purpose is to provide an extensible framework for diagnosing and fixing typical programming errors, like style violations, interface misuse, or bugs that can be deduced via static analysis. clang-tidy is modular and provides a convenient interface for writing new checks.
+[clang-tidy](https://clang.llvm.org/extra/clang-tidy/) is a clang-based C++ **linter** tool. Its purpose is to provide an extensible framework for diagnosing and fixing typical programming errors, like style violations, interface misuse, or bugs that can be derived via static analysis. clang-tidy is modular and provides a convenient interface for writing new checks.
 
 ### 1.1. Requirements
 
@@ -184,7 +184,7 @@ cpplint --help
 
 ### 2.4. Configuration
 
-cpplint supports per-directory configurations specified in [CPPLINT.cfg](https://nvuillam.github.io/mega-linter/descriptors/c_cpplint/) files. CPPLINT.cfg file can contain a number of key=value pairs. Currently the following options are supported:
+cpplint supports per-directory configurations specified in [CPPLINT.cfg](https://nvuillam.github.io/mega-linter/descriptors/c_cpplint/) files. CPPLINT.cfg file can contains key=value pairs. The following options are supported:
 
 ```conf
 set noparent

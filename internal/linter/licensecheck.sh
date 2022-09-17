@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform formatting of the codebase by running clang-format.
+# Perform checks of files license by running licensecheck.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -16,14 +16,14 @@ set -uo pipefail
 
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
-# readonly RC_FILE=".clang-format"
-# readonly RC_IGNORE_FILE=".clang-format-ignore"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/clang-format.log"
+# readonly RC_FILE=".licensecheck-check"
+# readonly RC_IGNORE_FILE=".licensecheck-ignore"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/licensecheck.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(h|hpp|hxx|c|cc|cpp|cxx)$"
 
 # Options
 
-L_FLAG="all"
+L_FLAG=""
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
@@ -50,12 +50,12 @@ analyzer() {
     return 2
   fi
 
-  # Run linter
   if [[ -z "${filepaths}" ]]; then
     return 255
   fi
 
-  local -r cmd="clang-format -i"
+  # Run linter
+  local -r cmd="licensecheck --copyright --deb-machine --lines 0 -r"
 
   (
     cd "${PATH_ROOT_DIR}" || return 1
@@ -64,21 +64,28 @@ analyzer() {
       eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
+
+  return 0
 }
 
 logger() {
-  local -i retval=0
+  local -i result=0
+  local -i errors=0
 
-  if ! is_file_empty "${LOG_FILE}"; then
-    ((retval |= 1))
-  else
-    remove_file "${LOG_FILE}"
+  if is_file "${LOG_FILE}"; then
+    errors=$(grep -i -c -E 'Copyright: NONE|Copyright: UNKNOWN|License: NONE' "${LOG_FILE}" || true)
+
+    if ((errors != 0)); then
+      ((result = 1))
+    else
+      remove_file "${LOG_FILE}"
+    fi
   fi
 
-  return "${retval}"
+  return "${result}"
 }
 
-lint() {
+run_licensecheck() {
   local -i result=0
 
   analyzer
@@ -92,5 +99,5 @@ lint() {
 
 # Control flow logic
 
-lint
+run_licensecheck
 exit "${?}"

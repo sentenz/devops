@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform a lint of the go code base by running golangci-lint.
+# Perform a catch of insensitive, inconsiderate writing by running alex.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -16,14 +16,13 @@ set -uo pipefail
 
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
-# readonly RC_FILE=".golangci.yml"
-# readonly FILE_RC_LICENSE=".golangci-licenses"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/golangci-lint.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(go)$"
+# readonly RC_FILE=".alexrc.yml"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/alex.log"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(md)$"
 
 # Options
 
-L_FLAG="all"
+L_FLAG=""
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
@@ -35,7 +34,7 @@ readonly L_FLAG
 # Internal functions
 
 analyzer() {
-  local -a filepaths
+  local -a filepaths='NULL'
 
   # Get files
   if [[ "${L_FLAG}" == "ci" ]]; then
@@ -50,15 +49,12 @@ analyzer() {
     return 2
   fi
 
-  # Run linter
   if [[ -z "${filepaths}" ]]; then
     return 255
   fi
 
-  local -r cmd="golangci-lint run --fast"
-
-  # FIXME(AK) https://github.com/actions/setup-go/issues/14
-  export PATH="${HOME}"/go/bin:/usr/local/go/bin:"${PATH}"
+  # Run linter
+  local -r cmd="alex -q"
 
   (
     cd "${PATH_ROOT_DIR}" || return 1
@@ -67,21 +63,28 @@ analyzer() {
       eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
+
+  return 0
 }
 
 logger() {
-  local -i retval=0
+  local -i result=0
+  local -i errors=0
 
-  if ! is_file_empty "${LOG_FILE}"; then
-    ((retval |= 1))
-  else
-    remove_file "${LOG_FILE}"
+  if is_file "${LOG_FILE}"; then
+    errors=$(grep -i -c -E 'error|warning' "${LOG_FILE}" || true)
+
+    if ((errors != 0)); then
+      ((result = 1))
+    else
+      remove_file "${LOG_FILE}"
+    fi
   fi
 
-  return "${retval}"
+  return "${result}"
 }
 
-lint() {
+run_alex() {
   local -i result=0
 
   analyzer
@@ -95,5 +98,5 @@ lint() {
 
 # Control flow logic
 
-lint
+run_alex
 exit "${?}"

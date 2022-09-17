@@ -45,23 +45,23 @@ analyzer() {
 }
 
 logger() {
-  local -i retval=0
+  local -i result=0
   local -i errors=0
 
   if is_file "${LOG_FILE}"; then
     errors=$(grep -i -c -E 'ERROR SUMMARY' "${LOG_FILE}" || true)
 
     if ((errors != 0)); then
-      ((retval |= 1))
+      ((result = 1))
     else
       remove_file "${LOG_FILE}"
     fi
   fi
 
-  return "${retval}"
+  return "${result}"
 }
 
-lint() {
+run_valgrind() {
   local -i result=0
 
   analyzer
@@ -75,5 +75,5 @@ lint() {
 
 # Control flow logic
 
-lint
+run_valgrind
 exit "${?}"

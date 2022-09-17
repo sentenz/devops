@@ -62,6 +62,7 @@ readonly -a NPM_PACKAGES=(
   remark-lint-ordered-list-marker-value
   remark-lint-emphasis-marker
   remark-lint-strong-marker
+  write-good
 )
 readonly -a GO_PACKAGES=(
   github.com/golangci/golangci-lint/cmd/golangci-lint@latest

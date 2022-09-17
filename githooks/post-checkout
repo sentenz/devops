@@ -72,7 +72,7 @@ END
 	return 1
 }
 
-post_checkout() {
+run_post_checkout() {
 	local -i result=0
 
 	create_file "${LOG_FILE}"
@@ -91,5 +91,5 @@ post_checkout() {
 
 # Control flow logic
 
-post_checkout
+run_post_checkout
 exit "${?}"

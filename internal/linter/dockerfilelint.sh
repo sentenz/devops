@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform a check of the markdown spelling by running mdspell.
+# Perform checks of docker files by running dockerfilelint.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -16,13 +16,13 @@ set -uo pipefail
 
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
-readonly RC_FILE=".spelling"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/mdspell.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(md)$"
+# readonly RC_FILE=".dockerfilelintrc"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/dockerfilelint.log"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*(Dockerfile)$"
 
 # Options
 
-L_FLAG="all"
+L_FLAG=""
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
@@ -49,20 +49,12 @@ analyzer() {
     return 2
   fi
 
-  # Run linter
   if [[ -z "${filepaths}" ]]; then
     return 255
   fi
 
-  local -r sortrc="sort < ${RC_FILE} | sort | uniq | tee ${RC_FILE}.tmp > /dev/null && mv ${RC_FILE}.tmp ${RC_FILE}"
-
-  (
-    cd "${PATH_ROOT_DIR}" || return 1
-
-    eval "${sortrc}"
-  )
-
-  local -r cmd="mdspell -n -a -r --en-us --en-gb '!**/vendor/**/*.md' '!**/translations/**/*.md'"
+  # Run linter
+  local -r cmd="dockerfilelint"
 
   (
     cd "${PATH_ROOT_DIR}" || return 1
@@ -71,26 +63,28 @@ analyzer() {
       eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
+
+  return 0
 }
 
 logger() {
-  local -i retval=0
+  local -i result=0
   local -i errors=0
 
   if is_file "${LOG_FILE}"; then
-    errors=$(grep -i -c -E 'spelling errors found' "${LOG_FILE}" || true)
+    errors=$(grep -i -c -E 'Possible Bug|Optimization|Clarity' "${LOG_FILE}" || true)
 
     if ((errors != 0)); then
-      ((retval |= 1))
+      ((result = 1))
     else
       remove_file "${LOG_FILE}"
     fi
   fi
 
-  return "${retval}"
+  return "${result}"
 }
 
-lint() {
+run_dockerfilelint() {
   local -i result=0
 
   analyzer
@@ -104,5 +98,5 @@ lint() {
 
 # Control flow logic
 
-lint
+run_dockerfilelint
 exit "${?}"

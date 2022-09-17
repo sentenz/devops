@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform lint of the codebase.
+# Perform linter calls.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -15,7 +15,7 @@ set -uo pipefail
 
 # Options
 
-L_FLAG="diff"
+L_FLAG=""
 while getopts 'l:' flag; do
   case "${flag}" in
     l) L_FLAG="${OPTARG}" ;;
@@ -28,6 +28,7 @@ readonly L_FLAG
 
 readonly -a SCRIPTS=(
   alex
+  write_good
   clang_format
   clang_tidy
   codespell
@@ -64,30 +65,33 @@ analyze() {
 
   monitor "validate - ${flag}" "${script}" "${result}"
 
-  if ((result == 255)); then
+  if ((result == 255)) || ((result == 254)); then
     return 0
   fi
 
   return "${result}"
 }
 
-lint() {
+run_linter() {
   local -a scripts=("$@")
 
   create_dir "$(get_root_dir)/logs/validate"
 
-  cd "$(get_sript_dir)/../lint" || return 1
+  (
+    local -i result=0
 
-  local -i result=0
-  for script in "${scripts[@]}"; do
-    analyze "${script}" "${L_FLAG}"
-    ((result |= $?))
-  done
+    cd "$(get_sript_dir)/../linter" || return 1
 
-  return "${result}"
+    for script in "${scripts[@]}"; do
+      analyze "${script}" "${L_FLAG}"
+      ((result |= $?))
+    done
+
+    return "${result}"
+  )
 }
 
 # Control flow logic
 
-lint "${SCRIPTS[@]}"
+run_linter "${SCRIPTS[@]}"
 exit "${?}"
