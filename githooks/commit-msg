@@ -30,7 +30,7 @@ enforce_commit_message_convention() {
 
   local -i result=0
 
-  make run-validate-commit
+  make run-linter-commit
   ((result = $?))
 
   if ((result != 0)); then

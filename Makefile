@@ -19,21 +19,25 @@ setup-integration: ## Setup dependencies and tools for the integration service
 	cd scripts/pipeline && chmod +x setup_continuous_integration.sh && ./setup_continuous_integration.sh
 .PHONY: setup-integration
 
-run-validate-staged: ## Perform validation of local staged files
+run-linter-staged: ## Perform validation of local staged files
 	cd cmd/app && chmod +x sast.sh && ./sast.sh -l staged
-.PHONY: run-validate-staged
+.PHONY: run-linter-staged
 
-run-validate-diff: ## Perform validation of local modified files
+run-linter-diff: ## Perform validation of local modified files
 	cd cmd/app && chmod +x sast.sh && ./sast.sh -l diff
-.PHONY: run-validate-diff
+.PHONY: run-linter-diff
 
-run-validate-ci: ## Perform validation of modified files in continuous integration pipeline
+run-linter-ci: ## Perform validation of modified files in continuous integration pipeline
 	cd cmd/app && chmod +x sast.sh && ./sast.sh -l ci
-.PHONY: run-validate-ci
+.PHONY: run-linter-ci
 
-run-validate-commit: ## Perform validation of the commit message
+run-linter-commit: ## Perform validation of the commit message
 	commitlint --edit .git/COMMIT_EDITMSG
-.PHONY: run-validate-commit
+.PHONY: run-linter-commit
+
+run-sanitizer: ## Perform validation of binary files
+	cd cmd/app && chmod +x sast.sh && ./dast.sh -b cmd/bin/*
+.PHONY: run-linter-ci
 
 setup-testing: ## Setup dependencies and tools for the testing service
 	cd scripts/pipeline && chmod +x setup_continuous_testing.sh && ./setup_continuous_testing.sh
@@ -57,7 +61,7 @@ setup-continuous-integration: ## Setup dependencies and tools for the continuous
 .PHONY: setup-continuous-integration
 
 run-continuous-integration: ## Perform task in continuous integration pipeline
-	$(MAKE) run-validate-ci
+	$(MAKE) run-linter-ci
 .PHONY: run-continuous-integration
 
 setup-continuous-testing: ## Setup dependencies and tools for the continuous testing pipeline

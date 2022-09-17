@@ -18,10 +18,10 @@ PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/valgrind.log"
 
-PATH_BINARY="."
-while getopts 'p:' flag; do
+PATH_BINARY=""
+while getopts 'b:' flag; do
   case "${flag}" in
-    p) PATH_BINARY="${OPTARG}" ;;
+    b) PATH_BINARY="${OPTARG}" ;;
     *) "error: unexpected option: ${flag}" ;;
   esac
 done

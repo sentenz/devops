@@ -23,7 +23,7 @@ readonly LOG_FILE
 enforce_coding_standards() {
     local -i result=0
 
-    make run-validate-staged
+    make run-linter-staged
     ((result = $?))
 
     if ((result != 0)); then
