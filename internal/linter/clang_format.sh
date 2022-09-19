@@ -47,35 +47,35 @@ analyzer() {
   else
     echo "error: unexpected option: ${F_LINT}" &>"${LOG_FILE}"
 
-    return 1
+    return "${STATUS_ERROR}"
   fi
 
   if [[ -z "${filepaths}" ]]; then
-    return 255
+    return "${STATUS_SKIP}"
   fi
 
   # Run linter
   local -r cmd="clang-format -i"
 
   (
-    cd "${PATH_ROOT_DIR}" || return 1
+    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
 
     for filepath in "${filepaths[@]}"; do
       eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
 
-  return 0
+  return "${STATUS_SUCCESS}"
 }
 
 logger() {
   if ! is_file_empty "${LOG_FILE}"; then
-    return 1
+    return "${STATUS_ERROR}"
   fi
 
   remove_file "${LOG_FILE}"
 
-  return 0
+  return "${STATUS_SUCCESS}"
 }
 
 run_clang_format() {

@@ -44,7 +44,7 @@ if [[ -f "${LOG_FILE}" ]]; then
   readonly WARNINGS
 
   if [[ "${ERRORS}" -ne 0 || "${WARNINGS}" -ne 0 ]]; then
-    return 1
+    return "${STATUS_ERROR}"
   else
     remove_file "${LOG_FILE}"
   fi

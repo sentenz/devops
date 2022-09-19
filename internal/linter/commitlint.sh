@@ -37,49 +37,49 @@ analyzer() {
 
   # Get files
   if [[ "${F_LINT}" == "ci" ]]; then
-    return 0
+    return "${STATUS_SUCCESS}"
   elif [[ "${F_LINT}" == "diff" ]]; then
-    return 0
+    return "${STATUS_SUCCESS}"
   elif [[ "${F_LINT}" == "staged" ]]; then
     filepaths="$(get_root_dir)/.git/COMMIT_EDITMSG"
   else
     echo "error: unexpected option: ${F_LINT}" &>"${LOG_FILE}"
 
-    return 1
+    return "${STATUS_ERROR}"
   fi
 
   if [[ -z "${filepaths}" ]]; then
-    return 255
+    return "${STATUS_SKIP}"
   fi
 
   # Run linter
   local -r cmd="commitlint --edit"
 
   (
-    cd "${PATH_ROOT_DIR}" || return 1
+    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
 
     for filepath in "${filepaths[@]}"; do
       eval "${cmd}" "${filepath}"
     done
   ) &>"${LOG_FILE}"
 
-  return 0
+  return "${STATUS_SUCCESS}"
 }
 
 logger() {
   if ! is_file "${LOG_FILE}"; then
-    return 0
+    return "${STATUS_SUCCESS}"
   fi
 
   local -i errors=0
   errors=$(grep -i -c -E '[1-9]{1,} problems|warnings' "${LOG_FILE}" || true)
   if ((errors != 0)); then
-    return 1
+    return "${STATUS_ERROR}"
   fi
 
   remove_file "${LOG_FILE}"
 
-  return 0
+  return "${STATUS_SUCCESS}"
 }
 
 run_commitlint() {

@@ -44,8 +44,8 @@ analyze() {
 
   monitor "validate - ${b_flag}" "${script}" "${result}"
 
-  if ((result == 255)) || ((result == 254)); then
-    return 0
+  if ((result == STATUS_SKIP)) || ((result == STATUS_WARNING)); then
+    return "${STATUS_SUCCESS}"
   fi
 
   return "${result}"
@@ -59,7 +59,7 @@ run_sanitizer() {
   (
     local -i result=0
 
-    cd "$(get_sript_dir)/../sanitizer" || return 1
+    cd "$(get_sript_dir)/../sanitizer" || return "${STATUS_ERROR}"
 
     for script in "${scripts[@]}"; do
       analyze "${script}" "${F_BINARY}"

@@ -51,7 +51,7 @@ See https://sentenz.github.io/guide/guideline/branching-strategies-guide.html
 ___________________________________________________________________________________________________
 END
 
-			return 1
+			return "${STATUS_ERROR}"
 		fi
 	done
 }
@@ -87,7 +87,7 @@ See https://sentenz.github.io/guide/guideline/branching-strategies-guide.html
 ___________________________________________________________________________________________________
 END
 
-		return 1
+		return "${STATUS_ERROR}"
 	fi
 }
 

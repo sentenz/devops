@@ -23,6 +23,7 @@
 - [21. Clang Analyzer](#21-clang-analyzer)
 - [22. Valgrind](#22-valgrind)
 
+
 ## 1. Clang-Tidy
 
 [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) is a clang-based C++ **linter** tool. Its purpose is to provide an extendable framework for diagnosing and fixing typical programming errors, like style violations, interface misuse, or bugs that can be derived via static analysis. clang-tidy is modular and provides a convenient interface for writing new checks.

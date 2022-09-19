@@ -11,6 +11,11 @@ readonly WHITE='\033[38;5;7m'
 DATE="[$(date +'%Y-%m-%dT%H:%M:%S%z')]"
 readonly DATE
 
+export STATUS_SUCCESS=0
+export STATUS_ERROR=1
+export STATUS_WARNING=2
+export STATUS_SKIP=255
+
 # Functions
 
 ########################
@@ -72,13 +77,15 @@ monitor() {
   local package="${2:?package is missing}"
   local status="${3:?status is missing}"
 
-  if ((status == 0)); then
+  if ((status == STATUS_SUCCESS)); then
     pass "[${task}] ${package}"
-  elif ((status == 255)); then
+  elif ((status == STATUS_SKIP)); then
     skip "[${task}] ${package}"
-  elif ((status == 254)); then
+  elif ((status == STATUS_WARNING)); then
     warn "[${task}] ${package}"
-  else
+  elif ((status == STATUS_ERROR)); then
     error "[${task}] ${package}"
+  else
+    error "[monitor]unknown status"
   fi
 }

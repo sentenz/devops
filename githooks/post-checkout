@@ -35,7 +35,7 @@ enforce_checkout_from_base_branches() {
 	local -a base_branches=("${@:3}")
 
 	if [[ "${flag_checkout}" == 0 ]]; then
-		return 0
+		return "${STATUS_SUCCESS}"
 	fi
 
 	parant_branch="$(git show-branch |
@@ -46,12 +46,12 @@ enforce_checkout_from_base_branches() {
 		sed "s/^.*\[//")"
 
 	if [[ -z "${parant_branch}" ]]; then
-		return 0
+		return "${STATUS_SUCCESS}"
 	fi
 
 	for branch in "${base_branches[@]}"; do
 		if [[ "${branch}" == "${parant_branch}" ]]; then
-			return 0
+			return "${STATUS_SUCCESS}"
 		fi
 	done
 
@@ -69,7 +69,7 @@ See https://sentenz.github.io/guide/guideline/branching-strategies-guide.html
 ___________________________________________________________________________________________________
 END
 
-	return 1
+	return "${STATUS_ERROR}"
 }
 
 run_post_checkout() {

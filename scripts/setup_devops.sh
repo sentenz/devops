@@ -99,7 +99,7 @@ run_scripts() {
   (
     local -i result=0
 
-    cd "$(get_sript_dir)/pipeline" || return 1
+    cd "$(get_sript_dir)/pipeline" || return "${STATUS_ERROR}"
 
     for script in "${scripts[@]}"; do
       chmod +x "${script}"

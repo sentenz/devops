@@ -33,7 +33,7 @@ analyzer() {
   local -r cmd="valgrind -s --tool=memcheck --log-file=${LOG_FILE} ./${F_BINARY}"
 
   (
-    cd "${PATH_ROOT_DIR}" || return 1
+    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
 
     eval "${cmd}"
   )
@@ -42,18 +42,18 @@ analyzer() {
 
 logger() {
   if ! is_file "${LOG_FILE}"; then
-    return 0
+    return "${STATUS_SUCCESS}"
   fi
 
   local -i errors=0
   errors=$(grep -i -c -E 'ERROR SUMMARY' "${LOG_FILE}" || true)
   if ((errors != 0)); then
-    return 1
+    return "${STATUS_ERROR}"
   fi
 
   remove_file "${LOG_FILE}"
 
-  return 0
+  return "${STATUS_SUCCESS}"
 }
 
 run_valgrind() {

@@ -64,8 +64,8 @@ analyze() {
 
   monitor "validate - ${l_flag}" "${script}" "${result}"
 
-  if ((result == 255)) || ((result == 254)); then
-    return 0
+  if ((result == STATUS_SKIP)) || ((result == STATUS_WARNING)); then
+    return "${STATUS_SUCCESS}"
   fi
 
   return "${result}"
@@ -79,7 +79,7 @@ run_linter() {
   (
     local -i result=0
 
-    cd "$(get_sript_dir)/../linter" || return 1
+    cd "$(get_sript_dir)/../linter" || return "${STATUS_ERROR}"
 
     for script in "${scripts[@]}"; do
       analyze "${script}" "${F_LINT}"

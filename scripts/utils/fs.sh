@@ -238,7 +238,7 @@ configure_permissions_ownership() {
         ;;
       *)
         echo "Invalid command line flag $1" >&2
-        return 1
+        return "${STATUS_ERROR}"
         ;;
     esac
     shift

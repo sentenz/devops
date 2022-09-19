@@ -28,7 +28,7 @@ readonly F_BINARY
 pre_cleanup() {
   # Cleanup previous logs
   if is_dir_empty "$(get_root_dir)/logs"; then
-    return 0
+    return "${STATUS_SUCCESS}"
   fi
 
   local regex_patterns="^.*\.(log)$"
@@ -41,7 +41,7 @@ sanitizer() {
   (
     local -i result=0
 
-    cd "$(get_sript_dir)/../../internal/app" || return 1
+    cd "$(get_sript_dir)/../../internal/app" || return "${STATUS_ERROR}"
 
     chmod +x sanitizer.sh
     ./sanitizer.sh -b "${b_flag}"
