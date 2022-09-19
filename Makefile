@@ -36,7 +36,7 @@ run-linter-commit: ## Perform validation of the commit message
 .PHONY: run-linter-commit
 
 run-sanitizer: ## Perform validation of binary files
-	cd cmd/app && chmod +x sast.sh && ./dast.sh -b cmd/bin/*
+	cd cmd/app && chmod +x dast.sh && ./dast.sh -b cmd/bin/*
 .PHONY: run-linter-ci
 
 setup-testing: ## Setup dependencies and tools for the testing service
