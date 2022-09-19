@@ -36,7 +36,7 @@ pre_cleanup() {
 }
 
 sanitizer() {
-  local b_flag="${1:?binary flag is missing}"
+  local f_binary="${1:?binary flag is missing}"
 
   (
     local -i result=0
@@ -44,7 +44,7 @@ sanitizer() {
     cd "$(get_sript_dir)/../../internal/app" || return "${STATUS_ERROR}"
 
     chmod +x sanitizer.sh
-    ./sanitizer.sh -b "${b_flag}"
+    ./sanitizer.sh -b "${f_binary}"
     ((result |= $?))
 
     return "${result}"

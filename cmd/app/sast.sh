@@ -18,7 +18,7 @@ F_LINT="NULL"
 while getopts 'l:' flag; do
   case "${flag}" in
     l) F_LINT="${OPTARG}" ;;
-    *) "error: unexpected option: ${flag}" ;;
+    *) ;;
   esac
 done
 readonly F_LINT
@@ -36,7 +36,7 @@ pre_cleanup() {
 }
 
 linter() {
-  local l_flag="${1:?linter flag is missing}"
+  local f_lint="${1:?linter flag is missing}"
 
   (
     local -i result=0
@@ -44,7 +44,7 @@ linter() {
     cd "$(get_sript_dir)/../../internal/app" || return "${STATUS_ERROR}"
 
     chmod +x linter.sh
-    ./linter.sh -l "${l_flag}"
+    ./linter.sh -l "${f_lint}"
     ((result |= $?))
 
     return "${result}"

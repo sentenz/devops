@@ -34,15 +34,15 @@ readonly -a SCRIPTS=(
 
 analyze() {
   local script="${1}"
-  local b_flag="${2}"
+  local f_binary="${2}"
 
   local -i result=0
 
   chmod +x "${script}.sh"
-  ./"${script}.sh" -b "${b_flag}"
+  ./"${script}.sh" -b "${f_binary}"
   ((result = $?))
 
-  monitor "validate - ${b_flag}" "${script}" "${result}"
+  monitor "validate - ${f_binary}" "${script}" "${result}"
 
   if ((result == STATUS_SKIP)) || ((result == STATUS_WARNING)); then
     return "${STATUS_SUCCESS}"
