@@ -26,7 +26,7 @@ F_LINT="NULL"
 while getopts 'l:' flag; do
   case "${flag}" in
     l) F_LINT="${OPTARG}" ;;
-    *) "error: unexpected option: ${flag}" ;;
+    *) ;;
   esac
 done
 readonly F_LINT

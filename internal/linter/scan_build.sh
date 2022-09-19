@@ -17,7 +17,7 @@ LOG_FILE="scan-build.log"
 while getopts 'p:' flag; do
   case "${flag}" in
     p) PATH_TO_BUILDDIR="${OPTARG}" ;;
-    *) "error: unexpected option: ${flag}" ;;
+    *) ;;
   esac
 done
 

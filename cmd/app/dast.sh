@@ -18,7 +18,7 @@ F_BINARY="NULL"
 while getopts 'b:' flag; do
   case "${flag}" in
     b) F_BINARY="${OPTARG}" ;;
-    *) "error: unexpected option: ${flag}" ;;
+    *) ;;
   esac
 done
 readonly F_BINARY
