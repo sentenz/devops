@@ -30,7 +30,7 @@
       "replacement": "{{BASEURL}}/"
     }
   ],
-  "retryCount": 5,
+  "retryCount": 2,
   "retryOn429": true,
-  "timeout": "20s"
+  "timeout": "10s"
 }

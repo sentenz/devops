@@ -14,14 +14,14 @@ set -uo pipefail
 
 # Options
 
-L_FLAG=""
+F_LINT="NULL"
 while getopts 'l:' flag; do
   case "${flag}" in
-    l) L_FLAG="${OPTARG}" ;;
+    l) F_LINT="${OPTARG}" ;;
     *) "error: unexpected option: ${flag}" ;;
   esac
 done
-readonly L_FLAG
+readonly F_LINT
 
 # Constant variables
 
@@ -57,7 +57,7 @@ run_sast() {
   pre_cleanup
   ((result |= $?))
 
-  linter "${L_FLAG}"
+  linter "${F_LINT}"
   ((result |= $?))
 
   return "${result}"

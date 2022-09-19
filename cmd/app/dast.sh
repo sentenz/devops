@@ -14,14 +14,14 @@ set -uo pipefail
 
 # Options
 
-B_FLAG=""
+F_BINARY="NULL"
 while getopts 'b:' flag; do
   case "${flag}" in
-    b) B_FLAG="${OPTARG}" ;;
+    b) F_BINARY="${OPTARG}" ;;
     *) "error: unexpected option: ${flag}" ;;
   esac
 done
-readonly B_FLAG
+readonly F_BINARY
 
 # Constant variables
 
@@ -57,7 +57,7 @@ run_dast() {
   pre_cleanup
   ((result |= $?))
 
-  sanitizer "${B_FLAG}"
+  sanitizer "${F_BINARY}"
   ((result |= $?))
 
   return "${result}"

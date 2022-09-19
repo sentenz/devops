@@ -23,14 +23,14 @@ readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(md
 
 # Options
 
-L_FLAG=""
+F_LINT="NULL"
 while getopts 'l:' flag; do
   case "${flag}" in
-    l) L_FLAG="${OPTARG}" ;;
+    l) F_LINT="${OPTARG}" ;;
     *) "error: unexpected option: ${flag}" ;;
   esac
 done
-readonly L_FLAG
+readonly F_LINT
 
 # Internal functions
 
@@ -38,14 +38,14 @@ analyzer() {
   local -a filepaths
 
   # Get files
-  if [[ "${L_FLAG}" == "ci" ]]; then
+  if [[ "${F_LINT}" == "ci" ]]; then
     filepaths=$(get_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-  elif [[ "${L_FLAG}" == "diff" ]]; then
+  elif [[ "${F_LINT}" == "diff" ]]; then
     filepaths=$(get_diff_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-  elif [[ "${L_FLAG}" == "staged" ]]; then
+  elif [[ "${F_LINT}" == "staged" ]]; then
     filepaths=$(get_staged_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
   else
-    echo "error: unexpected option: ${L_FLAG}" &>"${LOG_FILE}"
+    echo "error: unexpected option: ${F_LINT}" &>"${LOG_FILE}"
 
     return 2
   fi
@@ -69,20 +69,19 @@ analyzer() {
 }
 
 logger() {
-  local -i result=0
-  local -i errors=0
-
-  if is_file "${LOG_FILE}"; then
-    errors=$(grep -i -c -E 'error|warning' "${LOG_FILE}" || true)
-
-    if ((errors != 0)); then
-      ((result = 1))
-    else
-      remove_file "${LOG_FILE}"
-    fi
+  if ! is_file "${LOG_FILE}"; then
+    return 0
   fi
 
-  return "${result}"
+  local -i errors=0
+  errors=$(grep -i -c -E 'error|warning' "${LOG_FILE}" || true)
+  if ((errors != 0)); then
+    return 1
+  fi
+
+  remove_file "${LOG_FILE}"
+
+  return 0
 }
 
 run_remark() {

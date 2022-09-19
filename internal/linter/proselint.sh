@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform checks of markdown spelling by running mdspell.
+# Perform checks of english spelling by running proselint.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -16,35 +16,34 @@ set -uo pipefail
 
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
-readonly RC_FILE=".spelling"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/mdspell.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/proselint.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(md)$"
 
 # Options
 
-L_FLAG=""
+F_LINT="NULL"
 while getopts 'l:' flag; do
   case "${flag}" in
-    l) L_FLAG="${OPTARG}" ;;
+    l) F_LINT="${OPTARG}" ;;
     *) "error: unexpected option: ${flag}" ;;
   esac
 done
-readonly L_FLAG
+readonly F_LINT
 
 # Internal functions
 
 analyzer() {
-  local -a filepaths
+  local -a filepaths='NULL'
 
   # Get files
-  if [[ "${L_FLAG}" == "ci" ]]; then
+  if [[ "${F_LINT}" == "ci" ]]; then
     filepaths=$(get_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-  elif [[ "${L_FLAG}" == "diff" ]]; then
+  elif [[ "${F_LINT}" == "diff" ]]; then
     filepaths=$(get_diff_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-  elif [[ "${L_FLAG}" == "staged" ]]; then
+  elif [[ "${F_LINT}" == "staged" ]]; then
     filepaths=$(get_staged_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
   else
-    echo "error: unexpected option: ${L_FLAG}" &>"${LOG_FILE}"
+    echo "error: unexpected option: ${F_LINT}" &>"${LOG_FILE}"
 
     return 2
   fi
@@ -54,15 +53,7 @@ analyzer() {
   fi
 
   # Run linter
-  local -r sortrc="sort < ${RC_FILE} | sort | uniq | tee ${RC_FILE}.tmp > /dev/null && mv ${RC_FILE}.tmp ${RC_FILE}"
-
-  (
-    cd "${PATH_ROOT_DIR}" || return 1
-
-    eval "${sortrc}"
-  )
-
-  local -r cmd="mdspell -n -a -r --en-us --en-gb '!**/vendor/**/*.md' '!**/translations/**/*.md'"
+  local -r cmd="proselint"
 
   (
     cd "${PATH_ROOT_DIR}" || return 1
@@ -76,23 +67,16 @@ analyzer() {
 }
 
 logger() {
-  local -i result=0
-  local -i errors=0
-
-  if is_file "${LOG_FILE}"; then
-    errors=$(grep -i -c -E 'spelling errors found' "${LOG_FILE}" || true)
-
-    if ((errors != 0)); then
-      ((result = 254))
-    else
-      remove_file "${LOG_FILE}"
-    fi
+  if ! is_file_empty "${LOG_FILE}"; then
+    return 254
   fi
 
-  return "${result}"
+  remove_file "${LOG_FILE}"
+
+  return 0
 }
 
-run_mdspell() {
+run_proselint() {
   local -i result=0
 
   analyzer
@@ -106,5 +90,5 @@ run_mdspell() {
 
 # Control flow logic
 
-run_mdspell
+run_proselint
 exit "${?}"

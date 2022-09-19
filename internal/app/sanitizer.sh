@@ -15,14 +15,14 @@ set -uo pipefail
 
 # Options
 
-B_FLAG=""
+F_BINARY="NULL"
 while getopts 'b:' flag; do
   case "${flag}" in
-    b) B_FLAG="${OPTARG}" ;;
+    b) F_BINARY="${OPTARG}" ;;
     *) "error: unexpected option: ${flag}" ;;
   esac
 done
-readonly B_FLAG
+readonly F_BINARY
 
 # Constant variables
 
@@ -62,7 +62,7 @@ run_sanitizer() {
     cd "$(get_sript_dir)/../sanitizer" || return 1
 
     for script in "${scripts[@]}"; do
-      analyze "${script}" "${B_FLAG}"
+      analyze "${script}" "${F_BINARY}"
       ((result |= $?))
     done
 

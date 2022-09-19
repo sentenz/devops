@@ -15,38 +15,38 @@ set -uo pipefail
 
 # Options
 
-L_FLAG=""
+F_LINT="NULL"
 while getopts 'l:' flag; do
   case "${flag}" in
-    l) L_FLAG="${OPTARG}" ;;
+    l) F_LINT="${OPTARG}" ;;
     *) "error: unexpected option: ${flag}" ;;
   esac
 done
-readonly L_FLAG
+readonly F_LINT
 
 # Constant variables
 
 readonly -a SCRIPTS=(
   alex
   write_good
-  clang_format
-  clang_tidy
+  proselint
+  remark
+  markdown_link_check
+  # markdownlint
   codespell
   # commitlint
   cppcheck
   cpplint
-  dockerfilelint
-  golangci_lint
-  jsonlint
-  licensecheck
-  # markdown_link_check
-  # markdownlint
-  mdspell
-  prettier
-  # remark
+  clang_tidy
+  clang_format
   # scan_build
+  golangci_lint
+  dockerfilelint
+  licensecheck
   shellcheck
   shfmt
+  prettier
+  jsonlint
   yamllint
 )
 
@@ -82,7 +82,7 @@ run_linter() {
     cd "$(get_sript_dir)/../linter" || return 1
 
     for script in "${scripts[@]}"; do
-      analyze "${script}" "${L_FLAG}"
+      analyze "${script}" "${F_LINT}"
       ((result |= $?))
     done
 

@@ -1,132 +1,31 @@
 # `/linter`
 
 - [1. Clang-Tidy](#1-clang-tidy)
-  - [1.1. Requirements](#11-requirements)
-  - [1.2. Install](#12-install)
-  - [1.3. Usage](#13-usage)
 - [2. Cpplint](#2-cpplint)
-  - [2.1. Requirements](#21-requirements)
-  - [2.2. Install](#22-install)
-  - [2.3. Usage](#23-usage)
-  - [2.4. Configuration](#24-configuration)
 - [3. Cppcheck](#3-cppcheck)
-  - [3.1. Requirements](#31-requirements)
-  - [3.2. Install](#32-install)
-  - [3.3. Usage](#33-usage)
-  - [3.4. Configuration](#34-configuration)
 - [4. Golangci-lint](#4-golangci-lint)
-  - [4.1. Requirements](#41-requirements)
-  - [4.2. Install](#42-install)
-  - [4.3. Usage](#43-usage)
-  - [4.4. Configuration](#44-configuration)
-  - [4.5. Troubleshoot](#45-troubleshoot)
 - [5. Shellcheck](#5-shellcheck)
-  - [5.1. Requirements](#51-requirements)
-  - [5.2. Install](#52-install)
-  - [5.3. Usage](#53-usage)
-  - [5.4. Configuration](#54-configuration)
 - [6. Commitlint](#6-commitlint)
-  - [6.1. Requirements](#61-requirements)
-  - [6.2. Install](#62-install)
-  - [6.3. Uninstall](#63-uninstall)
-  - [6.4. Usage](#64-usage)
-  - [6.5. Configuration](#65-configuration)
 - [7. Makrdownlint](#7-makrdownlint)
-  - [7.1. Requirements](#71-requirements)
-  - [7.2. Install](#72-install)
-  - [7.3. Uninstall](#73-uninstall)
-  - [7.4. Usage](#74-usage)
-  - [7.5. Configuration](#75-configuration)
 - [8. Yamllint](#8-yamllint)
-  - [8.1. Requirements](#81-requirements)
-  - [8.2. Install](#82-install)
-  - [8.3. Usage](#83-usage)
-  - [8.4. Configuration](#84-configuration)
 - [9. Jsonlint](#9-jsonlint)
-  - [9.1. Requirements](#91-requirements)
-  - [9.2. Install](#92-install)
-  - [9.3. Uninstall](#93-uninstall)
-  - [9.4. Usage](#94-usage)
 - [10. Remark](#10-remark)
-  - [10.1. Requirements](#101-requirements)
-  - [10.2. Install](#102-install)
-  - [10.3. Uninstall](#103-uninstall)
-  - [10.4. Usage](#104-usage)
-  - [10.5. Configuration](#105-configuration)
 - [11. Dockerfilelint](#11-dockerfilelint)
-  - [11.1. Requirements](#111-requirements)
-  - [11.2. Install](#112-install)
-  - [11.3. Usage](#113-usage)
-  - [11.4. Configuration](#114-configuration)
 - [12. Licensecheck](#12-licensecheck)
-  - [12.1. Requirements](#121-requirements)
-  - [12.2. Install](#122-install)
-  - [12.3. Usage](#123-usage)
 - [13. Licensing](#13-licensing)
-  - [13.1. Requirements](#131-requirements)
-  - [13.2. Install](#132-install)
-  - [13.3. Usage](#133-usage)
 - [14. Clang-Format](#14-clang-format)
-  - [14.1. Requirements](#141-requirements)
-  - [14.2. Install](#142-install)
-    - [14.2.1. apt](#1421-apt)
-    - [14.2.2. python wrapper](#1422-python-wrapper)
-    - [14.2.3. npm wrapper](#1423-npm-wrapper)
-  - [14.3. Usage](#143-usage)
-  - [14.4. Configuration](#144-configuration)
-    - [14.4.1. Resource file](#1441-resource-file)
-    - [14.4.2. Ignore file](#1442-ignore-file)
 - [15. gofmt](#15-gofmt)
-  - [15.1. Requirements](#151-requirements)
-  - [15.2. Install](#152-install)
-  - [15.3. Usage](#153-usage)
 - [16. shfmt](#16-shfmt)
-  - [16.1. Requirements](#161-requirements)
-  - [16.2. Install](#162-install)
-    - [16.2.1. Binary](#1621-binary)
-  - [16.3. Usage](#163-usage)
-  - [16.4. Configuration](#164-configuration)
 - [17. Prettier](#17-prettier)
-  - [17.1. Requirements](#171-requirements)
-  - [17.2. Install](#172-install)
-  - [17.3. Usage](#173-usage)
-  - [17.4. Configuration](#174-configuration)
 - [18. Markdown Link Check](#18-markdown-link-check)
-  - [18.1. Requirements](#181-requirements)
-  - [18.2. Install](#182-install)
-  - [18.3. Usage](#183-usage)
-  - [18.4. Configuration](#184-configuration)
-- [19. Markdown Spellcheck](#19-markdown-spellcheck)
-  - [19.1. Requirements](#191-requirements)
-  - [19.2. Install](#192-install)
-  - [19.3. Usage](#193-usage)
-  - [19.4. Configuration](#194-configuration)
-- [20. Alex](#20-alex)
-  - [20.1. Requirements](#201-requirements)
-  - [20.2. Install](#202-install)
-  - [20.3. Usage](#203-usage)
-  - [20.4. Configuration](#204-configuration)
-    - [20.4.1. Ignoring files](#2041-ignoring-files)
-    - [20.4.2. Resource files](#2042-resource-files)
-- [21. Codespell](#21-codespell)
-  - [21.1. Requirements](#211-requirements)
-  - [21.2. Install](#212-install)
-  - [21.3. Usage](#213-usage)
-  - [21.4. Configuration](#214-configuration)
-- [22. Clang Analyzer](#22-clang-analyzer)
-  - [22.1. Requirements](#221-requirements)
-  - [22.2. Install](#222-install)
-  - [22.3. Usage](#223-usage)
-  - [22.4. Configuration](#224-configuration)
-- [23. Valgrind](#23-valgrind)
-  - [23.1. Requirements](#231-requirements)
-  - [23.2. Install](#232-install)
-  - [23.3. Usage](#233-usage)
-  - [23.4. Configuration](#234-configuration)
+- [19. Alex](#19-alex)
+- [20. Codespell](#20-codespell)
+- [21. Clang Analyzer](#21-clang-analyzer)
+- [22. Valgrind](#22-valgrind)
 
 ## 1. Clang-Tidy
 
-[clang-tidy](https://clang.llvm.org/extra/clang-tidy/) is a clang-based C++ **linter** tool. Its purpose is to provide an extensible framework for diagnosing and fixing typical programming errors, like style violations, interface misuse, or bugs that can be derived via static analysis. clang-tidy is modular and provides a convenient interface for writing new checks.
+[clang-tidy](https://clang.llvm.org/extra/clang-tidy/) is a clang-based C++ **linter** tool. Its purpose is to provide an extendable framework for diagnosing and fixing typical programming errors, like style violations, interface misuse, or bugs that can be derived via static analysis. clang-tidy is modular and provides a convenient interface for writing new checks.
 
 ### 1.1. Requirements
 
@@ -184,7 +83,7 @@ cpplint --help
 
 ### 2.4. Configuration
 
-cpplint supports per-directory configurations specified in [CPPLINT.cfg](https://nvuillam.github.io/mega-linter/descriptors/c_cpplint/) files. CPPLINT.cfg file can contains key=value pairs. The following options are supported:
+cpplint supports per-directory configurations specified in [CPPLINT.cfg](https://github.com/RobotLocomotion/drake/blob/master/CPPLINT.cfg) files. CPPLINT.cfg file can contains key=value pairs. The following options are supported:
 
 ```conf
 set noparent
@@ -279,7 +178,7 @@ golangci-lint run ./...
 
 - [Configuration File](https://golangci-lint.run/usage/configuration/)
 
-  The configuration files are named [.golangci.yml](https://github.com/golangci/golangci-lint/blob/master/.golangci.example.yml) and are automatically recognized.
+  The configuration files are named [.golangci.yml](https://github.com/golangci/golangci-lint/blob/master/.golangci.reference.yml) and are automatically recognized.
 
   Enabled by your configuration linters:
 
@@ -339,7 +238,7 @@ golangci-lint run ./...
   - paralleltest: paralleltest detects missing usage of t.Parallel() method in your Go test `[fast: true, auto-fix: false]`
   - predeclared: find code that shadows one of Go's predeclared identifiers `[fast: true, auto-fix: false]`
   - promlinter: Check Prometheus metrics naming via promlint `[fast: true, auto-fix: false]`
-  - revive: Fast, configurable, extensible, flexible, and beautiful linter for Go. Drop-in replacement of golint. `[fast: false, auto-fix: false]`
+  - revive: Fast, configurable, extendable, flexible, and beautiful linter for Go. Drop-in replacement of golint. `[fast: false, auto-fix: false]`
   - rowserrcheck: checks whether Err of rows is checked successfully `[fast: false, auto-fix: false]`
   - sqlclosecheck: Checks that sql.Rows and sql.Stmt are closed. `[fast: false, auto-fix: false]`
   - staticcheck (megacheck): Staticcheck is a go vet on steroids, applying a ton of static analysis checks `[fast: false, auto-fix: false]`
@@ -356,10 +255,10 @@ golangci-lint run ./...
   - unused (megacheck): Checks Go code for unused constants, variables, functions and types `[fast: false, auto-fix: false]`
   - varcheck: Finds unused global variables and constants `[fast: false, auto-fix: false]`
   - varnamelen: checks that the length of a variable's name matches its scope `[fast: false, auto-fix: false]`
-  - wastedassign: wastedassign finds wasted assignment statements. `[fast: false, auto-fix: false]`
+  - wastedassign: wastedassign finds wasted assignment statements `[fast: false, auto-fix: false]`
   - whitespace: Tool for detection of leading and trailing whitespace `[fast: true, auto-fix: true]`
   - wrapcheck: Checks that errors returned from external packages are wrapped `[fast: false, auto-fix: false]`
-  - wsl: Whitespace Linter - Forces you to use empty lines! `[fast: true, auto-fix: false]`
+  - wsl: Whitespace Linter - Forces you to use empty lines `[fast: true, auto-fix: false]`
 
   Deactivated by your configuration linters:
 
@@ -1198,9 +1097,10 @@ Example:
 }
 ```
 
-## 19. Markdown Spellcheck
 
-[markdown-spellcheck](https://github.com/lukeapage/node-markdown-spellcheck) reads markdown files and spellchecks them, using [open source Hunspell dictionary files](https://github.com/lukeapage/node-markdown-spellcheck#dictionaries-being-used).
+## 19. Alex
+
+[alex](https://github.com/get-alex/alex) catch insensitive, inconsiderate writing.
 
 ### 19.1. Requirements
 
@@ -1210,72 +1110,10 @@ Example:
 ### 19.2. Install
 
 ```bash
-npm i -g markdown-spellcheck
-```
-
-### 19.3. Usage
-
-```bash
-# Interactive mode
-mdspell "**/*.md"
-
-# Excluding patterns
-mdspell '**/*.md' '!**/node_modules/**/*.md'
-
-# CLI options
-mdspell --en-us -n -a --report '**/*.md' '!**/node_modules/**/*.md'
-```
-
-Below is an example of how to respond to misspellings.
-
-```shell
-$ mdspell README.md
-Spelling - README.md
-I have a nise sentenz.
-?
-  Ignore
-  Add to file ignores
-  Add to dictionary - case insensitive
-  Enter correct spelling
-  noise
-  anise
-  nine
-  nice
-  nose
-```
-
-### 19.4. Configuration
-
-All exclusions will be stored in a `.spelling` file in the directory from which you run the command.
-
-Example:
-
-```txt
-API
-Backend
-BlackDuck
-Bundesbeauftragter
-Bundesnetzagentur
-Changelog
-Changelogs
-```
-
-## 20. Alex
-
-[alex](https://github.com/get-alex/alex) catch insensitive, inconsiderate writing.
-
-### 20.1. Requirements
-
-- NPM 6.14.14 or higher.
-- Node 12+
-
-### 20.2. Install
-
-```bash
 npm install -g alex
 ```
 
-### 20.3. Usage
+### 19.3. Usage
 
 The CLI searches for files with a markdown or text extension when given directories (alex will find readme.md and path/to/file.txt).
 
@@ -1283,9 +1121,9 @@ The CLI searches for files with a markdown or text extension when given director
 alex .
 ```
 
-### 20.4. Configuration
+### 19.4. Configuration
 
-#### 20.4.1. [Ignoring files](https://github.com/get-alex/alex#ignoring-files)
+#### 19.4.1. [Ignoring files](https://github.com/get-alex/alex#ignoring-files)
 
 To prevent files from being found, create an `.alexignore` file:
 
@@ -1295,7 +1133,7 @@ CODE_OF_CONDUCT.md
 vendor/
 ```
 
-#### 20.4.2. [Resource files](https://github.com/get-alex/alex#configuration)
+#### 19.4.2. [Resource files](https://github.com/get-alex/alex#configuration)
 
 You can control alex through `.alexrc.yml` configuration files:
 
@@ -1306,21 +1144,21 @@ allow:
   - european
 ```
 
-## 21. Codespell
+## 20. Codespell
 
 [codespell](https://github.com/codespell-project/codespell) fix common misspellings in text files. It's designed primarily for checking misspelled words in source code, but it can be used with other files as well. It does not check for word membership in a complete dictionary, but instead looks for a set of common misspellings. This also means it shouldn't generate false-positives when you use a niche term it doesn't know about.
 
-### 21.1. Requirements
+### 20.1. Requirements
 
 Python 3.7 or higher.
 
-### 21.2. Install
+### 20.2. Install
 
 ```bash
 pip install codespell
 ```
 
-### 21.3. Usage
+### 20.3. Usage
 
 For more in depth info please check usage with `codespell -h`.
 
@@ -1342,7 +1180,7 @@ codespell \
     --skip="*.json,*.txt,*.log,.git,./node_modules,./vendor"
 ```
 
-### 21.4. Configuration
+### 20.4. Configuration
 
 Command line options can also be specified in a config file.
 
@@ -1356,19 +1194,19 @@ check-filenames =
 check-hidden =
 ```
 
-## 22. Clang Analyzer
+## 21. Clang Analyzer
 
 [scan-build](https://github.com/rizsotto/scan-build) is a package designed to wrap a build so that all calls to gcc/clang are intercepted and logged into a compilation database and/or piped to the clang static analyzer. Includes intercept-build tool, which logs the build, as well as scan-build tool, which logs the build and runs the clang static analyzer on it.
 
 See [scan-build docs](http://clang-analyzer.llvm.org/scan-build.html)
 
-### 22.1. Requirements
+### 21.1. Requirements
 
 Python 3.7 or higher.
 
 `pip` is the package installer for Python. You can use pip to install packages from the Python Package Index and other indexes.
 
-### 22.2. Install
+### 21.2. Install
 
 It's available from the Python Package Index.
 
@@ -1376,7 +1214,7 @@ It's available from the Python Package Index.
 pip install scan-build
 ```
 
-### 22.3. Usage
+### 21.3. Usage
 
 Generally speaking, the `intercept-build` and `analyze-build` tools together does the same job as `scan-build` does. So, you can expect the same output from this line as scan-build would do:
 
@@ -1391,13 +1229,13 @@ intercept-build <your build command>
 analyze-build
 ```
 
-### 22.4. Configuration
+### 21.4. Configuration
 
 ```bash
 
 ```
 
-## 23. Valgrind
+## 22. Valgrind
 
 [Valgrind](https://www.valgrind.org/) is an instrumentation framework for building dynamic analysis tools. There are Valgrind tools that can automatically detect many memory management and threading bugs, and profile your programs in detail.
 
@@ -1407,17 +1245,17 @@ Related:
 
 - [valgrind - github](https://github.com/tklengyel/valgrind)
 
-### 23.1. Requirements
+### 22.1. Requirements
 
 `apt` package management system for installing, upgrading, configuring, and removing software.
 
-### 23.2. Install
+### 22.2. Install
 
 ```bash
 sudo apt install -y valgrind
 ```
 
-### 23.3. Usage
+### 22.3. Usage
 
 Valgrind [manual-core](https://valgrind.org/docs/manual/manual-core.html) describes the Valgrind core services, command-line options and behaviours.
 
@@ -1426,7 +1264,7 @@ Valgrind [manual-core](https://valgrind.org/docs/manual/manual-core.html) descri
 valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes --error-limit=no -q ./<executable>
 ```
 
-### 23.4. Configuration
+### 22.4. Configuration
 
 When running valgrind, it will check in the current directory for a file named `~/.valgrindrc` or `./.valgrindrc` (or a file specified via `--suppressions=<filename>`).
 

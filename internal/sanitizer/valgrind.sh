@@ -18,23 +18,19 @@ PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/valgrind.log"
 
-PATH_BINARY=""
+F_BINARY="NULL"
 while getopts 'b:' flag; do
   case "${flag}" in
-    b) PATH_BINARY="${OPTARG}" ;;
+    b) F_BINARY="${OPTARG}" ;;
     *) "error: unexpected option: ${flag}" ;;
   esac
 done
-readonly PATH_BINARY
+readonly F_BINARY
 
 # Internal functions
 
 analyzer() {
-  if ! is_file "${PATH_BINARY}"; then
-    return 255
-  fi
-
-  local -r cmd="valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --track-origins=yes --show-reachable=yes --error-limit=no -q --log-file=${LOG_FILE} ./${PATH_BINARY}"
+  local -r cmd="valgrind -s --tool=memcheck --log-file=${LOG_FILE} ./${F_BINARY}"
 
   (
     cd "${PATH_ROOT_DIR}" || return 1
@@ -45,20 +41,19 @@ analyzer() {
 }
 
 logger() {
-  local -i result=0
-  local -i errors=0
-
-  if is_file "${LOG_FILE}"; then
-    errors=$(grep -i -c -E 'ERROR SUMMARY' "${LOG_FILE}" || true)
-
-    if ((errors != 0)); then
-      ((result = 1))
-    else
-      remove_file "${LOG_FILE}"
-    fi
+  if ! is_file "${LOG_FILE}"; then
+    return 0
   fi
 
-  return "${result}"
+  local -i errors=0
+  errors=$(grep -i -c -E 'ERROR SUMMARY' "${LOG_FILE}" || true)
+  if ((errors != 0)); then
+    return 1
+  fi
+
+  remove_file "${LOG_FILE}"
+
+  return 0
 }
 
 run_valgrind() {
