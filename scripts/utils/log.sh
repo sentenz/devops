@@ -86,6 +86,6 @@ monitor() {
   elif ((status == STATUS_ERROR)); then
     error "[${task}] ${package}"
   else
-    error "[monitor]unknown status"
+    error "[${task}] ${package} unknown status code: ${status}"
   fi
 }
