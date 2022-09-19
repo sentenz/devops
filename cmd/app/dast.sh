@@ -41,7 +41,7 @@ sanitizer() {
   (
     local -i result=0
 
-    cd "$(get_sript_dir)/../../internal/app" || return 2
+    cd "$(get_sript_dir)/../../internal/app" || return 1
 
     chmod +x sanitizer.sh
     ./sanitizer.sh -b "${b_flag}"

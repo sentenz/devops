@@ -46,7 +46,7 @@ analyzer() {
   else
     echo "error: unexpected option: ${F_LINT}" &>"${LOG_FILE}"
 
-    return 2
+    return 1
   fi
 
   if [[ -z "${filepaths}" ]]; then

@@ -41,7 +41,7 @@ linter() {
   (
     local -i result=0
 
-    cd "$(get_sript_dir)/../../internal/app" || return 2
+    cd "$(get_sript_dir)/../../internal/app" || return 1
 
     chmod +x linter.sh
     ./linter.sh -l "${l_flag}"
