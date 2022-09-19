@@ -18,7 +18,7 @@ PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".remarkrc.json"
 # readonly RC_IGNORE_FILE=".remarkignore"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/remark.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/remark.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(md)$"
 
 # Options

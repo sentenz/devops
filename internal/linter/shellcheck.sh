@@ -17,7 +17,7 @@ set -uo pipefail
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".shellcheckrc"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/shellcheck.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/shellcheck.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(sh)$"
 
 # Options

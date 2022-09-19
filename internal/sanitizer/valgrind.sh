@@ -16,7 +16,7 @@ set -uo pipefail
 
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/valgrind.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/sanitizer/valgrind.log"
 
 F_BINARY="NULL"
 while getopts 'b:' flag; do

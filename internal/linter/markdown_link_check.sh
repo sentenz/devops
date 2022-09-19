@@ -17,7 +17,7 @@ set -uo pipefail
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".markdown-link-check.json"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/markdown-link-check.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/markdown-link-check.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(md)$"
 
 # Options

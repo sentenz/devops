@@ -42,7 +42,7 @@ analyze() {
   ./"${script}.sh" -b "${f_binary}"
   ((result = $?))
 
-  monitor "validate - ${f_binary}" "${script}" "${result}"
+  monitor "sanitizer - ${f_binary}" "${script}" "${result}"
 
   if ((result == STATUS_SKIP)) || ((result == STATUS_WARNING)); then
     return "${STATUS_SUCCESS}"
@@ -54,7 +54,7 @@ analyze() {
 run_sanitizer() {
   local -a scripts=("$@")
 
-  create_dir "$(get_root_dir)/logs/validate"
+  create_dir "$(get_root_dir)/logs/sanitizer"
 
   (
     local -i result=0

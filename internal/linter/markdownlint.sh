@@ -18,7 +18,7 @@ PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".markdownlint.json"
 # readonly RC_IGNORE_FILE=".markdownlintignore"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/markdownlint.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/markdownlint.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(md)$"
 
 # Options

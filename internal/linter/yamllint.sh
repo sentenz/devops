@@ -17,7 +17,7 @@ set -uo pipefail
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".yamllint.yml"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/yamllint.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/yamllint.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(yml|yaml)$"
 
 # Options

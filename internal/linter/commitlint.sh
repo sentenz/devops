@@ -17,7 +17,7 @@ set -uo pipefail
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".commitlintrc.yml"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/commitlint.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/commitlint.log"
 
 # Options
 

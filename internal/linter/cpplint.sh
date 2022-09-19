@@ -17,7 +17,7 @@ set -uo pipefail
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE="CPPLINT.cfg"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/cpplint.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/cpplint.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(h|hpp|hxx|c|cc|cpp|cxx)$"
 
 # Options

@@ -18,7 +18,7 @@ PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".golangci.yml"
 # readonly FILE_RC_LICENSE=".golangci-licenses"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/golangci-lint.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/golangci-lint.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(go)$"
 
 # Options

@@ -62,7 +62,7 @@ analyze() {
   ./"${script}.sh" -l "${f_lint}"
   ((result = $?))
 
-  monitor "validate - ${f_lint}" "${script}" "${result}"
+  monitor "linter - ${f_lint}" "${script}" "${result}"
 
   if ((result == STATUS_SKIP)) || ((result == STATUS_WARNING)); then
     return "${STATUS_SUCCESS}"
@@ -74,7 +74,7 @@ analyze() {
 run_linter() {
   local -a scripts=("$@")
 
-  create_dir "$(get_root_dir)/logs/validate"
+  create_dir "$(get_root_dir)/logs/linter"
 
   (
     local -i result=0

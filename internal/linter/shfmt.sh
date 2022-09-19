@@ -17,7 +17,7 @@ set -uo pipefail
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".editorconfig"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/shfmt.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/shfmt.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(sh)$"
 
 # Options

@@ -18,7 +18,7 @@ PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".licensecheck-check"
 # readonly RC_IGNORE_FILE=".licensecheck-ignore"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/licensecheck.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/licensecheck.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(h|hpp|hxx|c|cc|cpp|cxx)$"
 
 # Options

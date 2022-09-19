@@ -17,7 +17,7 @@ set -uo pipefail
 PATH_ROOT_DIR="$(get_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".dockerfilelintrc"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/dockerfilelint.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/dockerfilelint.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*(Dockerfile)$"
 
 # Options

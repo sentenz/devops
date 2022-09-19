@@ -19,7 +19,7 @@ readonly PATH_ROOT_DIR
 readonly PATH_COMPILE_COMMANDS_DB="${PATH_ROOT_DIR}/build/cmake/build"
 # readonly RC_FILE=".clang-tidy"
 # readonly RC_IGNORE_FILE=".clang-tidy-ignore"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/validate/clang-tidy.log"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/clang-tidy.log"
 readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(h|hpp|hxx|c|cc|cpp|cxx)$"
 
 # Options
