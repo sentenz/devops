@@ -17,11 +17,9 @@ Integrate the DevOps service repository into a base repository with `git submodu
 Run the following command to setup the DevOps service into the base repository:
 
 ```bash
- ./path/to/devops/scripts/setup_devops.sh
+cd pathto/devops/scripts 
+chmod +x setup_devops.sh
+./setup_devops.sh
 ```
 
 The commands of the initialized DevOps service are available as `make <target>` in the `Makefile` of a base repository.
-
-## Cleanup
-
-<!-- TODO(AK) Create a cleanup script for the devops service -->
