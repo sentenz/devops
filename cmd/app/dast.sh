@@ -23,20 +23,10 @@ while getopts 'b:' flag; do
 done
 readonly F_BINARY
 
-# Constant variables
-
-pre_cleanup() {
-  # Cleanup previous logs
-  if is_dir_empty "$(get_root_dir)/logs"; then
-    return "${STATUS_SUCCESS}"
-  fi
-
-  local regex_patterns="^.*\.(log)$"
-  find "$(get_root_dir)/logs" -type f -regextype posix-egrep -regex "${regex_patterns}" -delete
-}
+# Internal functions
 
 sanitizer() {
-  local f_binary="${1:?binary flag is missing}"
+  local f_binary="${1:?binary is missing}"
 
   (
     local -i result=0
@@ -53,9 +43,6 @@ sanitizer() {
 
 run_dast() {
   local -i result=0
-
-  pre_cleanup
-  ((result |= $?))
 
   sanitizer "${F_BINARY}"
   ((result |= $?))

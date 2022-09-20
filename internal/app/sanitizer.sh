@@ -32,9 +32,23 @@ readonly -a SCRIPTS=(
 
 # Internal functions
 
+initialize_logs() {
+  local log_dir
+  log_dir="$(get_root_dir)/logs/sanitizer"
+  local regex_patterns="^.*\.(log)$"
+
+  if ! is_dir_empty "${log_dir}"; then
+    find "${log_dir}" -type f -regextype posix-egrep -regex "${regex_patterns}" -delete
+  fi
+
+  create_dir "${log_dir}"
+
+  return "${STATUS_SUCCESS}"
+}
+
 analyze() {
-  local script="${1}"
-  local f_binary="${2}"
+  local script="${1:?script is missing}"
+  local f_binary="${2:?binary is missing}"
 
   local -i result=0
 
@@ -54,7 +68,7 @@ analyze() {
 run_sanitizer() {
   local -a scripts=("$@")
 
-  create_dir "$(get_root_dir)/logs/sanitizer"
+  initialize_logs
 
   (
     local -i result=0

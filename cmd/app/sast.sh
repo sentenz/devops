@@ -23,17 +23,7 @@ while getopts 'l:' flag; do
 done
 readonly F_LINT
 
-# Constant variables
-
-pre_cleanup() {
-  # Cleanup previous logs
-  if is_dir_empty "$(get_root_dir)/logs"; then
-    return "${STATUS_SUCCESS}"
-  fi
-
-  local regex_patterns="^.*\.(log)$"
-  find "$(get_root_dir)/logs" -type f -regextype posix-egrep -regex "${regex_patterns}" -delete
-}
+# Internal functions
 
 linter() {
   local f_lint="${1:?linter flag is missing}"
@@ -53,9 +43,6 @@ linter() {
 
 run_sast() {
   local -i result=0
-
-  pre_cleanup
-  ((result |= $?))
 
   linter "${F_LINT}"
   ((result |= $?))
