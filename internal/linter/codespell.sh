@@ -69,7 +69,7 @@ analyzer() {
 
 logger() {
   if ! is_file_empty "${LOG_FILE}"; then
-    return "${STATUS_ERROR}"
+    return "${STATUS_WARNING}"
   fi
 
   remove_file "${LOG_FILE}"

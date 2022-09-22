@@ -87,7 +87,7 @@ logger() {
   local -i errors=0
   errors=$(grep -i -c -E 'ERROR' "${LOG_FILE}" || true)
   if ((errors != 0)); then
-    return "${STATUS_ERROR}"
+    return "${STATUS_WARNING}"
   fi
 
   remove_file "${LOG_FILE}"

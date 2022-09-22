@@ -30,10 +30,10 @@ readonly -a SCRIPTS=(
   alex
   write_good
   proselint
+  codespell
   remark
   markdown_link_check
   # markdownlint
-  codespell
   # commitlint
   cppcheck
   cpplint
