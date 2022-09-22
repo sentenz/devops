@@ -2,6 +2,8 @@
 #
 # Library for utility actions.
 
+source "$(dirname "${BASH_SOURCE[0]}")/log.sh"
+
 ########################
 # Add apt repository to package dependencies.
 # Arguments:

@@ -3,33 +3,37 @@ help: ## Display help screen
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-30s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 .PHONY: help
 
-setup: ## Setup dependencies and tools
+setup: ## Setup dependencies and tools for the devops service
 	cd scripts && chmod +x setup.sh && ./setup.sh
 .PHONY: setup
 
-setup-devops: ## Setup dependencies and tools for the devops service
-	cd scripts && chmod +x setup_devops.sh && ./setup_devops.sh
-.PHONY: setup-devops
-
-cleanup-devops: ## Cleanup dependencies and tools of the devops service
+cleanup: ## Cleanup dependencies and tools of the devops service
 	# TODO(AK)
-.PHONY: setup-devops
+.PHONY: cleanup
 
 setup-integration: ## Setup dependencies and tools for the integration service
 	cd scripts/pipeline && chmod +x setup_continuous_integration.sh && ./setup_continuous_integration.sh
 .PHONY: setup-integration
 
-run-validate-staged: ## Perform validation of local staged files
-	cd cmd && chmod +x validate.sh && ./validate.sh -l staged
-.PHONY: run-validate-staged
+run-linter-staged: ## Perform validation of local staged files
+	cd cmd/app && chmod +x sast.sh && ./sast.sh -l staged
+.PHONY: run-linter-staged
 
-run-validate-diff: ## Perform validation of local modified files
-	cd cmd && chmod +x validate.sh && ./validate.sh -l diff
-.PHONY: run-validate-diff
+run-linter-diff: ## Perform validation of local modified files
+	cd cmd/app && chmod +x sast.sh && ./sast.sh -l diff
+.PHONY: run-linter-diff
 
-run-validate-ci: ## Perform validation of modified files in continuous integration pipeline
-	cd cmd && chmod +x validate.sh && ./validate.sh -l ci
-.PHONY: run-validate-ci
+run-linter-ci: ## Perform validation of modified files in continuous integration pipeline
+	cd cmd/app && chmod +x sast.sh && ./sast.sh -l ci
+.PHONY: run-linter-ci
+
+run-linter-commit: ## Perform validation of the commit message
+	commitlint --edit .git/COMMIT_EDITMSG
+.PHONY: run-linter-commit
+
+run-sanitizer: ## Perform validation of binary files
+	cd cmd/app && chmod +x dast.sh && ./dast.sh -b cmd/bin/*
+.PHONY: run-sanitizer
 
 setup-testing: ## Setup dependencies and tools for the testing service
 	cd scripts/pipeline && chmod +x setup_continuous_testing.sh && ./setup_continuous_testing.sh
@@ -45,7 +49,6 @@ run-release: ## Perform release service task
 
 setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
 	$(MAKE) setup
-	$(MAKE) setup-devops
 .PHONY: setup-devcontainer
 
 setup-continuous-integration: ## Setup dependencies and tools for the continuous integration pipeline
@@ -53,7 +56,7 @@ setup-continuous-integration: ## Setup dependencies and tools for the continuous
 .PHONY: setup-continuous-integration
 
 run-continuous-integration: ## Perform task in continuous integration pipeline
-	$(MAKE) run-validate-ci
+	$(MAKE) run-linter-ci
 .PHONY: run-continuous-integration
 
 setup-continuous-testing: ## Setup dependencies and tools for the continuous testing pipeline
@@ -71,7 +74,3 @@ setup-continuous-release: ## Setup dependencies and tools for the continuous rel
 run-continuous-release: ## Perform task in continuous release pipeline
 	$(MAKE) run-release
 .PHONY: run-continuous-release
-
-run-githooks-pre-commit: ## Perform task in githooks pre-commit event
-	$(MAKE) run-validate-staged
-.PHONY: run-githooks-pre-commit

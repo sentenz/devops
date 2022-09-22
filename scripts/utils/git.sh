@@ -3,6 +3,16 @@
 # Library for git actions.
 
 ########################
+# Configure ownership in repository.
+# Arguments:
+#   None
+# Returns:
+#   None
+#########################
+configure_repo_ownership() {
+  git config --global --add safe.directory "$(get_root_dir)"
+}
+########################
 # Get the absolute path of the root project by command substitution.
 # Arguments:
 #   None
@@ -10,6 +20,7 @@
 #   Path
 #########################
 get_root_dir() {
+  local retval
   retval="$(git rev-parse --show-superproject-working-tree --show-toplevel | head -1)"
   echo "${retval}"
 
@@ -24,6 +35,7 @@ get_root_dir() {
 #   Branch
 #########################
 get_local_branch() {
+  local retval
   retval="$(git rev-parse --abbrev-ref HEAD)"
   echo "${retval}"
 
@@ -43,6 +55,7 @@ get_staged_files() {
   local path="${1:-}"
   local regex="${2:-}"
 
+  local retval
   retval=$(git diff --submodule=diff --diff-filter=d --name-only --line-prefix="${path}/" --cached | grep -P "${regex}" | xargs)
   echo "${retval}"
 
@@ -62,6 +75,7 @@ get_diff_files() {
   local path="${1:-}"
   local regex="${2:-}"
 
+  local retval
   retval=$(git diff --submodule=diff --diff-filter=d --name-only --line-prefix="${path}/" remotes/origin/HEAD... | grep -P "${regex}" | xargs)
   echo "${retval}"
 
@@ -81,6 +95,7 @@ get_ci_files() {
   local path="${1:-}"
   local regex="${2:-}"
 
+  local retval
   retval=$(git diff --submodule=diff --diff-filter=d --name-only --line-prefix="${path}/" remotes/origin/main... | grep -P "${regex}" | xargs)
   echo "${retval}"
 

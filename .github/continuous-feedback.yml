@@ -11,7 +11,7 @@ jobs:
   issues-comment:
     if: ${{ github.event_name == 'issues' }}
     name: continuous-feedback
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/github-script@v6
         with:
@@ -36,7 +36,7 @@ jobs:
   pull-request-comment:
     if: ${{ github.event_name == 'pull_request_target' }}
     name: continuous-feedback
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/github-script@v6
         with:

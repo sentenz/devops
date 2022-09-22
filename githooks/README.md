@@ -26,7 +26,7 @@ chmod +x path/to/githooks/*
 - pre-commit
   > Contained actions:
   >
-  > - Enforce static analysis, linting, spell checks, and code style checks.
+  > - Enforce coding standards and static analysis os the codebase through linting, spell checks, and code style checks.
 
 - commit-msg
   > Contained actions:

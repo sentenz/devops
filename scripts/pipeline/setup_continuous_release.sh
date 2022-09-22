@@ -5,12 +5,10 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 # Include libraries
 
-. ./../../scripts/utils/log.sh
 . ./../../scripts/utils/util.sh
 
 # Constant variables

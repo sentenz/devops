@@ -3,11 +3,18 @@
 # Library for logging actions.
 
 # Color palette
-RESET='\033[0m'
-GREEN='\033[38;5;2m'
-RED='\033[38;5;1m'
-YELLOW='\033[38;5;3m'
+readonly RESET='\033[0m'
+readonly GREEN='\033[38;5;2m'
+readonly RED='\033[38;5;1m'
+readonly YELLOW='\033[38;5;3m'
+readonly WHITE='\033[38;5;7m'
 DATE="[$(date +'%Y-%m-%dT%H:%M:%S%z')]"
+readonly DATE
+
+export STATUS_SUCCESS=0
+export STATUS_ERROR=1
+export STATUS_WARNING=2
+export STATUS_SKIP=255
 
 # Functions
 
@@ -21,12 +28,21 @@ log() {
 }
 
 ########################
-# Log info message.
+# Log skipped message.
 # Arguments:
 #   $1 - Message to log
 #########################
-info() {
-  log "${DATE} ${GREEN}INFO ${RESET}\t" "${*}"
+skip() {
+  log "${DATE} ${WHITE}SKIP ${RESET}\t" "${*}"
+}
+
+########################
+# Log pass message.
+# Arguments:
+#   $1 - Message to log
+#########################
+pass() {
+  log "${DATE} ${GREEN}PASS ${RESET}\t" "${*}"
 }
 
 ########################
@@ -61,11 +77,15 @@ monitor() {
   local package="${2:?package is missing}"
   local status="${3:?status is missing}"
 
-  if ((status == 0)); then
-    info "[${task}] succeeded ${package}"
-  elif ((status == 255)); then
-    warn "[${task}] skipped ${package}"
+  if ((status == STATUS_SUCCESS)); then
+    pass "[${task}] ${package}"
+  elif ((status == STATUS_SKIP)); then
+    skip "[${task}] ${package}"
+  elif ((status == STATUS_WARNING)); then
+    warn "[${task}] ${package}"
+  elif ((status == STATUS_ERROR)); then
+    error "[${task}] ${package}"
   else
-    error "[${task}] failed ${package}"
+    error "[${task}] ${package} unknown status code: ${status}"
   fi
 }

@@ -5,14 +5,10 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 # Include libraries
 
-. ./../../scripts/utils/log.sh
-. ./../../scripts/utils/fs.sh
-. ./../../scripts/utils/git.sh
 . ./../../scripts/utils/util.sh
 
 # Constant variables
@@ -45,6 +41,7 @@ readonly -a PIP_PACKAGES=(
   cpplint
   cmake_format
   yamllint
+  proselint
 )
 readonly -a NPM_PACKAGES=(
   alex
@@ -56,16 +53,11 @@ readonly -a NPM_PACKAGES=(
   markdownlint
   markdownlint-cli
   markdown-link-check
-  markdown-spellcheck
-  remark-cli
+  remark
   remark-preset-lint-markdown-style-guide
   remark-preset-lint-recommended
   remark-preset-lint-consistent
-  remark-lint-list-item-indent
-  remark-lint-maximum-line-length
-  remark-lint-ordered-list-marker-value
-  remark-lint-emphasis-marker
-  remark-lint-strong-marker
+  write-good
 )
 readonly -a GO_PACKAGES=(
   github.com/golangci/golangci-lint/cmd/golangci-lint@latest

@@ -7,7 +7,7 @@ on:
 jobs:
   release:
     name: continuous-release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout Codebase
         uses: actions/checkout@v3

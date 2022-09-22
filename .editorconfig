@@ -49,4 +49,4 @@ indent_size = 2
 indent_style = space
 
 [COMMIT_EDITMSG]
-max_line_length = 72
+max_line_length = 100

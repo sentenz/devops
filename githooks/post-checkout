@@ -7,7 +7,6 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 # Include libraries
@@ -36,7 +35,7 @@ enforce_checkout_from_base_branches() {
 	local -a base_branches=("${@:3}")
 
 	if [[ "${flag_checkout}" == 0 ]]; then
-		return 0
+		return "${STATUS_SUCCESS}"
 	fi
 
 	parant_branch="$(git show-branch |
@@ -47,12 +46,12 @@ enforce_checkout_from_base_branches() {
 		sed "s/^.*\[//")"
 
 	if [[ -z "${parant_branch}" ]]; then
-		return 0
+		return "${STATUS_SUCCESS}"
 	fi
 
 	for branch in "${base_branches[@]}"; do
 		if [[ "${branch}" == "${parant_branch}" ]]; then
-			return 0
+			return "${STATUS_SUCCESS}"
 		fi
 	done
 
@@ -65,22 +64,25 @@ Branching strategy - Enforce to create the support branches from the base branch
 
 Branch "${local_branch}" is created from "${parant_branch}".
 Though, support branches should be created from a base branch, e.g. "${base_branches[@]}".
-___________________________________________________________________________________________________
 
+See https://sentenz.github.io/guide/guideline/branching-strategies-guide.html
+___________________________________________________________________________________________________
 END
 
-	return 1
+	return "${STATUS_ERROR}"
 }
 
-post_checkout() {
+run_post_checkout() {
 	local -i result=0
 
-	create_empty_file "${LOG_FILE}"
+	create_file "${LOG_FILE}"
 
 	enforce_checkout_from_base_branches "${LOCAL_BRANCH}" "${FLAG_CHECKOUT}" "${BASE_BRANCHES[@]}" >>"${LOG_FILE}"
 	((result |= $?))
 
-	remove_empty_file "${LOG_FILE}"
+	if ((result == 0)); then
+		remove_file "${LOG_FILE}"
+	fi
 
 	monitor "githooks" "post-checkout" "${result}"
 
@@ -89,5 +91,5 @@ post_checkout() {
 
 # Control flow logic
 
-post_checkout
+run_post_checkout
 exit "${?}"

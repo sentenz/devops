@@ -5,7 +5,6 @@
 # -x: print a trace (debug)
 # -u: treat unset variables
 # -o pipefail: return value of a pipeline
-# -o posix: match the standard
 set -uo pipefail
 
 readonly CC="gcc"
@@ -18,7 +17,7 @@ LOG_FILE="scan-build.log"
 while getopts 'p:' flag; do
   case "${flag}" in
     p) PATH_TO_BUILDDIR="${OPTARG}" ;;
-    *) "[error] Unexpected option: ${flag}" ;;
+    *) ;;
   esac
 done
 
@@ -45,8 +44,8 @@ if [[ -f "${LOG_FILE}" ]]; then
   readonly WARNINGS
 
   if [[ "${ERRORS}" -ne 0 || "${WARNINGS}" -ne 0 ]]; then
-    exit 1
+    return "${STATUS_ERROR}"
   else
-    rm -f "${LOG_FILE}"
+    remove_file "${LOG_FILE}"
   fi
 fi

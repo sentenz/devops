@@ -82,7 +82,7 @@ merge_file() {
 
   local tmp="diff.txt"
 
-  diff --line-format %L -D MERGE -B "${src}" "${dest}" >"${tmp}"
+  diff --line-format="%L" -D MERGE -B "${src}" "${dest}" >"${tmp}"
   mv "${tmp}" "${dest}"
 }
 
@@ -105,20 +105,33 @@ create_dir() {
 }
 
 ########################
-# Create a empty file.
+# Creates a empty file and the directore if not exist.
 # Arguments:
 #   $1 - file
 # Returns:
 #   None
 #########################
-create_empty_file() {
+create_file() {
   local file="${1:?file is missing}"
 
   create_dir "$(dirname "${file}")" && touch "${file}"
 }
 
 ########################
-# Remove a empty file.
+# Removes a file.
+# Arguments:
+#   $1 - file
+# Returns:
+#   None
+#########################
+remove_file() {
+  local file="${1:?file is missing}"
+
+  rm -f "${file}"
+}
+
+########################
+# Removes a empty file.
 # Arguments:
 #   $1 - file
 # Returns:
@@ -174,6 +187,7 @@ is_file_empty() {
 #   Path
 #########################
 get_sript_dir() {
+  local retval
   retval="$(dirname "$(realpath "$0")")"
   echo "${retval}"
 
@@ -224,7 +238,7 @@ configure_permissions_ownership() {
         ;;
       *)
         echo "Invalid command line flag $1" >&2
-        return 1
+        return "${STATUS_ERROR}"
         ;;
     esac
     shift
