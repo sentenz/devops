@@ -56,7 +56,7 @@ analyzer() {
   fi
 
   # Run linter
-  local -r cmd="clang-tidy -p=${PATH_COMPILE_COMMANDS_DB} ${filepaths}"
+  local -r cmd="clang-tidy --fix -p=${PATH_COMPILE_COMMANDS_DB} ${filepaths}"
 
   (
     cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
