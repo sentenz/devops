@@ -19,7 +19,10 @@
         "Accept-Encoding": "zstd, br, gzip, deflate"
       },
       "urls": [
-        "https://github.com/", "https://guides.github.com/", "https://help.github.com/", "https://docs.github.com/"
+        "https://github.com/",
+        "https://guides.github.com/",
+        "https://help.github.com/",
+        "https://docs.github.com/"
       ]
     },
     {
