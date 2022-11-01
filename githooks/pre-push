@@ -47,7 +47,7 @@ Noting that contributions to base branches are not compliant with the branching 
 Contributing to a base branch can only be made via pull requests (PR). Create a support branch
 from and merge back to a base branch.
 
-See https://sentenz.github.io/guide/guideline/branching-strategies-guide.html
+See https://sentenz.github.io/guide/internal/guideline/branching-strategies-guide.html
 ___________________________________________________________________________________________________
 END
 
@@ -83,7 +83,7 @@ The naming rule is: [support-branch]/[issue-id]-[short-description].
 
 Example: feature/158-enforce-policy
 
-See https://sentenz.github.io/guide/guideline/branching-strategies-guide.html
+See https://sentenz.github.io/guide/internal/guideline/branching-strategies-guide.html
 ___________________________________________________________________________________________________
 END
 
