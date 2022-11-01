@@ -2,8 +2,11 @@
   "name": "Ubuntu",
   "build": {
     "dockerfile": "../build/container/devcontainer.dockerfile",
+    "target": "development",
     "context": ".."
   },
+  "settings": {},
+  "features": {},
   "extensions": [
 	"ms-vscode.cpptools",
 	"ms-vscode.cmake-tools",
@@ -13,6 +16,5 @@
   "onCreateCommand": "apt update && apt install -y make",
   "postCreateCommand": "make setup-devcontainer",
   "forwardPorts": [],
-  "features": {},
   "remoteUser": "root"
 }
