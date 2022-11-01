@@ -82,6 +82,7 @@ merge_file() {
 
   local tmp="diff.txt"
 
+  touch "${dest}"
   diff --line-format="%L" -D MERGE -B "${src}" "${dest}" >"${tmp}"
   mv "${tmp}" "${dest}"
 }
