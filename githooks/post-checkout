@@ -65,7 +65,7 @@ Branching strategy - Enforce to create the support branches from the base branch
 Branch "${local_branch}" is created from "${parant_branch}".
 Though, support branches should be created from a base branch, e.g. "${base_branches[@]}".
 
-See https://sentenz.github.io/guide/guideline/branching-strategies-guide.html
+See https://sentenz.github.io/guide/internal/guideline/branching-strategies-guide.html
 ___________________________________________________________________________________________________
 END
 

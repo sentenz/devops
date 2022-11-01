@@ -46,7 +46,7 @@ A commit message that is compliant with Conventional Commits consists of the for
 
   <type>(<scope>): <short summary>
 
-See https://sentenz.github.io/guide/guideline/commit-message-guide.html
+See https://sentenz.github.io/guide/internal/guideline/commit-message-guide.html
 ___________________________________________________________________________________________________
 END
   fi

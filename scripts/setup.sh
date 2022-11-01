@@ -41,6 +41,7 @@ readonly -a PIPELINES=(
 
 initialize_repo() {
   configure_repo_ownership
+  chmod +x "$(get_root_dir)"/internal/*/*.sh
 }
 
 initialize_scripts() {
