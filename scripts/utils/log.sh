@@ -54,8 +54,10 @@ readonly DATE
 # Log message to stderr.
 # Arguments:
 #   $1 - Message to log
+# Returns:
+#   Name
 #########################
-log() {
+log_print() {
   printf "%b\\n" "${*}" >&2
 }
 
@@ -63,45 +65,55 @@ log() {
 # Log info message.
 # Arguments:
 #   $1 - Message to log
+# Returns:
+#   Name
 #########################
-info() {
-  log "${DATE} ${INTENS_WHITE}info ${RESET}\t" "${*}"
+log_info() {
+  log_print "${DATE} ${INTENS_WHITE}info ${RESET}\t" "${*}"
 }
 
 ########################
 # Log skipped message.
 # Arguments:
 #   $1 - Message to log
+# Returns:
+#   Name
 #########################
-skip() {
-  log "${DATE} ${INTENS_WHITE}skipped ${RESET}\t" "${*}"
+log_skip() {
+  log_print "${DATE} ${INTENS_WHITE}skipped ${RESET}\t" "${*}"
 }
 
 ########################
 # Log pass message.
 # Arguments:
 #   $1 - Message to log
+# Returns:
+#   Name
 #########################
-pass() {
-  log "${DATE} ${INTENS_GREEN}passed ${RESET}\t" "${*}"
+log_passpass() {
+  log_print "${DATE} ${INTENS_GREEN}passed ${RESET}\t" "${*}"
 }
 
 ########################
 # Log warning message.
 # Arguments:
 #   $1 - Message to log
+# Returns:
+#   Name
 #########################
-warn() {
-  log "${DATE} ${INTENS_YELLOW}warning ${RESET}\t" "${*}"
+log_warn() {
+  log_print "${DATE} ${INTENS_YELLOW}warning ${RESET}\t" "${*}"
 }
 
 ########################
 # Log error message.
 # Arguments:
 #   $1 - Message to log
+# Returns:
+#   Name
 #########################
-error() {
-  log "${DATE} ${INTENS_RED}error ${RESET}\t" "${*}"
+log_error() {
+  log_print "${DATE} ${INTENS_RED}error ${RESET}\t" "${*}"
 }
 
 ########################
@@ -113,20 +125,20 @@ error() {
 # Returns:
 #   None
 #########################
-monitor() {
+log_monitor() {
   local task="${1:?task is missing}"
   local package="${2:?package is missing}"
   local status="${3:?status is missing}"
 
   if ((status == STATUS_SUCCESS)); then
-    pass "[${task}] ${package}"
+    log_pass "[${task}] ${package}"
   elif ((status == STATUS_SKIP)); then
-    skip "[${task}] ${package}"
+    log_skip "[${task}] ${package}"
   elif ((status == STATUS_WARNING)); then
-    warn "[${task}] ${package}"
+    log_warn "[${task}] ${package}"
   elif ((status == STATUS_ERROR)); then
-    error "[${task}] ${package}"
+    log_error "[${task}] ${package}"
   else
-    error "[${task}] ${package} unknown status code: ${status}"
+    log_error "[${task}] ${package} unknown status code: ${status}"
   fi
 }

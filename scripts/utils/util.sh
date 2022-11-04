@@ -11,7 +11,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/log.sh"
 # Returns:
 #   Boolean
 #########################
-add_apt_ppa() {
+util_add_apt_ppa() {
   local repo="${1:?repo is missing}"
 
   local -i result=0
@@ -30,7 +30,7 @@ add_apt_ppa() {
 # Returns:
 #   Boolean
 #########################
-install_apt() {
+util_install_apt() {
   local package="${1:?package is missing}"
 
   local -i result=0
@@ -49,19 +49,19 @@ install_apt() {
 # Returns:
 #   Boolean
 #########################
-setup_apt_packages() {
+util_setup_apt_packages() {
   local -a packages=("$@")
 
   local -i retval=0
   local -i result=0
 
   for package in "${packages[@]}"; do
-    update_apt
+    util_update_apt
 
-    install_apt "${package}"
+    util_install_apt "${package}"
     ((result = $?))
 
-    monitor "setup" "${package}" "${result}"
+    log_monitor "setup" "${package}" "${result}"
   done
 
   ((retval |= "${result}"))
@@ -76,7 +76,7 @@ setup_apt_packages() {
 # Returns:
 #   None
 #########################
-update_apt() {
+util_update_apt() {
   sudo apt update -qqq
 }
 
@@ -87,7 +87,7 @@ update_apt() {
 # Returns:
 #   Boolean
 #########################
-cleanup_apt() {
+util_cleanup_apt() {
   local -i result=0
 
   sudo apt install -y -f -qqq
@@ -102,7 +102,7 @@ cleanup_apt() {
   sudo rm -rf /var/lib/apt/lists/*
   ((result |= $?))
 
-  monitor "cleanup" "apt" "${result}"
+  log_monitor "cleanup" "apt" "${result}"
 
   return "${result}"
 }
@@ -114,7 +114,7 @@ cleanup_apt() {
 # Returns:
 #   Boolean
 #########################
-install_pip() {
+util_install_pip() {
   local package="${1:?package is missing}"
 
   local -i result=0
@@ -133,17 +133,17 @@ install_pip() {
 # Returns:
 #   Boolean
 #########################
-setup_pip_packages() {
+util_setup_pip_packages() {
   local -a packages=("$@")
 
   local -i retval=0
   local -i result=0
 
   for package in "${packages[@]}"; do
-    install_pip "${package}"
+    util_install_pip "${package}"
     ((result = $?))
 
-    monitor "setup" "${package}" "${result}"
+    log_monitor "setup" "${package}" "${result}"
   done
 
   ((retval |= "${result}"))
@@ -158,7 +158,7 @@ setup_pip_packages() {
 # Returns:
 #   Boolean
 #########################
-install_go() {
+util_install_go() {
   local package="${1:?package is missing}"
 
   local -i result=0
@@ -177,7 +177,7 @@ install_go() {
 # Returns:
 #   Boolean
 #########################
-setup_go_packages() {
+util_setup_go_packages() {
   local -a packages=("$@")
 
   local -i retval=0
@@ -187,10 +187,10 @@ setup_go_packages() {
     # HACK(AK) https://github.com/actions/setup-go/issues/14
     export PATH="${HOME}"/go/bin:/usr/local/go/bin:"${PATH}"
 
-    install_go "${package}"
+    util_install_go "${package}"
     ((result = $?))
 
-    monitor "setup" "${package}" "${result}"
+    log_monitor "setup" "${package}" "${result}"
   done
 
   ((retval |= "${result}"))
@@ -205,7 +205,7 @@ setup_go_packages() {
 # Returns:
 #   Boolean
 #########################
-install_curl() {
+util_install_curl() {
   local package="${1:?package is missing}"
 
   local -i result=0
@@ -224,7 +224,7 @@ install_curl() {
 # Returns:
 #   Boolean
 #########################
-setup_curl_packages() {
+util_setup_curl_packages() {
   local -a packages=("$@")
 
   local -i retval=0
@@ -233,10 +233,10 @@ setup_curl_packages() {
   for package in "${packages[@]}"; do
     export PATH="${HOME}"/.local/bin:"${PATH}"
 
-    install_curl "${package}"
+    util_install_curl "${package}"
     ((result = $?))
 
-    monitor "setup" "$(basename "${package}")" "${result}"
+    log_monitor "setup" "$(basename "${package}")" "${result}"
   done
 
   ((retval |= "${result}"))
@@ -251,7 +251,7 @@ setup_curl_packages() {
 # Returns:
 #   Boolean
 #########################
-install_npm() {
+util_install_npm() {
   local package="${1:?package is missing}"
 
   local -i result=0
@@ -270,17 +270,17 @@ install_npm() {
 # Returns:
 #   Boolean
 #########################
-setup_npm_packages() {
+util_setup_npm_packages() {
   local -a packages=("$@")
 
   local -i retval=0
   local -i result=0
 
   for package in "${packages[@]}"; do
-    install_npm "${package}"
+    util_install_npm "${package}"
     ((result = $?))
 
-    monitor "setup" "${package}" "${result}"
+    log_monitor "setup" "${package}" "${result}"
   done
 
   ((retval |= "${result}"))
@@ -295,13 +295,13 @@ setup_npm_packages() {
 # Returns:
 #   Boolean
 #########################
-cleanup_npm() {
+util_cleanup_npm() {
   local -i result=0
 
   npm cache clean --force --silent
   ((result |= $?))
 
-  monitor "cleanup" "npm" "${result}"
+  log_monitor "cleanup" "npm" "${result}"
 
   return "${result}"
 }
