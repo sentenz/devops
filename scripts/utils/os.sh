@@ -9,7 +9,7 @@
 # Returns:
 #   Name
 #########################
-get_os_name() {
+os_get_name() {
   local retval
   retval="$(uname | tr '[:upper:]' '[:lower:]')"
   echo "${retval}"
@@ -24,7 +24,7 @@ get_os_name() {
 # Returns:
 #   Boolean
 #########################
-user_exists() {
+os_user_exists() {
   local user="${1:?user is missing}"
   id "$user" >/dev/null 2>&1
 }
@@ -36,7 +36,7 @@ user_exists() {
 # Returns:
 #   Boolean
 #########################
-group_exists() {
+os_group_exists() {
   local group="${1:?group is missing}"
   getent group "$group" >/dev/null 2>&1
 }
@@ -48,10 +48,10 @@ group_exists() {
 # Returns:
 #   None
 #########################
-create_group() {
+os_create_group() {
   local group="${1:?group is missing}"
 
-  if ! group_exists "$group"; then
+  if ! os_group_exists "$group"; then
     groupadd "$group" >/dev/null 2>&1
   fi
 }
@@ -64,14 +64,14 @@ create_group() {
 # Returns:
 #   None
 #########################
-create_user() {
+os_create_user() {
   local user="${1:?user is missing}"
   local group="${2:-}"
 
-  if ! user_exists "$user"; then
+  if ! os_user_exists "$user"; then
     useradd "$user" >/dev/null 2>&1
     if [[ -n "$group" ]]; then
-      create_group "$group"
+      os_create_group "$group"
       usermod -a -G "$group" "$user" >/dev/null 2>&1
     fi
   fi
@@ -85,7 +85,7 @@ create_user() {
 # Returns:
 #   Boolean
 #########################
-am_i_root() {
+os_am_i_root() {
   if [[ "$(id -u)" = "0" ]]; then
     true
   else
@@ -100,7 +100,7 @@ am_i_root() {
 # Returns:
 #   Memory in bytes
 #########################
-get_total_memory() {
+os_get_total_memory() {
   echo $(($(grep MemTotal /proc/meminfo | awk '{print $2}') / 1024))
 }
 
@@ -113,7 +113,7 @@ get_total_memory() {
 # Returns:
 #   None
 #########################
-debug_execute() {
+os_debug_execute() {
   if ${DEBUG:-false}; then
     "$@"
   else
@@ -130,7 +130,7 @@ debug_execute() {
 # Returns:
 #   Boolean
 #########################
-retry_while() {
+os_retry_while() {
   local -r cmd="${1:?cmd is missing}"
   local -r retries="${2:-12}"
   local -r sleep_time="${3:-5}"

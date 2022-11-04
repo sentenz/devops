@@ -2,7 +2,6 @@
   "name": "Ubuntu",
   "build": {
     "dockerfile": "../build/container/devcontainer.dockerfile",
-    "target": "development",
     "context": ".."
   },
   "settings": {},

@@ -10,7 +10,6 @@
   >
   > - `build.dockerfile`: The location of a Dockerfile that defines the contents of the container. The path is relative to the devcontainer.json file.
   > - `build.context`: Path that the Docker build should be run from relative to devcontainer.json.
-  > - `build.target`: A string that specifies a Docker image build target that should be passed when building a Dockerfile. Defaults to not set.
   > - `settings`: Set default container specific settings.json values on container create.
   > - `features`: See features on [devcontainers](https://github.com/devcontainers/features/tree/main/src) repository.
   > - `extensions`: Add the IDs of extensions you want installed when the container is created.

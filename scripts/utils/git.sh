@@ -9,8 +9,8 @@
 # Returns:
 #   None
 #########################
-configure_repo_ownership() {
-  git config --global --add safe.directory "$(get_root_dir)"
+git_configure_repo_ownership() {
+  git config --global --add safe.directory "$(git_get_root_dir)"
 }
 ########################
 # Get the absolute path of the root project by command substitution.
@@ -19,7 +19,7 @@ configure_repo_ownership() {
 # Returns:
 #   Path
 #########################
-get_root_dir() {
+git_get_root_dir() {
   local retval
   retval="$(git rev-parse --show-superproject-working-tree --show-toplevel | head -1)"
   echo "${retval}"
@@ -34,7 +34,7 @@ get_root_dir() {
 # Returns:
 #   Branch
 #########################
-get_local_branch() {
+git_get_local_branch() {
   local retval
   retval="$(git rev-parse --abbrev-ref HEAD)"
   echo "${retval}"
@@ -51,7 +51,7 @@ get_local_branch() {
 # Returns:
 #   List
 #########################
-get_staged_files() {
+git_get_staged_files() {
   local path="${1:-}"
   local regex="${2:-}"
 
@@ -71,7 +71,7 @@ get_staged_files() {
 # Returns:
 #   List
 #########################
-get_diff_files() {
+git_get_diff_files() {
   local path="${1:-}"
   local regex="${2:-}"
 
@@ -91,7 +91,7 @@ get_diff_files() {
 # Returns:
 #   List
 #########################
-get_ci_files() {
+git_get_ci_files() {
   local path="${1:-}"
   local regex="${2:-}"
 

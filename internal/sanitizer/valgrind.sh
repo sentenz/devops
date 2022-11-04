@@ -14,7 +14,7 @@ set -uo pipefail
 
 # Constant variables
 
-PATH_ROOT_DIR="$(get_root_dir)"
+PATH_ROOT_DIR="$(git_get_root_dir)"
 readonly PATH_ROOT_DIR
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/sanitizer/valgrind.log"
 
@@ -41,7 +41,7 @@ analyzer() {
 }
 
 logger() {
-  if ! is_file "${LOG_FILE}"; then
+  if ! fs_is_file "${LOG_FILE}"; then
     return "${STATUS_SUCCESS}"
   fi
 
@@ -51,7 +51,7 @@ logger() {
     return "${STATUS_ERROR}"
   fi
 
-  remove_file "${LOG_FILE}"
+  fs_remove_file "${LOG_FILE}"
 
   return "${STATUS_SUCCESS}"
 }
