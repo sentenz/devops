@@ -37,16 +37,16 @@ readonly -a NPM_PACKAGES=(
 setup_continuous_release() {
   local -i result=0
 
-  setup_apt_packages "${APT_PACKAGES[@]}"
+  util_setup_apt_packages "${APT_PACKAGES[@]}"
   ((result |= $?))
 
-  setup_npm_packages "${NPM_PACKAGES[@]}"
+  util_setup_npm_packages "${NPM_PACKAGES[@]}"
   ((result |= $?))
 
-  cleanup_apt
+  util_cleanup_apt
   ((result |= $?))
 
-  cleanup_npm
+  util_cleanup_npm
   ((result |= $?))
 
   return "${result}"

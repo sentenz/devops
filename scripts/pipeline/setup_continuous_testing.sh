@@ -24,10 +24,10 @@ readonly -a APT_PACKAGES=(
 setup_continuous_testing() {
   local -i result=0
 
-  setup_apt_packages "${APT_PACKAGES[@]}"
+  util_setup_apt_packages "${APT_PACKAGES[@]}"
   ((result |= $?))
 
-  cleanup_apt
+  util_cleanup_apt
   ((result |= $?))
 
   return "${result}"
