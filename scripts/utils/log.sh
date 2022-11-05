@@ -90,7 +90,7 @@ log_skip() {
 # Returns:
 #   Name
 #########################
-log_passpass() {
+log_pass() {
   log_print "${DATE} ${INTENS_GREEN}passed ${RESET}\t" "${*}"
 }
 
