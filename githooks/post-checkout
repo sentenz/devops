@@ -33,6 +33,8 @@ readonly FLAG_CHECKOUT
 run_post_checkout() {
   local -i result=0
 
+  fs_create_file "${LOG_FILE}"
+
   hook_enforce_checkout_from_base_branches "${LOCAL_BRANCH}" "${FLAG_CHECKOUT}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
   ((result = $?))
   if ((result == 1)); then
@@ -40,6 +42,8 @@ run_post_checkout() {
 
     return "${result}"
   fi
+
+  fs_remove_file "${LOG_FILE}"
 
   return "${result}"
 }

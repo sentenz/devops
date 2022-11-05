@@ -24,6 +24,8 @@ readonly LOG_FILE
 run_pre_commit() {
   local -i result=0
 
+  fs_create_file "${LOG_FILE}"
+
   hook_enforce_coding_standards "make run-linter-staged" &>"${LOG_FILE}"
   ((result = $?))
   if ((result == 1)); then
@@ -31,6 +33,8 @@ run_pre_commit() {
 
     return "${result}"
   fi
+
+  fs_remove_file "${LOG_FILE}"
 
   return "${result}"
 }

@@ -41,7 +41,7 @@ readonly -a PIPELINES=(
 
 initialize_repo() {
   git_configure_repo_ownership
-  chmod +x "$(fs_get_sript_dir)/../internal/*/*.sh"
+  chmod +x "$(fs_get_sript_dir)"/../internal/*/*.sh
 }
 
 initialize_scripts() {
@@ -59,7 +59,7 @@ initialize_scripts() {
 initialize_githooks() {
   if fs_is_dir "$(fs_get_sript_dir)/../githooks"; then
     fs_copy_files "$(fs_get_sript_dir)/../githooks" "$(git_get_root_dir)"
-    chmod +x "$(git_get_root_dir)/githooks/*"
+    chmod +x "$(git_get_root_dir)"/githooks/*
     git config core.hooksPath githooks
   fi
 }

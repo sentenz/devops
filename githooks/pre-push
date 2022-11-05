@@ -37,6 +37,8 @@ readonly -a SUPPORT_BRANCHES=(
 run_pre_push() {
   local -i result=0
 
+  fs_create_file "${LOG_FILE}"
+
   hook_prevent_push_to_base_branches "${LOCAL_BRANCH}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
   ((result = $?))
   if ((result == 1)); then
@@ -52,6 +54,8 @@ run_pre_push() {
 
     return "${result}"
   fi
+
+  fs_remove_file "${LOG_FILE}"
 
   return "${result}"
 }
