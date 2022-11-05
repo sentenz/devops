@@ -29,6 +29,8 @@ readonly COMMIT_MESSAGE_FILE
 run_commit_msg() {
   local -i result=0
 
+  fs_create_file "${LOG_FILE}"
+
   hook_enforce_commit_message_convention "make run-linter-commit" "${COMMIT_MESSAGE_FILE}" &>"${LOG_FILE}"
   ((result = $?))
   if ((result == 1)); then
@@ -36,6 +38,8 @@ run_commit_msg() {
 
     return "${result}"
   fi
+
+  # fs_remove_file "${LOG_FILE}"
 
   return "${result}"
 }

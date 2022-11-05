@@ -96,7 +96,7 @@ hook_enforce_coding_standards() {
 
   local -i result=0
 
-  eval "${cmd}"
+  bash -c "${cmd}"
   ((result = $?))
 
   if ((result != 0)); then
@@ -128,7 +128,7 @@ hook_enforce_commit_message_convention() {
 
   local -i result=0
 
-  eval "${cmd}"
+  bash -c "${cmd}"
   ((result = $?))
 
   if ((result != 0)); then
