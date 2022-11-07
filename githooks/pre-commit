@@ -1,6 +1,16 @@
 #!/bin/bash
 #
-# Enforce code style guides via linters.
+# The "pre-commit" hook is run just before "commit" starts doing its job, and can prevent the
+# command from running by exiting with non-zero status. 
+#
+# Details:
+# Perform to verify the codebase is about to be committed.
+#
+# Arguments:
+#   None
+#
+# Returns:
+#   Exitcode
 
 # -x: print a trace (debug)
 # -u: treat unset variables

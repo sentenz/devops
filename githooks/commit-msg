@@ -1,9 +1,17 @@
 #!/bin/bash
 #
-# Enforce commit via commit-msg:
+# The "commit-msg" hook is run just before "git commit" starts doing its job, and can prevent the
+# command from running by exiting with non-zero status. 
 #
-# - Enforce commit conventions via commitlint.
-# TODO(AK) Perform commit spelling check.
+# Details:
+# Enforce commit conventions by verify the commit log message. The hook is allowed to edit the
+# commit message file.
+#
+# Arguments:
+#   $1 - the name of the file that has the commit message
+#
+# Returns:
+#   Exitcode
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -19,10 +27,11 @@ set -uo pipefail
 
 # Constant variables
 
-LOG_FILE="$(git_get_root_dir)/logs/githooks/commit-msg.log"
-readonly LOG_FILE
 COMMIT_MESSAGE_FILE="${1}"
 readonly COMMIT_MESSAGE_FILE
+
+LOG_FILE="$(git_get_root_dir)/logs/githooks/commit-msg.log"
+readonly LOG_FILE
 
 # Internal functions
 
