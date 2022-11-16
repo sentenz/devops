@@ -3,8 +3,8 @@
 - devcontainer.json
   > An container file for vs code editor only.
   >
-  > For format details, see [microsoft devcontainer](https://aka.ms/devcontainer.json).
-  > For config options, see [microsoft vscode-dev-containers](https://github.com/microsoft/vscode-dev-containers/tree/v0.202.5/containers/ubuntu) repository.
+  > For format details, see [microsoft devcontainer properties](https://aka.ms/devcontainer.json).
+  > For preconfigured containers, see [microsoft vscode-dev-containers](https://github.com/microsoft/vscode-dev-containers/tree/v0.202.5/containers/ubuntu) repository.
   >
   > Contains the commands:
   >

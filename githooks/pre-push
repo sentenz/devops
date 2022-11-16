@@ -1,9 +1,26 @@
 #!/bin/bash
 #
-# Enforce convention policies by using pre-push:
+# The "pre-push" hook is called by "git push" after it has checked the remote status, but before
+# anything has been pushed. If this script exits with a non-zero status nothing will be pushed.
 #
-# - Prevent a direct push to the base branches.
-# - Enforce naming convention for support branches.
+# Details:
+# Contained actions:
+#   - Prevent a direct push to the base branches.
+#   - Enforce naming convention for support branches.
+#
+# Arguments:
+#   $1 - the name of the remote to which the push is being done
+#   $2 - URL to which the push is being done
+#
+# If pushing without using a named remote those arguments will be equal.
+#
+# Information about the commits which are being pushed is supplied as lines to
+# the standard input in the form:
+#
+#   <local ref> <local oid> <remote ref> <remote oid>
+#
+# Returns:
+#   Exitcode
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -18,6 +35,11 @@ set -uo pipefail
 . ./scripts/utils/hook.sh
 
 # Constant variables
+
+REMOTE_BRANCHE="${1}"
+readonly REMOTE_BRANCHE
+URL="${2}"
+readonly URL
 
 LOG_FILE="$(git_get_root_dir)/logs/githooks/pre-push.log"
 readonly LOG_FILE

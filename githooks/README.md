@@ -43,3 +43,8 @@ chmod +x path/to/githooks/*
   > Contained actions:
   > 
   > - Enforce to create the support branches from the base branches.
+
+- pre-rebase
+  > Contained actions:
+  > 
+  > - The golden rule of rebasing.
