@@ -78,3 +78,7 @@ setup-continuous-release: ## Setup dependencies and tools for the continuous rel
 run-continuous-release: ## Perform task in continuous release pipeline
 	$(MAKE) run-release
 .PHONY: run-continuous-release
+
+install-extensions: ## Install recommended VS Code extensions
+	code --list-extensions | xargs -L 1 code --install-extension
+.PHONY: install-extensions
