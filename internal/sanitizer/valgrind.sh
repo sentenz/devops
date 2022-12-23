@@ -30,7 +30,7 @@ readonly F_BINARY
 # Internal functions
 
 analyzer() {
-  local -r cmd="valgrind -s --tool=memcheck --log-file=${LOG_FILE} ./${F_BINARY}"
+  local -r cmd="valgrind --log-file=${LOG_FILE} ./${F_BINARY}"
 
   (
     cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
@@ -46,7 +46,7 @@ logger() {
   fi
 
   local -i errors=0
-  errors=$(grep -i -c -E 'ERROR SUMMARY' "${LOG_FILE}" || true)
+  errors=$(grep -i -c -E 'ERROR SUMMARY: [^0]+' "${LOG_FILE}" || true)
   if ((errors != 0)); then
     return "${STATUS_ERROR}"
   fi
