@@ -1,0 +1,15 @@
+This package was constructed by Bdale Garbee , using source
+downloaded from
+
+	http://domsch.com/linux/ia64/
+
+Upstream Author: Matt Domsch 
+
+Copyright:
+
+  Copyright (C) 2001-2005 Dell Computer Corporation 
+
+  efibootmgr is distributed under the GPL.
+
+On Debian GNU/Linux systems, the complete text of the GNU General
+Public License can be found in `/usr/share/common-licenses/GPL'.

@@ -32,9 +32,8 @@
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
     "editor.insertSpaces": true,
-    "editor.detectIndentation": true,
-    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
-  },
+    "editor.detectIndentation": true
+ },
   "markdown.extension.toc.levels": "2..2",
   "[yaml]": {
     "editor.formatOnSave": true,

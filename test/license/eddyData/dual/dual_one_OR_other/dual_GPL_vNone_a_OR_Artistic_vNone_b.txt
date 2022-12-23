@@ -1,0 +1,21 @@
+This is Debian GNU/Linux's prepackaged version of Tim Bunce's
+Perl DBI module.
+
+Christian Schwarz <schwarz@debian.org> originally put together this
+package from original DBI sources. It was then taken over by Ben
+Gertzfield, then Martin Schulze and ist currently maintained by
+Christian Hammers. The library is available from the Comprehensive Perl
+Archive Network (CPAN). Visit <URL:http://www.perl.com/CPAN/> to find
+a CPAN site near you.
+
+from sources obtained from:
+ftp.infodrom.north.de/pub/CPAN/modules/by-module/DBI/DBI-1.02.tar.gz
+
+The DBI module is Copyright (c) 1995,1996,1997 Tim Bunce <Tim.Bunce@ig.co.uk>.
+All rights reserved.
+
+You may distribute under the terms of either the GNU General Public
+License or the Artistic License, as specified in the Perl README file.
+(See /usr/share/common-licenses/ and /usr/share/doc/perl/)
+
+In case of problems you should send details to dbi-users@fugue.com.

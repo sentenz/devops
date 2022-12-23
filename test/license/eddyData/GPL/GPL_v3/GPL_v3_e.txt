@@ -1,0 +1,47 @@
+Net::FriendFeed
+
+This module provides Perl wrapper around FriendFeed.com API.
+
+FriendFeed is a social feed aggregator. See for yourself.
+
+The API provides calls to fetch different feeds, to publish data, to
+comment and "like" entries and to get user profile information.
+
+This pure-perl module uses LWP for HTTP fetching & JSON.pm for JSON parsing.
+
+INSTALLATION
+
+To install this module, run the following commands:
+
+	perl Build.PL
+	./Build
+	./Build test
+	./Build install
+
+SUPPORT AND DOCUMENTATION
+
+After installing, you can find documentation for this module with the
+perldoc command.
+
+    perldoc Net::FriendFeed
+
+You can also look for information at:
+
+    RT, CPAN's request tracker
+        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Net-FriendFeed
+
+    AnnoCPAN, Annotated CPAN documentation
+        http://annocpan.org/dist/Net-FriendFeed
+
+    CPAN Ratings
+        http://cpanratings.perl.org/d/Net-FriendFeed
+
+    Search CPAN
+        http://search.cpan.org/dist/Net-FriendFeed
+
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2008 Alex Kapranoff
+
+This program is released under the following license: GPLv3

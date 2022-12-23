@@ -35,9 +35,13 @@ run-linter-commit: ## Perform validation of the commit message
 	commitlint --edit .git/COMMIT_EDITMSG
 .PHONY: run-linter-commit
 
-run-sanitizer: ## Perform validation of binary files
-	cd cmd/app && chmod +x dast.sh && ./dast.sh -b cmd/bin/*
-.PHONY: run-sanitizer
+run-sanitizer-app: ## Perform validation of the application binary file
+	cd cmd/app && chmod +x dast.sh && ./dast.sh -b cmd/bin/*-app
+.PHONY: run-sanitizer-app
+
+run-sanitizer-test: ## Perform validation of the test binary file
+	cd cmd/app && chmod +x dast.sh && ./dast.sh -b cmd/bin/*-test
+.PHONY: run-sanitizer-test
 
 setup-testing: ## Setup dependencies and tools for the testing service
 	cd scripts/pipeline && chmod +x setup_continuous_testing.sh && ./setup_continuous_testing.sh

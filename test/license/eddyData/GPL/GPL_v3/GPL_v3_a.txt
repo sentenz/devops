@@ -1,0 +1,11 @@
+This package was created by Jamie Strandboge <jamie@canonical.com> on
+Fri, 12 May 2008 15:44:32 -0400.
+
+Upstream Author: Jamie Strandboge <jamie@canonical.com>
+
+Copyright: (C) 2008 Canonical, Ltd.
+
+License: GPL-3, see `/usr/share/common-licenses/GPL-3'
+
+The Debian packaging is (C) 2008, Jamie Strandboge <jamie@canonical.com> and
+is licensed under the GPL-3, see `/usr/share/common-licenses/GPL-3'.

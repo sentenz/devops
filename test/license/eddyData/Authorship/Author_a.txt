@@ -1,0 +1,6 @@
+/* parts of this file are :
+ * Written March 1993 by Branko Lankester
+ * Modified June 1993 by Colin Plumb for altered md5.c.
+ * Modified October 1995 by Erik Troan for RPM
+ */
+

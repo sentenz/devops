@@ -1,0 +1,3 @@
+Unless otherwise noted, Debian packaging is copyright (C) 1996-2001
+Johnie Ingram, and released under the terms of the GPL -- version 2,
+or any later version.

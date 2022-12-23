@@ -1,0 +1,8 @@
+This file provides basic information about NUnitLite. For more info see the NUnitLite web site at http://nunitlite.com.
+
+COPYRIGHT AND LICENSE
+
+NUnitLite is CopyRight � 2007, Charlie Poole
+and is licensed under the Open Software License version 3.0
+
+A copy of the license is distributed with the program in the file LICENSE.txt and is also available at http://www.opensource.org/licenses/osl-3.0.php

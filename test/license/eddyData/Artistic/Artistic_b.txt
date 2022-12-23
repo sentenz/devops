@@ -1,0 +1,17 @@
+This package was debianized by Josip Rodin  on
+Sat, 18 Dec 1999 01:14:02 +0100.
+
+Original source can be found at http://www.hibernaculum.net/gbase.html
+
+  Copyright (C) 1999 Damian Kramer (psiren@hibernaculum.demon.co.uk)
+  Copyright (C) 1999 Roger Dunce (kro@penguinpowered.com)
+
+  You may distribute this program under the terms of the Artistic License.
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  Artistic License for more details.
+
+You can see the full text of the Artistic license in the
+`/usr/share/common-licenses/Artistic' file on your Debian system.

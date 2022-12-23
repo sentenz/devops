@@ -1,0 +1,4 @@
+Upstream Author: Zygmunt Krynicki <zkrynicki@gmail.com>
+Michael Vogt <michael.vogt@ubuntu.com>
+
+Copyright: GPL, see /usr/share/common-licenses/GPL

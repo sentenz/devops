@@ -1,0 +1,15 @@
+The gfx/cairo/cairo directory is licensed under the following terms:
+
+  Copyright (c) 2003 University of Southern California
+  Copyright (c) 1999 Tom Tromey
+  Copyright (c) 2002, 2003 University of Southern California
+  Copyright (c) 2004 Calum Robinson
+  Copyright (c) 2004 David Reveman
+  Copyright (c) 2000, 2002, 2004 Keith Packard
+  Copyright (c) 2004, 2005 Red Hat, Inc
+
+  Cairo is free software and is available to be redistributed and/or
+  modified under the terms of either the GNU Lesser General Public
+  License (LGPL) version 2.1 or the Mozilla Public License (MPL) version
+  1.1.
+

@@ -1,0 +1,26 @@
+This is the Debian GNU/Linux version of the Net::SNMP Perl module.
+It has been downloaded from the CPAN archive:
+http://www.cpan.org/modules/by-module/Net/
+
+From the README:
+
+COPYRIGHT
+
+Copyright (c) 1998-2004 David M. Town. All rights reserved. This
+program is free software; you may redistribute it and/or modify
+it under the same terms as Perl itself.
+
+Perl is distributed under either the Artistic licence or the GPL.
+
+The full text of the GPL is available on Debian systems in
+/usr/share/common-licenses/GPL
+
+The full text of the Artistic Licence is available on Debian systems in
+/usr/share/common-licenses/Artistic.
+
+This package has been through multiple maintainers (for a list see
+/usr/share/doc/libnet-snmp-perl/changelog.Debian.gz).
+
+Current Debian specific changes are copyright (c) 2003
+Stephen Zander <gibreel@debian.org>.
+Copyright (c) 2004 Jochen Friedrich <jochen@scram.de>

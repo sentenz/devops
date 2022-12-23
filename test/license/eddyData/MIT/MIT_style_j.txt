@@ -1,0 +1,15 @@
+/* The following code declares class array,
+ * an STL container (as wrapper) for arrays of constant size.
+ *
+ * See
+ *      http://www.josuttis.com/cppcode
+ * for details and the latest version.
+ *
+ * (C) Copyright Nicolai M. Josuttis 2001.
+ * Permission to copy, use, modify, sell and distribute this software
+ * is granted provided this copyright notice appears in all copies.
+ * This software is provided "as is" without express or implied
+ * warranty, and with no claim as to its suitability for any purpose.
+ *
+ * Aug 05, 2001
+ */

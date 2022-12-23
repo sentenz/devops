@@ -1,0 +1,6 @@
+/*
+genre.php (c) Mar 2002 evil_deceiver
+http://justice.loyola.edu/~mcoffey/ce/music/genre.php
+released under the GNU GPL ( http://www.gnu.org/copyleft/gpl.html )
+If there's a word that you think should be in here but isn't, let me know.
+*/

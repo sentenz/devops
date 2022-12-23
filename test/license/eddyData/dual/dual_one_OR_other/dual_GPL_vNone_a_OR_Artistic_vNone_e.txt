@@ -1,0 +1,25 @@
+The sources have been downloaded here :
+http://www.perl.com/CPAN/modules/by-module/DBD/DBD-mysql-2.9007.tar.gz
+
+AUTHORS
+The current versions of DBD::mSQL and DBD::mysql is almost completely
+written by Jochen Wiedmann (*joe@ispsoft.de*). The first version's
+author was Alligator Descartes(*descarte@symbolstone.org*), who has been
+aided and abetted by Gary Shea, Andreas K nig and Tim Bunce amongst
+others.
+
+The Mysql module was originally written by Andreas K nig
+<koenig@kulturbox.de>. The current version, mainly an emulation layer,
+is from Jochen Wiedmann.
+
+COPYRIGHT
+This module is Copyright (c) 1997-1999 Jochen Wiedmann, with code
+portions Copyright (c)1994-1997 their original authors. This module is
+released under the same license as Perl itself. See the Perl README for
+details.
+
+Check the perl license in /usr/share/doc/perl/copyright.
+
+You can also read the General Public License and the Artistic License
+in /usr/share/common-licenses/GPL and /usr/share/common-licenses/Artistic
+respectively.

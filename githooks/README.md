@@ -30,21 +30,21 @@ chmod +x path/to/githooks/*
 
 - commit-msg
   > Contained actions:
-  > 
+  >
   > - Enforce the conventional commits specification to commit messages.
 
 - pre-push
   > Contained actions:
-  > 
+  >
   > - Enforce the branching strategy to prevent direct pushes to base branches.
   > - Enforce the branching strategy of the naming convention for support branches.
 
 - post-checkout
   > Contained actions:
-  > 
+  >
   > - Enforce to create the support branches from the base branches.
 
 - pre-rebase
   > Contained actions:
-  > 
+  >
   > - The golden rule of rebasing.

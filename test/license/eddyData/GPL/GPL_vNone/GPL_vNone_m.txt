@@ -1,0 +1,8 @@
+Copyright:
+
+AWStats is distributed under the GNU General Public License (GPL).
+So you must follow the line "Free software - Copylefted - GPL" to know
+what are major license agreements with AWStats.
+
+On Debian Linux systems, the complete text of the GNU General
+Public License can be found in `/usr/share/common-licenses/GPL'.

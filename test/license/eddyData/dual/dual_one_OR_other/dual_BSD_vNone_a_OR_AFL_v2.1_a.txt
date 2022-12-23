@@ -1,0 +1,8 @@
+	Dojo is available under *either* the terms of the modified BSD license *or* the
+2	Academic Free License version 2.1. As a recipient of Dojo, you may choose which
+3	license to receive this code under (except as noted in per-module LICENSE
+4	files). Some modules may not be the copyright of the Dojo Foundation. These
+5	modules contain explicit declarations of copyright in both the LICENSE files in
+6	the directories in which they reside and in the code itself. No external
+7	contributions are allowed under licenses which are fundamentally incompatible
+8	with the AFL or BSD licenses that Dojo is distributed under.

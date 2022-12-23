@@ -1,0 +1,6 @@
+This package (bzip2) was created by Philippe Troin <phil@fifi.org>.
+It is currently mantained by Anibal Monsalve Salazar <anibal@debian.org>.
+This package is Copyright (C) 1999, 2000, 2001, 2002 Philippe Troin
+<phil@fifi.org> and Copyright (C) 2004-2006 Anibal Monsalve Salazar.
+It is licensed under the GNU General Public License which can be
+found in /usr/share/common-licenses/GPL.
