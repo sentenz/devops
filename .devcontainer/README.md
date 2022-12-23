@@ -6,7 +6,7 @@
   > For format details, see [microsoft devcontainer properties](https://aka.ms/devcontainer.json).
   > For preconfigured containers, see [microsoft vscode-dev-containers](https://github.com/microsoft/vscode-dev-containers/tree/v0.202.5/containers/ubuntu) repository.
   >
-  > Contains the commands:
+  > Contains the commands, refer to [devcontainer metadata reference](https://containers.dev/implementors/json_reference/):
   >
   > - `build.dockerfile`: The location of a Dockerfile that defines the contents of the container. The path is relative to the devcontainer.json file.
   > - `build.context`: Path that the Docker build should be run from relative to devcontainer.json.
