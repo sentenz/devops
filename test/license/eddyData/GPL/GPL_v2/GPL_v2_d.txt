@@ -1,0 +1,3 @@
+Jean Tourrilhes <jt@hpl.hp.com>
+The software is released under GNU GPLv2. For more info
+see /usr/share/common-licenses/GPL

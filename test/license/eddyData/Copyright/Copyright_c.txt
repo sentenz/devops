@@ -1,0 +1,23 @@
+/************************************************************************
+* NCSA HTTPd Server
+* Software Development Group
+* National Center for Supercomputing Applications
+* University of Illinois at Urbana-Champaign
+* 605 E. Springfield, Champaign, IL 61820
+* httpd@ncsa.uiuc.edu
+*
+* Copyright (C) 1995, Board of Trustees of the University of Illinois
+*
+************************************************************************
+*
+* md5.c: NCSA HTTPd code which uses the md5c.c RSA Code
+*
+* Original Code Copyright (C) 1994, Jeff Hostetler, Spyglass, Inc.
+* Portions of Content-MD5 code Copyright (C) 1993, 1994 by Carnegie Mellon
+* University (see Copyright below).
+* Portions of Content-MD5 code Copyright (C) 1991 Bell Communications
+* Research, Inc. (Bellcore) (see Copyright below).
+* Portions extracted from mpack, John G. Myers - jgm+@cmu.edu
+* Content-MD5 Code contributed by Martin Hamilton (martin@net.lut.ac.uk)
+*
+*/

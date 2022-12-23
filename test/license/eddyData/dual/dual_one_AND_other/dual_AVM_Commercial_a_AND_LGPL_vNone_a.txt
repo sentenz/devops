@@ -1,0 +1,43 @@
+Upstream Author: AVM (http://www.avm.de/)
+
+License:
+
+The available AVM driver package consists of two portions, namely an Open
+Source Software portion and a Proprietary Source Software portion. The
+Proprietary Source Software portion is delivered in binary format only
+and includes the firmware (.frm and .bin files) and object code (i.e. the
+lib.o files and the drdsl executable). The object code, again, includes
+libraries as well as specific portions of the driver. The Open Source
+Software portion is licensed under the terms and conditions of the GNU
+Lesser GPL (LGPL). Please be aware of the requirements of the LGPL.
+You may easily download the terms of the LGPL as follows:
+http://www.gnu.org/copyleft/lesser.html.
+
+On Debian GNU/Linux systems, the complete text of the GNU Lesser General
+Public License can be found in `/usr/share/common-licenses/LGPL'.
+
+In general, you may distribute both portions of the available AVM driver
+package, i.e. on a distribution CD delivered in conjunction with your
+products. In addition to the terms of the LGPL and under all AVM
+intellectual property and proprietary rights, AVM grants you the worldwide,
+non-exclusive and royalty-free rights
+
+(1) to use and copy
+
+(2) to make (and have made), use, import, sell, offer for sale or
+otherwise distribute any of your (legal) products or services
+containing (portions of) the AVM driver package.
+
+The Proprietary Source Software, which is delivered in object code format
+only, such as the firmware, the ".o files" and the "drdsl" binary, shall
+in no event be disassembled, reverse engineered, decompiled or otherwise
+"be opened" and the results realised insofar shall not be copied or
+distributed without the prior written approval of AVM except to the extent
+as may be expressly authorized under mandatory law and the terms of the LGPL.
+
+It is understood that you will be responsible/liable for the software which
+you offer/distribute/make available in conjunction with or which you
+combine with (portions of) the AVM driver package. For instance, we refer
+to the implications mentioned in the LGPL in case of a breach (your rights
+granted under LGPL would terminate automatically, see Art. 4 LGPL). You
+should state clearly that you offer any necessary support on your own.

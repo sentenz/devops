@@ -1,0 +1,8 @@
+This package was debianized by David Schleef <ds@stm.lbl.gov> on
+Mon, 25 Jun 2001 22:13:43 -0700.
+
+Upstream Maintainer: Erik Andersen <andersee@debian.org>
+
+uClibc is licensed under the GNU Lesser General Public License
+(LGPL). The text of the LGPL can be found in
+/usr/share/common-licenses/LGPL.

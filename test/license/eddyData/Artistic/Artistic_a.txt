@@ -1,0 +1,6 @@
+Qstat was downloaded from http://www.qstat.org/ .
+
+Qstat is Copyright (C) 1996,1997,1998,1999,2000,2001,2002 Steve Jankowski.
+You are free to distribute this software under the terms of the Artistic
+licence. In Debian systems, the complete text of the Artistic licence can be
+found in the /usr/share/common-licenses/Artistic file.

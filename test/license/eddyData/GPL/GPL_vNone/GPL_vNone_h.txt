@@ -1,0 +1,18 @@
+This package was debianized by Turbo Fredriksson <turbo@debian.org>
+on Thu, 20 Jun 2002 08:28:44 +0200.
+
+It was downloaded from http://www.nagios.org/
+
+Upstream Author: Ethan Galstad <nagios@nagios.org>
+
+Current Debian Maintainers: Joerg Jaspert <joerg@debian.org>
+               Jeremy T. Bouse <jbouse@debian.org>
+              Tony Mancill <tony@mancill.com>
+              Sean Finney <seanius@debian.org>
+              Guido Trotter <ultrotter@quaqua.net>
+Mailing-List:         pkg-nagios-devel@lists.alioth.debian.org
+
+Copyright:
+
+Nagios is released under the terms of the GPL license.
+See /usr/share/common-licenses/GPL for the full license.

@@ -1,0 +1,20 @@
+/*
+2Copyright (c) 2005 JSON.org
+3
+4Permission is hereby granted, free of charge, to any person obtaining a copy
+5of this software and associated documentation files (the "Software"), to deal
+6in the Software without restriction, including without limitation the rights
+7to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+8copies of the Software, and to permit persons to whom the Software is
+9furnished to do so, subject to the following conditions:
+10
+11The Software shall be used for Good, not Evil.
+12
+13THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+14IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+15FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+16AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+17LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+18OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+19SOFTWARE.
+20*/

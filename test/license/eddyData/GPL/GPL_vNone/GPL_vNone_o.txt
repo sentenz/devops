@@ -1,0 +1,13 @@
+COPYRIGHT
+---------
+
+rsync was originally written by Andrew Tridgell and has been improved
+by many developers around the world. rsync may be used, modified and
+redistributed only under the terms of the GNU General Public License,
+found in the file:
+
+/usr/share/common-licenses/GPL
+
+on Debian systems, or at
+
+http://www.fsf.org/licenses/gpl.html

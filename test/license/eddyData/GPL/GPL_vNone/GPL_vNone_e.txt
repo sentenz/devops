@@ -1,0 +1,26 @@
+Copyright(C) 2001 University of California.
+ *
+ * This software has been authored by an employee or employees of the
+ * University of California, operator of the Los Alamos National
+ * Laboratory under Contract No.  W-7405-ENG-36 with the U.S.
+ * Department of Energy.  The U.S. Government has rights to use,
+ * reproduce, and distribute this software. If the software is
+ * modified to produce derivative works, such modified software should
+ * be clearly marked, so as not to confuse it with the version
+ * available from LANL.
+ *
+ * This software may be used and distributed according to the terms of
+ * the GNU General Public License, incorporated herein by reference to
+ * http://www.gnu.org/licenses/gpl.html.
+ *
+ * This software is provided by the author(s) "as is" and any express
+ * or implied warranties, including, but not limited to, the implied
+ * warranties of merchantability and fitness for a particular purpose
+ * are disclaimed.  In no event shall the author(s) be liable for any
+ * direct, indirect, incidental, special, exemplary, or consequential
+ * damages (including, but not limited to, procurement of substitute
+ * goods or services; loss of use, data, or profits; or business
+ * interruption) however caused and on any theory of liability,
+ * whether in contract, strict liability, or tort (including
+ * negligence or otherwise) arising in any way out of the use of this
+ * software, even if advised of the possibility of such damage.

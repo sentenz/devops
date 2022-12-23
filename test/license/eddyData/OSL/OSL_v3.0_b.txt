@@ -1,0 +1,1 @@
+NUnitLite is an Open Source project, available under the Open Source License ("OSL") 3.0.

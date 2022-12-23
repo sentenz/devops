@@ -1,0 +1,4 @@
+Copyright:
+
+Released under the terms of the GPL; see
+/usr/share/common-licenses/GPL.
