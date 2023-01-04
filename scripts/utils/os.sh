@@ -12,9 +12,8 @@
 os_get_name() {
   local retval
   retval="$(uname | tr '[:upper:]' '[:lower:]')"
-  echo "${retval}"
 
-  return "${?}"
+  echo "${retval}"
 }
 
 ########################
@@ -86,11 +85,11 @@ os_create_user() {
 #   Boolean
 #########################
 os_am_i_root() {
-  if [[ "$(id -u)" = "0" ]]; then
-    true
-  else
-    false
+  if [[ "$(id -u)" -ne 0 ]]; then
+    return 1
   fi
+
+  return 0
 }
 
 ########################

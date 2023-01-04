@@ -76,7 +76,7 @@ analyze() {
   ./"${script}.sh" -l "${f_lint}"
   ((result = $?))
 
-  log_monitor "linter - ${f_lint}" "${script}" "${result}"
+  log_message "linter - ${f_lint}" "${script}" "${result}"
 
   if ((result == STATUS_SKIP)) || ((result == STATUS_WARNING)); then
     return "${STATUS_SUCCESS}"

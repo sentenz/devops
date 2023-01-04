@@ -4,9 +4,8 @@
 # anything has been pushed. If this script exits with a non-zero status nothing will be pushed.
 #
 # Details:
-# Contained actions:
-#   - Prevent a direct push to the base branches.
-#   - Enforce naming convention for support branches.
+# - Prevent a direct push to the base branches.
+# - Enforce naming convention for support branches.
 #
 # Arguments:
 #   $1 - the name of the remote to which the push is being done
@@ -64,7 +63,7 @@ run_pre_push() {
   hook_prevent_push_to_base_branches "${LOCAL_BRANCH}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
   ((result = $?))
   if ((result == 1)); then
-    log_monitor "githooks" "pre-push" "${result}"
+    log_message "githooks" "pre-push" "${result}"
 
     return "${result}"
   fi
@@ -72,7 +71,7 @@ run_pre_push() {
   hook_enforce_naming_convention_of_support_branch "${LOCAL_BRANCH}" "${SUPPORT_BRANCHES[@]}" &>"${LOG_FILE}"
   ((result = $?))
   if ((result == 1)); then
-    log_monitor "githooks" "pre-push" "${result}"
+    log_message "githooks" "pre-push" "${result}"
 
     return "${result}"
   fi

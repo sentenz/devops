@@ -20,19 +20,19 @@ fs_owned_by() {
 ########################
 # Check if a file exists.
 # Arguments:
-#   $1 - file
+#   $1 - filename
 #   $2 - owner
 # Returns:
 #   Boolean
 #########################
 fs_is_file() {
-  local file="${1:?file is missing}"
+  local filename="${1:?filename is missing}"
 
-  if [[ -f "$file" ]]; then
-    true
-  else
-    false
+  if [[ ! -f "${filename}" ]]; then
+    return 1
   fi
+
+  return 0
 }
 
 ########################
@@ -46,11 +46,11 @@ fs_is_file() {
 fs_is_dir() {
   local dir="${1:?directory is missing}"
 
-  if [[ -d "$dir" ]]; then
-    true
-  else
-    false
+  if [[ ! -d "${dir}" ]]; then
+    return 1
   fi
+
+  return 0
 }
 
 ########################
@@ -71,19 +71,19 @@ fs_copy_files() {
 ########################
 # Merge a source file into a destination file.
 # Arguments:
-#   $1 - source file
-#   $2 - destination file
+#   $1 - source filename
+#   $2 - destination filename
 # Returns:
 #   None
 #########################
 fs_merge_file() {
-  local src="${1:?source file is missing}"
-  local dest="${2:?destination file is missing}"
+  local src="${1:?source filename is missing}"
+  local dest="${2:?destination filename is missing}"
 
   local tmp="diff.txt"
 
   touch "${dest}"
-  diff --line-format="%L" -D MERGE -B "${src}" "${dest}" >"${tmp}"
+  diff --line-format="%L" -D MERGE_DEVOPS -B "${src}" "${dest}" >"${tmp}"
   mv "${tmp}" "${dest}"
 }
 
@@ -108,41 +108,41 @@ fs_create_dir() {
 ########################
 # Creates a empty file and the directore if not exist.
 # Arguments:
-#   $1 - file
+#   $1 - filename
 # Returns:
 #   None
 #########################
 fs_create_file() {
-  local file="${1:?file is missing}"
+  local filename="${1:?filename is missing}"
 
-  fs_create_dir "$(dirname "${file}")" && touch "${file}"
+  fs_create_dir "$(dirname "${filename}")" && touch "${filename}"
 }
 
 ########################
 # Removes a file.
 # Arguments:
-#   $1 - file
+#   $1 - filename
 # Returns:
 #   None
 #########################
 fs_remove_file() {
-  local file="${1:?file is missing}"
+  local filename="${1:?filename is missing}"
 
-  rm -f "${file}"
+  rm -f "${filename}"
 }
 
 ########################
 # Removes a empty file.
 # Arguments:
-#   $1 - file
+#   $1 - filename
 # Returns:
 #   None
 #########################
 fs_remove_empty_file() {
-  local file="${1:?file is missing}"
+  local filename="${1:?filename is missing}"
 
-  if fs_is_file_empty "${file}"; then
-    rm -f "${file}"
+  if fs_is_file_empty "${filename}"; then
+    rm -f "${filename}"
   fi
 }
 
@@ -154,30 +154,35 @@ fs_remove_empty_file() {
 #   Boolean
 #########################
 fs_is_dir_empty() {
-  local dir="${1:?missing directory}"
+  local dir="${1:?directory is missing}"
 
-  if [[ ! -e "$dir" ]] || [[ -z "$(ls -A "$dir")" ]]; then
-    true
-  else
-    false
+  if fs_is_dir "${dir}"; then
+    return 1
   fi
+
+  if [[ -n "$(ls -A "${dir}")" ]]; then
+    return 1
+  fi
+
+  return 0
+
 }
 
 ########################
 # Checks whether a file is empty or not.
 # Arguments:
-#   $1 - file
+#   $1 - filename
 # Returns:
 #   Boolean
 #########################
 fs_is_file_empty() {
-  local file="${1:?missing file}"
+  local filename="${1:?filename is missing}"
 
-  if [[ -f "${file}" && -s "${file}" ]]; then
-    false
-  else
-    true
+  if [[ -f "${filename}" && -s "${filename}" ]]; then
+    return 1
   fi
+
+  return 0
 }
 
 ########################
@@ -190,9 +195,8 @@ fs_is_file_empty() {
 fs_get_sript_dir() {
   local retval
   retval="$(dirname "$(realpath "$0")")"
-  echo "${retval}"
 
-  return "${?}"
+  echo "${retval}"
 }
 
 ########################
