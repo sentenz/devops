@@ -56,7 +56,7 @@ analyze() {
   ./"${script}.sh" -b "${f_binary}"
   ((result = $?))
 
-  log_monitor "sanitizer - ${f_binary}" "${script}" "${result}"
+  log_message "sanitizer - ${f_binary}" "${script}" "${result}"
 
   if ((result == STATUS_SKIP)) || ((result == STATUS_WARNING)); then
     return "${STATUS_SUCCESS}"

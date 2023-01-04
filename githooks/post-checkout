@@ -1,10 +1,9 @@
 #!/bin/bash
 #
-# The "post-checkout" hook runs after a successful "git checkout". 
+# The "post-checkout" hook runs after a successful "git checkout".
 #
 # Details:
-# Contained actions:
-#   - Enforce the creation of support branches from the base branches.
+# Enforce the creation of support branches from the base branches.
 #
 # Arguments:
 #   $1 - ref of the previous HEAD
@@ -53,7 +52,7 @@ run_post_checkout() {
   hook_enforce_checkout_from_base_branches "${LOCAL_BRANCH}" "${FLAG_CHECKOUT}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
   ((result = $?))
   if ((result == 1)); then
-    log_monitor "githooks" "pre-push" "${result}"
+    log_message "githooks" "pre-push" "${result}"
 
     return "${result}"
   fi

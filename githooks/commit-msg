@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # The "commit-msg" hook is run just before "git commit" starts doing its job, and can prevent the
-# command from running by exiting with non-zero status. 
+# command from running by exiting with non-zero status.
 #
 # Details:
 # Enforce commit conventions by verify the commit log message. The hook is allowed to edit the
@@ -43,7 +43,7 @@ run_commit_msg() {
   hook_enforce_commit_message_convention "make run-linter-commit" "${COMMIT_MESSAGE_FILE}" &>"${LOG_FILE}"
   ((result = $?))
   if ((result == 1)); then
-    log_monitor "githooks" "pre-push" "${result}"
+    log_message "githooks" "pre-push" "${result}"
 
     return "${result}"
   fi

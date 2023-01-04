@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # The "pre-commit" hook is run just before "commit" starts doing its job, and can prevent the
-# command from running by exiting with non-zero status. 
+# command from running by exiting with non-zero status.
 #
 # Details:
 # Perform to verify the codebase is about to be committed.
@@ -39,7 +39,7 @@ run_pre_commit() {
   hook_enforce_coding_standards "make run-linter-staged" &>"${LOG_FILE}"
   ((result = $?))
   if ((result == 1)); then
-    log_monitor "githooks" "pre-push" "${result}"
+    log_message "githooks" "pre-push" "${result}"
 
     return "${result}"
   fi

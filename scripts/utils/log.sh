@@ -33,7 +33,7 @@ readonly RESET='\033[0m'
 
 # High Intensty
 # readonly INTENS_BLACK='\033[38;5;8m'
-# readonly INTENS_BLUE='\033[38;5;12m'
+readonly INTENS_BLUE='\033[38;5;12m'
 readonly INTENS_RED='\033[38;5;9m'
 readonly INTENS_GREEN='\033[38;5;10m'
 readonly INTENS_YELLOW='\033[38;5;11m'
@@ -45,7 +45,7 @@ export STATUS_ERROR=1
 export STATUS_WARNING=2
 export STATUS_SKIP=255
 
-DATE="[$(date +'%Y-%m-%dT%H:%M:%S%z')]"
+DATE="$(date +'%Y-%m-%dT%H:%M:%S%z')"
 readonly DATE
 
 # Functions
@@ -69,7 +69,7 @@ log_print() {
 #   Name
 #########################
 log_info() {
-  log_print "${DATE} ${INTENS_WHITE}info ${RESET}\t" "${*}"
+  log_print "${DATE}\t ${INTENS_BLUE}info ${RESET}\t" "${*}"
 }
 
 ########################
@@ -80,7 +80,7 @@ log_info() {
 #   Name
 #########################
 log_skip() {
-  log_print "${DATE} ${INTENS_WHITE}skipped ${RESET}\t" "${*}"
+  log_print "${DATE}\t ${INTENS_WHITE}skipped ${RESET}\t" "${*}"
 }
 
 ########################
@@ -91,7 +91,7 @@ log_skip() {
 #   Name
 #########################
 log_pass() {
-  log_print "${DATE} ${INTENS_GREEN}passed ${RESET}\t" "${*}"
+  log_print "${DATE}\t ${INTENS_GREEN}passed ${RESET}\t" "${*}"
 }
 
 ########################
@@ -102,7 +102,7 @@ log_pass() {
 #   Name
 #########################
 log_warn() {
-  log_print "${DATE} ${INTENS_YELLOW}warning ${RESET}\t" "${*}"
+  log_print "${DATE}\t ${INTENS_YELLOW}warning ${RESET}\t" "${*}"
 }
 
 ########################
@@ -113,7 +113,7 @@ log_warn() {
 #   Name
 #########################
 log_error() {
-  log_print "${DATE} ${INTENS_RED}error ${RESET}\t" "${*}"
+  log_print "${DATE}\t ${INTENS_RED}failed ${RESET}\t" "${*}"
 }
 
 ########################
@@ -125,7 +125,7 @@ log_error() {
 # Returns:
 #   None
 #########################
-log_monitor() {
+log_message() {
   local task="${1:?task is missing}"
   local package="${2:?package is missing}"
   local status="${3:?status is missing}"

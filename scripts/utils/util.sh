@@ -61,7 +61,7 @@ util_setup_apt_packages() {
     util_install_apt "${package}"
     ((result = $?))
 
-    log_monitor "setup" "${package}" "${result}"
+    log_message "setup" "${package}" "${result}"
   done
 
   ((retval |= "${result}"))
@@ -102,7 +102,7 @@ util_cleanup_apt() {
   sudo rm -rf /var/lib/apt/lists/*
   ((result |= $?))
 
-  log_monitor "cleanup" "apt" "${result}"
+  log_message "cleanup" "apt" "${result}"
 
   return "${result}"
 }
@@ -143,7 +143,7 @@ util_setup_pip_packages() {
     util_install_pip "${package}"
     ((result = $?))
 
-    log_monitor "setup" "${package}" "${result}"
+    log_message "setup" "${package}" "${result}"
   done
 
   ((retval |= "${result}"))
@@ -190,7 +190,7 @@ util_setup_go_packages() {
     util_install_go "${package}"
     ((result = $?))
 
-    log_monitor "setup" "${package}" "${result}"
+    log_message "setup" "${package}" "${result}"
   done
 
   ((retval |= "${result}"))
@@ -236,7 +236,7 @@ util_setup_curl_packages() {
     util_install_curl "${package}"
     ((result = $?))
 
-    log_monitor "setup" "$(basename "${package}")" "${result}"
+    log_message "setup" "$(basename "${package}")" "${result}"
   done
 
   ((retval |= "${result}"))
@@ -280,7 +280,7 @@ util_setup_npm_packages() {
     util_install_npm "${package}"
     ((result = $?))
 
-    log_monitor "setup" "${package}" "${result}"
+    log_message "setup" "${package}" "${result}"
   done
 
   ((retval |= "${result}"))
@@ -301,7 +301,7 @@ util_cleanup_npm() {
   npm cache clean --force --silent
   ((result |= $?))
 
-  log_monitor "cleanup" "npm" "${result}"
+  log_message "cleanup" "npm" "${result}"
 
   return "${result}"
 }

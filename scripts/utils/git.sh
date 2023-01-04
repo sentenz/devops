@@ -12,6 +12,7 @@
 git_configure_repo_ownership() {
   git config --global --add safe.directory "$(git_get_root_dir)"
 }
+
 ########################
 # Get the absolute path of the root project by command substitution.
 # Arguments:
@@ -22,9 +23,30 @@ git_configure_repo_ownership() {
 git_get_root_dir() {
   local retval
   retval="$(git rev-parse --show-superproject-working-tree --show-toplevel | head -1)"
-  echo "${retval}"
 
-  return "${?}"
+  echo "${retval}"
+}
+
+########################
+# Check if the repository is valid.
+# Arguments:
+#   None
+# Returns:
+#   Boolean
+#########################
+git_valid_repo() {
+  local path
+  path="$(git_get_root_dir)"
+
+  if [[ -z "${path}" ]]; then
+    return 1
+  fi
+
+  if [[ ! -d "${path}/.git" ]]; then
+    return 1
+  fi
+
+  return 0
 }
 
 ########################
@@ -37,9 +59,8 @@ git_get_root_dir() {
 git_get_local_branch() {
   local retval
   retval="$(git rev-parse --abbrev-ref HEAD)"
-  echo "${retval}"
 
-  return "${?}"
+  echo "${retval}"
 }
 
 ########################
@@ -57,9 +78,8 @@ git_get_staged_files() {
 
   local retval
   retval=$(git diff --submodule=diff --diff-filter=d --name-only --line-prefix="${path}/" --cached | grep -P "${regex}" | xargs)
-  echo "${retval}"
 
-  return "${?}"
+  echo "${retval}"
 }
 
 ########################
@@ -77,9 +97,8 @@ git_get_diff_files() {
 
   local retval
   retval=$(git diff --submodule=diff --diff-filter=d --name-only --line-prefix="${path}/" remotes/origin/HEAD... | grep -P "${regex}" | xargs)
-  echo "${retval}"
 
-  return "${?}"
+  echo "${retval}"
 }
 
 ########################
@@ -97,7 +116,6 @@ git_get_ci_files() {
 
   local retval
   retval=$(git diff --submodule=diff --diff-filter=d --name-only --line-prefix="${path}/" remotes/origin/main... | grep -P "${regex}" | xargs)
-  echo "${retval}"
 
-  return "${?}"
+  echo "${retval}"
 }
