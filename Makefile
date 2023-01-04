@@ -19,27 +19,27 @@ setup-integration: ## Setup dependencies and tools for the integration service
 	cd scripts/pipeline && chmod +x setup_continuous_integration.sh && ./setup_continuous_integration.sh
 .PHONY: setup-integration
 
-run-linter-staged: ## Perform validation of local staged files
+run-linter-staged: ## Perform analysis of local staged files
 	cd cmd/app && chmod +x sast.sh && ./sast.sh -l staged
 .PHONY: run-linter-staged
 
-run-linter-diff: ## Perform validation of local modified files
+run-linter-diff: ## Perform analysis of local modified files
 	cd cmd/app && chmod +x sast.sh && ./sast.sh -l diff
 .PHONY: run-linter-diff
 
-run-linter-ci: ## Perform validation of modified files in continuous integration pipeline
+run-linter-ci: ## Perform analysis of modified files in continuous integration pipeline
 	cd cmd/app && chmod +x sast.sh && ./sast.sh -l ci
 .PHONY: run-linter-ci
 
-run-linter-commit: ## Perform validation of the commit message
+run-linter-commit: ## Perform analysis of the commit message
 	commitlint --edit .git/COMMIT_EDITMSG
 .PHONY: run-linter-commit
 
-run-sanitizer-app: ## Perform validation of the application binary file
+run-sanitizer-app: ## Perform analysis of the application binary file
 	cd cmd/app && chmod +x dast.sh && ./dast.sh -b cmd/bin/*-app
 .PHONY: run-sanitizer-app
 
-run-sanitizer-test: ## Perform validation of the test binary file
+run-sanitizer-test: ## Perform analysis of the test binary file
 	cd cmd/app && chmod +x dast.sh && ./dast.sh -b cmd/bin/*-test
 .PHONY: run-sanitizer-test
 
