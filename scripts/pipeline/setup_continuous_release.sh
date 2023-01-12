@@ -17,19 +17,19 @@ readonly -a APT_PACKAGES=(
   nodejs
   npm
 )
-readonly -a NPM_PACKAGES=(
-  semantic-release
-  semantic-commitlint
-  semantic-release-commitlint
-  @semantic-release/git
-  @semantic-release/changelog
-  @semantic-release/error
-  @semantic-release/exec
-  @semantic-release/commit-analyzer
-  @semantic-release/release-notes-generator
-  @semantic-release/github
-  semantic-release-ado
-  # @semantic-release/npm
+readonly -A NPM_PACKAGES=(
+  [semantic-release]=17.4.7
+  [semantic-commitlint]=latest
+  [semantic-release-commitlint]=latest
+  [@semantic-release/git]=latest
+  [@semantic-release/changelog]=latest
+  [@semantic-release/error]=latest
+  [@semantic-release/exec]=latest
+  [@semantic-release/commit-analyzer]=latest
+  [@semantic-release/release-notes-generator]=latest
+  [@semantic-release/github]=latest
+  [semantic-release-ado]=latest
+  # [@semantic-release/npm]=latest
 )
 
 # Internal functions
@@ -40,8 +40,16 @@ setup_continuous_release() {
   util_setup_apt_packages "${APT_PACKAGES[@]}"
   ((result |= $?))
 
-  util_setup_npm_packages "${NPM_PACKAGES[@]}"
-  ((result |= $?))
+  # HACK(AK) I don't know how to pass key value pairs to function
+  # util_setup_npm_packages "${NPM_PACKAGES[@]}"
+  # ((result |= $?))
+  for package in "${!NPM_PACKAGES[@]}"; do
+
+    util_install_npm "${package}" "${NPM_PACKAGES[$package]}"
+    ((result |= $?))
+
+    log_message "setup" "${package}" "${result}"
+  done
 
   util_cleanup_apt
   ((result |= $?))
