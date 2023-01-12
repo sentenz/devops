@@ -1,6 +1,6 @@
 ## `/internal`
 
-Pperform various analysis, test or release operations.
+Perform various analysis, test or release operations.
 
 ## `/linter`
 
