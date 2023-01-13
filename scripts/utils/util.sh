@@ -249,16 +249,18 @@ util_install_curl_packages() {
 # Install npm package dependency.
 # Arguments:
 #   $1 - package
+#   $2 - version
 # Returns:
 #   Boolean
 #########################
 util_install_npm() {
   local package="${1:?package is missing}"
+  local version="${2:?version is missing}"
 
   local -i retval=0
 
   if ! npm list "${package}" -g --depth=0 &>/dev/null; then
-    sudo npm i --silent -g "${package}"@latest
+    sudo npm i --silent -g "${package}"@"${version}"
     ((retval = $?))
   fi
 
