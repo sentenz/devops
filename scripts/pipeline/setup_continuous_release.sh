@@ -10,7 +10,6 @@ set -uo pipefail
 # Include libraries
 
 . ./../../scripts/utils/util.sh
-. ./../../scripts/utils/log.sh
 
 # Constant variables
 
@@ -19,18 +18,18 @@ readonly -a APT_PACKAGES=(
   npm
 )
 readonly -A NPM_PACKAGES=(
-  [semantic-release]=17.4.7
-  [semantic-commitlint]=latest
-  [semantic-release-commitlint]=latest
-  [@semantic-release/git]=latest
-  [@semantic-release/changelog]=latest
-  [@semantic-release/error]=latest
-  [@semantic-release/exec]=latest
-  [@semantic-release/commit-analyzer]=latest
-  [@semantic-release/release-notes-generator]=latest
-  [@semantic-release/github]=latest
-  [semantic-release-ado]=latest
-  # [@semantic-release/npm]=latest
+  ["semantic-release"]=17.4.7
+  ["semantic-commitlint"]="latest"
+  ["semantic-release-commitlint"]="latest"
+  ["@semantic-release/git"]="latest"
+  ["@semantic-release/changelog"]="latest"
+  ["@semantic-release/error"]="latest"
+  ["@semantic-release/exec"]="latest"
+  ["@semantic-release/commit-analyzer"]="latest"
+  ["@semantic-release/release-notes-generator"]="latest"
+  ["@semantic-release/github"]="latest"
+  ["semantic-release-ado"]="latest"
+  # ["@semantic-release/npm"]="latest"
 )
 
 # Internal functions
@@ -51,7 +50,7 @@ setup_continuous_release() {
     ((result = $?))
     ((retval |= "${result}"))
 
-    log_message "setup" "${package}" "${result}"
+    log_message "setup" "${package} : ${NPM_PACKAGES[$package]}" "${result}"
   done
 
   util_cleanup_apt
