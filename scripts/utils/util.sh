@@ -14,13 +14,14 @@ source "$(dirname "${BASH_SOURCE[0]}")/log.sh"
 util_add_apt_ppa() {
   local repo="${1:?repo is missing}"
 
-  local -i result=0
+  local -i retval=0
+
   if ! grep -q "${repo}" /etc/apt/sources.list; then
     sudo add-apt-repository -y "${repo}"
-    ((result = $?))
+    ((retval = $?))
   fi
 
-  return "${result}"
+  return "${retval}"
 }
 
 ########################
@@ -33,23 +34,24 @@ util_add_apt_ppa() {
 util_install_apt() {
   local package="${1:?package is missing}"
 
-  local -i result=0
+  local -i retval=0
+
   if ! command -v "${package}" &>/dev/null; then
     sudo apt install -y -qqq "${package}"
-    ((result = $?))
+    ((retval = $?))
   fi
 
-  return "${result}"
+  return "${retval}"
 }
 
 ########################
-# Setup apt package dependencies.
+# Install apt package list dependencies.
 # Arguments:
 #   $@ - packages
 # Returns:
 #   Boolean
 #########################
-util_setup_apt_packages() {
+util_install_apt_packages() {
   local -a packages=("$@")
 
   local -i retval=0
@@ -60,11 +62,10 @@ util_setup_apt_packages() {
 
     util_install_apt "${package}"
     ((result = $?))
+    ((retval |= "${result}"))
 
     log_message "setup" "${package}" "${result}"
   done
-
-  ((retval |= "${result}"))
 
   return "${retval}"
 }
@@ -88,23 +89,23 @@ util_update_apt() {
 #   Boolean
 #########################
 util_cleanup_apt() {
-  local -i result=0
+  local -i retval=0
 
   sudo apt install -y -f -qqq
-  ((result |= $?))
+  ((retval |= $?))
 
   sudo apt autoremove -y -qqq
-  ((result |= $?))
+  ((retval |= $?))
 
   sudo apt clean -qqq
-  ((result |= $?))
+  ((retval |= $?))
 
   sudo rm -rf /var/lib/apt/lists/*
-  ((result |= $?))
+  ((retval |= $?))
 
-  log_message "cleanup" "apt" "${result}"
+  log_message "cleanup" "apt" "${retval}"
 
-  return "${result}"
+  return "${retval}"
 }
 
 ########################
@@ -117,23 +118,24 @@ util_cleanup_apt() {
 util_install_pip() {
   local package="${1:?package is missing}"
 
-  local -i result=0
+  local -i retval=0
+
   if ! command -v "${package}" &>/dev/null; then
     sudo pip install -q "${package}"
-    ((result = $?))
+    ((retval = $?))
   fi
 
-  return "${result}"
+  return "${retval}"
 }
 
 ########################
-# Setup pip package dependencies.
+# Install pip package list dependencies.
 # Arguments:
 #   $@ - packages
 # Returns:
 #   Boolean
 #########################
-util_setup_pip_packages() {
+util_install_pip_packages() {
   local -a packages=("$@")
 
   local -i retval=0
@@ -142,11 +144,10 @@ util_setup_pip_packages() {
   for package in "${packages[@]}"; do
     util_install_pip "${package}"
     ((result = $?))
+    ((retval |= "${result}"))
 
     log_message "setup" "${package}" "${result}"
   done
-
-  ((retval |= "${result}"))
 
   return "${retval}"
 }
@@ -161,23 +162,24 @@ util_setup_pip_packages() {
 util_install_go() {
   local package="${1:?package is missing}"
 
-  local -i result=0
+  local -i retval=0
+
   if ! command -v "${package}" &>/dev/null; then
     go install "${package}"
-    ((result = $?))
+    ((retval = $?))
   fi
 
-  return "${result}"
+  return "${retval}"
 }
 
 ########################
-# Setup go package dependencies.
+# Install go package list dependencies.
 # Arguments:
 #   $@ - packages
 # Returns:
 #   Boolean
 #########################
-util_setup_go_packages() {
+util_install_go_packages() {
   local -a packages=("$@")
 
   local -i retval=0
@@ -189,11 +191,10 @@ util_setup_go_packages() {
 
     util_install_go "${package}"
     ((result = $?))
+    ((retval |= "${result}"))
 
     log_message "setup" "${package}" "${result}"
   done
-
-  ((retval |= "${result}"))
 
   return "${retval}"
 }
@@ -208,23 +209,24 @@ util_setup_go_packages() {
 util_install_curl() {
   local package="${1:?package is missing}"
 
-  local -i result=0
+  local -i retval=0
+
   if ! command -v "$(basename "${package}")" &>/dev/null; then
     curl -sS "${package}" | bash
-    ((result = $?))
+    ((retval = $?))
   fi
 
-  return "${result}"
+  return "${retval}"
 }
 
 ########################
-# Setup curl package dependencies.
+# Install curl package list dependencies.
 # Arguments:
 #   $@ - packages
 # Returns:
 #   Boolean
 #########################
-util_setup_curl_packages() {
+util_install_curl_packages() {
   local -a packages=("$@")
 
   local -i retval=0
@@ -235,11 +237,10 @@ util_setup_curl_packages() {
 
     util_install_curl "${package}"
     ((result = $?))
+    ((retval |= "${result}"))
 
     log_message "setup" "$(basename "${package}")" "${result}"
   done
-
-  ((retval |= "${result}"))
 
   return "${retval}"
 }
@@ -254,23 +255,24 @@ util_setup_curl_packages() {
 util_install_npm() {
   local package="${1:?package is missing}"
 
-  local -i result=0
+  local -i retval=0
+
   if ! npm list "${package}" -g --depth=0 &>/dev/null; then
     sudo npm i --silent -g "${package}"@latest
-    ((result |= $?))
+    ((retval = $?))
   fi
 
-  return "${result}"
+  return "${retval}"
 }
 
 ########################
-# Setup npm package dependencies.
+# Install npm package list dependencies.
 # Arguments:
 #   $@ - packages
 # Returns:
 #   Boolean
 #########################
-util_setup_npm_packages() {
+util_install_npm_packages() {
   local -a packages=("$@")
 
   local -i retval=0
@@ -279,11 +281,10 @@ util_setup_npm_packages() {
   for package in "${packages[@]}"; do
     util_install_npm "${package}"
     ((result = $?))
+    ((retval |= "${result}"))
 
     log_message "setup" "${package}" "${result}"
   done
-
-  ((retval |= "${result}"))
 
   return "${retval}"
 }
@@ -296,12 +297,12 @@ util_setup_npm_packages() {
 #   Boolean
 #########################
 util_cleanup_npm() {
-  local -i result=0
+  local -i retval=0
 
   npm cache clean --force --silent
-  ((result |= $?))
+  ((retval = $?))
 
-  log_message "cleanup" "npm" "${result}"
+  log_message "cleanup" "npm" "${retval}"
 
-  return "${result}"
+  return "${retval}"
 }
