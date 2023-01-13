@@ -135,7 +135,7 @@ run_scripts() {
 setup() {
   local -i result=0
 
-  util_setup_apt_packages "${APT_PACKAGES[@]}"
+  util_install_apt_packages "${APT_PACKAGES[@]}"
   ((result |= $?))
 
   run_scripts "${SCRIPTS[@]}"

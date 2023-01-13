@@ -71,19 +71,19 @@ readonly -a CURL_PACKAGES=(
 setup_continuous_integration() {
   local -i result=0
 
-  util_setup_apt_packages "${APT_PACKAGES[@]}"
+  util_install_apt_packages "${APT_PACKAGES[@]}"
   ((result |= $?))
 
-  util_setup_go_packages "${GO_PACKAGES[@]}"
+  util_install_go_packages "${GO_PACKAGES[@]}"
   ((result |= $?))
 
-  util_setup_curl_packages "${CURL_PACKAGES[@]}"
+  util_install_curl_packages "${CURL_PACKAGES[@]}"
   ((result |= $?))
 
-  util_setup_pip_packages "${PIP_PACKAGES[@]}"
+  util_install_pip_packages "${PIP_PACKAGES[@]}"
   ((result |= $?))
 
-  util_setup_npm_packages "${NPM_PACKAGES[@]}"
+  util_install_npm_packages "${NPM_PACKAGES[@]}"
   ((result |= $?))
 
   util_cleanup_apt
