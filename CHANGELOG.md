@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/sentenz/devops/compare/v2.0.0...v2.1.0) (2023-01-13)
+
+
+### Features
+
+* create a teardown script ([#71](https://github.com/sentenz/devops/issues/71)) ([da5ee00](https://github.com/sentenz/devops/commit/da5ee00f0025ef67064861cdc3efa537ca2052ee)), closes [#70](https://github.com/sentenz/devops/issues/70)
+
 # [2.0.0](https://github.com/sentenz/devops/compare/v1.0.0...v2.0.0) (2023-01-13)
 
 
