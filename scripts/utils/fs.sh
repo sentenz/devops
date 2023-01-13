@@ -132,6 +132,19 @@ fs_remove_file() {
 }
 
 ########################
+# Removes a directory recursively.
+# Arguments:
+#   $1 - directory
+# Returns:
+#   None
+#########################
+fs_remove_dir() {
+  local dir="${1:?directory is missing}"
+
+  rm -rf "${dir}"
+}
+
+########################
 # Removes a empty file.
 # Arguments:
 #   $1 - filename
@@ -165,7 +178,6 @@ fs_is_dir_empty() {
   fi
 
   return 0
-
 }
 
 ########################

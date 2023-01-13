@@ -43,21 +43,20 @@ readonly -a PIP_PACKAGES=(
   yamllint
   proselint
 )
-readonly -a NPM_PACKAGES=(
-  alex
-  prettier
-  jsonlint
-  @commitlint/cli
-  @commitlint/config-conventional
-  @commitlint/format
-  markdownlint
-  markdownlint-cli
-  markdown-link-check
-  remark
-  remark-preset-lint-markdown-style-guide
-  remark-preset-lint-recommended
-  remark-preset-lint-consistent
-  write-good
+readonly -A NPM_PACKAGES=(
+  ["alex"]="10.0.0"
+  ["prettier"]="2.7.1"
+  ["jsonlint"]="1.6.3"
+  ["@commitlint/cli"]="17.2.0"
+  ["@commitlint/config-conventional"]="17.2.0"
+  ["@commitlint/format"]="17.0.0"
+  ["markdownlint"]="0.32.2"
+  ["markdown-link-check"]="3.10.3"
+  ["write-good"]="1.0.8"
+  ["remark"]="14.0.2"
+  ["remark-preset-lint-markdown-style-guide"]="5.1.2"
+  ["remark-preset-lint-recommended"]="6.1.2"
+  ["remark-preset-lint-consistent"]="5.1.1"
 )
 readonly -a GO_PACKAGES=(
   github.com/golangci/golangci-lint/cmd/golangci-lint@latest
@@ -68,34 +67,44 @@ readonly -a CURL_PACKAGES=(
 
 # Internal functions
 
-setup_continuous_integration() {
+setup_integration() {
+  local -i retval=0
   local -i result=0
 
   util_install_apt_packages "${APT_PACKAGES[@]}"
-  ((result |= $?))
+  ((retval |= $?))
 
   util_install_go_packages "${GO_PACKAGES[@]}"
-  ((result |= $?))
+  ((retval |= $?))
 
   util_install_curl_packages "${CURL_PACKAGES[@]}"
-  ((result |= $?))
+  ((retval |= $?))
 
   util_install_pip_packages "${PIP_PACKAGES[@]}"
-  ((result |= $?))
+  ((retval |= $?))
 
-  util_install_npm_packages "${NPM_PACKAGES[@]}"
-  ((result |= $?))
+  # HACK(AK) I don't know how to pass key value pairs to function
+  # util_install_npm_packages "${NPM_PACKAGES[@]}"
+  # ((result |= $?))
+  for package in "${!NPM_PACKAGES[@]}"; do
+
+    util_install_npm "${package}" "${NPM_PACKAGES[$package]}"
+    ((result = $?))
+    ((retval |= "${result}"))
+
+    log_message "setup" "${package} : ${NPM_PACKAGES[$package]}" "${result}"
+  done
 
   util_cleanup_apt
-  ((result |= $?))
+  ((retval |= $?))
 
   util_cleanup_npm
-  ((result |= $?))
+  ((retval |= $?))
 
-  return "${result}"
+  return "${retval}"
 }
 
 # Control flow logic
 
-setup_continuous_integration
+setup_integration
 exit "${?}"
