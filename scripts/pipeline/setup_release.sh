@@ -18,23 +18,23 @@ readonly -a APT_PACKAGES=(
   npm
 )
 readonly -A NPM_PACKAGES=(
-  ["semantic-release"]=17.4.7
-  ["semantic-commitlint"]="latest"
-  ["semantic-release-commitlint"]="latest"
-  ["@semantic-release/git"]="latest"
-  ["@semantic-release/changelog"]="latest"
-  ["@semantic-release/error"]="latest"
-  ["@semantic-release/exec"]="latest"
-  ["@semantic-release/commit-analyzer"]="latest"
-  ["@semantic-release/release-notes-generator"]="latest"
-  ["@semantic-release/github"]="latest"
-  ["semantic-release-ado"]="latest"
+  ["semantic-release"]="17.4.7"
+  ["semantic-commitlint"]="1.4.0"
+  ["semantic-release-commitlint"]="1.2.2"
+  ["@semantic-release/git"]="10.0.1"
+  ["@semantic-release/changelog"]="6.0.2"
+  ["@semantic-release/error"]="3.0.0"
+  ["@semantic-release/exec"]="6.0.3"
+  ["@semantic-release/commit-analyzer"]="9.0.2"
+  ["@semantic-release/release-notes-generator"]="10.0.3"
+  ["@semantic-release/github"]="8.0.7"
+  ["semantic-release-ado"]="1.4.0"
   # ["@semantic-release/npm"]="latest"
 )
 
 # Internal functions
 
-setup_continuous_release() {
+setup_release() {
   local -i retval=0
   local -i result=0
 
@@ -64,5 +64,5 @@ setup_continuous_release() {
 
 # Control flow logic
 
-setup_continuous_release
+setup_release
 exit "${?}"

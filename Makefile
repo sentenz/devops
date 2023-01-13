@@ -9,19 +9,24 @@ help: ## Display help screen
 .PHONY: help
 
 setup: ## Setup dependencies and tools
-	cd scripts && chmod +x setup.sh && ./setup.sh
+	cd $(@D)/scripts && chmod +x setup.sh && ./setup.sh
 .PHONY: setup
 
 setup-devops: ## Setup dependencies and tools for the devops service
 	cd scripts && chmod +x setup.sh && ./setup.sh
 .PHONY: setup-devops
 
-cleanup: ## Cleanup dependencies and tools of the devops service
-	# TODO(AK)
-.PHONY: cleanup
+teardown-devops: ## Teardown dependencies and tools for the devops service
+	cd scripts && chmod +x teardown.sh && ./teardown.sh
+.PHONY: teardown-devops
+
+update-devops: ## Update dependencies and tools for the devops service
+	$(MAKE) teardown-devops
+	$(MAKE) setup-devops
+.PHONY: update-devops
 
 setup-integration: ## Setup dependencies and tools for the integration service
-	cd scripts/pipeline && chmod +x setup_continuous_integration.sh && ./setup_continuous_integration.sh
+	cd $(@D)/scripts/pipeline && chmod +x setup_integration.sh && ./setup_integration.sh
 .PHONY: setup-integration
 
 run-linter-staged: ## Perform analysis of local staged files
@@ -49,11 +54,11 @@ run-sanitizer-test: ## Perform analysis of the test binary file
 .PHONY: run-sanitizer-test
 
 setup-testing: ## Setup dependencies and tools for the testing service
-	cd scripts/pipeline && chmod +x setup_continuous_testing.sh && ./setup_continuous_testing.sh
+	cd $(@D)/scripts/pipeline && chmod +x setup_integration.sh && ./setup_integration.sh
 .PHONY: setup-testing
 
 setup-release: ## Setup dependencies and tools for the release service
-	cd scripts/pipeline && chmod +x setup_continuous_release.sh && ./setup_continuous_release.sh
+	cd $(@D)/scripts/pipeline && chmod +x setup_release.sh && ./setup_release.sh
 .PHONY: setup-release
 
 run-release: ## Perform release service task

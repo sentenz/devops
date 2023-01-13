@@ -45,6 +45,26 @@ util_install_apt() {
 }
 
 ########################
+# Uninstall apt package dependency.
+# Arguments:
+#   $1 - package
+# Returns:
+#   Boolean
+#########################
+util_uninstall_apt() {
+  local package="${1:?package is missing}"
+
+  local -i retval=0
+
+  if command -v "${package}" &>/dev/null; then
+    sudo apt remove -y -qqq "${package}"
+    ((retval = $?))
+  fi
+
+  return "${retval}"
+}
+
+########################
 # Install apt package list dependencies.
 # Arguments:
 #   $@ - packages
@@ -71,6 +91,30 @@ util_install_apt_packages() {
 }
 
 ########################
+# Uninstall apt package list dependencies.
+# Arguments:
+#   $@ - packages
+# Returns:
+#   Boolean
+#########################
+util_uninstall_apt_packages() {
+  local -a packages=("$@")
+
+  local -i retval=0
+  local -i result=0
+
+  for package in "${packages[@]}"; do
+    util_uninstall_apt "${package}"
+    ((result = $?))
+    ((retval |= "${result}"))
+
+    log_message "teardown" "${package}" "${result}"
+  done
+
+  return "${retval}"
+}
+
+########################
 # Update apt package dependencies.
 # Arguments:
 #   None
@@ -91,7 +135,7 @@ util_update_apt() {
 util_cleanup_apt() {
   local -i retval=0
 
-  sudo apt install -y -f -qqq
+  sudo apt -f install -y -qqq
   ((retval |= $?))
 
   sudo apt autoremove -y -qqq

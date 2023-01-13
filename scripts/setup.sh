@@ -28,7 +28,7 @@ readonly -a APT_PACKAGES=(
   dirmngr
 )
 readonly -a SCRIPTS=(
-  setup_continuous_integration.sh
+  setup_integration.sh
 )
 readonly -a PIPELINES=(
   continuous-integration.yml

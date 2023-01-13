@@ -21,7 +21,7 @@ readonly -a APT_PACKAGES=(
 
 # Internal functions
 
-setup_continuous_testing() {
+setup_integration() {
   local -i result=0
 
   util_install_apt_packages "${APT_PACKAGES[@]}"
@@ -35,5 +35,5 @@ setup_continuous_testing() {
 
 # Control flow logic
 
-setup_continuous_testing
+setup_integration
 exit "${?}"
