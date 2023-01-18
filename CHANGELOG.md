@@ -1,3 +1,10 @@
+## [2.1.3](https://github.com/sentenz/devops/compare/v2.1.2...v2.1.3) (2023-01-18)
+
+
+### Bug Fixes
+
+* **scripts:** remove unneeded functions calls ([#79](https://github.com/sentenz/devops/issues/79)) ([2a3ab7a](https://github.com/sentenz/devops/commit/2a3ab7a4570c159a9833f89cac26d90838be00be)), closes [#78](https://github.com/sentenz/devops/issues/78)
+
 ## [2.1.2](https://github.com/sentenz/devops/compare/v2.1.1...v2.1.2) (2023-01-18)
 
 
