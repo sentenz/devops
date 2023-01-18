@@ -135,7 +135,7 @@ run_scripts() {
 setup() {
   local -i result=0
 
-  util_install_apt_packages "${APT_PACKAGES[@]}"
+  pkg_install_apt_list "${APT_PACKAGES[@]}"
   ((result |= $?))
 
   run_scripts "${SCRIPTS[@]}"
@@ -149,7 +149,7 @@ setup() {
   initialize_container
   initialize_merge
 
-  util_cleanup_apt
+  pkg_cleanup_apt
   ((result |= $?))
 
   return "${result}"

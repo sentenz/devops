@@ -11,7 +11,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/log.sh"
 # Returns:
 #   Boolean
 #########################
-util_add_apt_ppa() {
+pkg_add_apt_ppa() {
   local repo="${1:?repo is missing}"
 
   local -i retval=0
@@ -31,7 +31,7 @@ util_add_apt_ppa() {
 # Returns:
 #   Boolean
 #########################
-util_install_apt() {
+pkg_install_apt() {
   local package="${1:?package is missing}"
 
   local -i retval=0
@@ -51,7 +51,7 @@ util_install_apt() {
 # Returns:
 #   Boolean
 #########################
-util_uninstall_apt() {
+pkg_uninstall_apt() {
   local package="${1:?package is missing}"
 
   local -i retval=0
@@ -71,16 +71,16 @@ util_uninstall_apt() {
 # Returns:
 #   Boolean
 #########################
-util_install_apt_packages() {
+pkg_install_apt_list() {
   local -a packages=("$@")
 
   local -i retval=0
   local -i result=0
 
   for package in "${packages[@]}"; do
-    util_update_apt
+    pkg_update_apt
 
-    util_install_apt "${package}"
+    pkg_install_apt "${package}"
     ((result = $?))
     ((retval |= "${result}"))
 
@@ -97,14 +97,14 @@ util_install_apt_packages() {
 # Returns:
 #   Boolean
 #########################
-util_uninstall_apt_packages() {
+pkg_uninstall_apt_list() {
   local -a packages=("$@")
 
   local -i retval=0
   local -i result=0
 
   for package in "${packages[@]}"; do
-    util_uninstall_apt "${package}"
+    pkg_uninstall_apt "${package}"
     ((result = $?))
     ((retval |= "${result}"))
 
@@ -121,7 +121,7 @@ util_uninstall_apt_packages() {
 # Returns:
 #   None
 #########################
-util_update_apt() {
+pkg_update_apt() {
   sudo apt update -qqq
 }
 
@@ -132,7 +132,7 @@ util_update_apt() {
 # Returns:
 #   Boolean
 #########################
-util_cleanup_apt() {
+pkg_cleanup_apt() {
   local -i retval=0
 
   sudo apt -f install -y -qqq
@@ -160,7 +160,7 @@ util_cleanup_apt() {
 # Returns:
 #   Boolean
 #########################
-util_install_pip() {
+pkg_install_pip() {
   local package="${1:?package is missing}"
   local version="${2:-}"
 
@@ -187,7 +187,7 @@ util_install_pip() {
 # Returns:
 #   Boolean
 #########################
-util_uninstall_pip() {
+pkg_uninstall_pip() {
   local package="${1:?package is missing}"
 
   local -i retval=0
@@ -207,14 +207,14 @@ util_uninstall_pip() {
 # Returns:
 #   Boolean
 #########################
-util_install_pip_packages() {
+pkg_install_pip_list() {
   local -a packages=("$@")
 
   local -i retval=0
   local -i result=0
 
   for package in "${packages[@]}"; do
-    util_install_pip "${package}"
+    pkg_install_pip "${package}"
     ((result = $?))
     ((retval |= "${result}"))
 
@@ -231,7 +231,7 @@ util_install_pip_packages() {
 # Returns:
 #   Boolean
 #########################
-util_install_go() {
+pkg_install_go() {
   local package="${1:?package is missing}"
 
   local -i retval=0
@@ -251,7 +251,7 @@ util_install_go() {
 # Returns:
 #   Boolean
 #########################
-util_install_go_packages() {
+pkg_install_go_list() {
   local -a packages=("$@")
 
   local -i retval=0
@@ -261,7 +261,7 @@ util_install_go_packages() {
     # HACK(AK) https://github.com/actions/setup-go/issues/14
     export PATH="${HOME}"/go/bin:/usr/local/go/bin:"${PATH}"
 
-    util_install_go "${package}"
+    pkg_install_go "${package}"
     ((result = $?))
     ((retval |= "${result}"))
 
@@ -278,7 +278,7 @@ util_install_go_packages() {
 # Returns:
 #   Boolean
 #########################
-util_install_curl() {
+pkg_install_curl() {
   local package="${1:?package is missing}"
 
   local -i retval=0
@@ -298,7 +298,7 @@ util_install_curl() {
 # Returns:
 #   Boolean
 #########################
-util_install_curl_packages() {
+pkg_install_curl_list() {
   local -a packages=("$@")
 
   local -i retval=0
@@ -307,7 +307,7 @@ util_install_curl_packages() {
   for package in "${packages[@]}"; do
     export PATH="${HOME}"/.local/bin:"${PATH}"
 
-    util_install_curl "${package}"
+    pkg_install_curl "${package}"
     ((result = $?))
     ((retval |= "${result}"))
 
@@ -325,7 +325,7 @@ util_install_curl_packages() {
 # Returns:
 #   Boolean
 #########################
-util_install_npm() {
+pkg_install_npm() {
   local package="${1:?package is missing}"
   local version="${2:-}"
 
@@ -351,14 +351,14 @@ util_install_npm() {
 # Returns:
 #   Boolean
 #########################
-util_install_npm_packages() {
+pkg_install_npm_list() {
   local -a packages=("$@")
 
   local -i retval=0
   local -i result=0
 
   for package in "${packages[@]}"; do
-    util_install_npm "${package}"
+    pkg_install_npm "${package}"
     ((result = $?))
     ((retval |= "${result}"))
 
@@ -375,7 +375,7 @@ util_install_npm_packages() {
 # Returns:
 #   Boolean
 #########################
-util_cleanup_npm() {
+pkg_cleanup_npm() {
   local -i retval=0
 
   npm cache clean --force --silent

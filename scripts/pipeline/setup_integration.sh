@@ -69,20 +69,20 @@ setup_integration() {
   local -i retval=0
   local -i result=0
 
-  util_install_apt_packages "${APT_PACKAGES[@]}"
+  pkg_install_apt_list "${APT_PACKAGES[@]}"
   ((retval |= $?))
 
-  util_install_go_packages "${GO_PACKAGES[@]}"
+  pkg_install_go_list "${GO_PACKAGES[@]}"
   ((retval |= $?))
 
-  util_install_curl_packages "${CURL_PACKAGES[@]}"
+  pkg_install_curl_list "${CURL_PACKAGES[@]}"
   ((retval |= $?))
 
-  # util_install_pip_packages "${PIP_PACKAGES[@]}"
+  # pkg_install_pip_list "${PIP_PACKAGES[@]}"
   # ((retval |= $?))
   for package in "${!PIP_PACKAGES[@]}"; do
 
-    util_install_pip "${package}" "${PIP_PACKAGES[$package]}"
+    pkg_install_pip "${package}" "${PIP_PACKAGES[$package]}"
     ((result = $?))
     ((retval |= "${result}"))
 
@@ -90,21 +90,21 @@ setup_integration() {
   done
 
   # HACK(AK) I don't know how to pass key value pairs to function
-  # util_install_npm_packages "${NPM_PACKAGES[@]}"
+  # pkg_install_npm_list "${NPM_PACKAGES[@]}"
   # ((result |= $?))
   for package in "${!NPM_PACKAGES[@]}"; do
 
-    util_install_npm "${package}" "${NPM_PACKAGES[$package]}"
+    pkg_install_npm "${package}" "${NPM_PACKAGES[$package]}"
     ((result = $?))
     ((retval |= "${result}"))
 
     log_message "setup" "${package} : ${NPM_PACKAGES[$package]}" "${result}"
   done
 
-  util_cleanup_apt
+  pkg_cleanup_apt
   ((retval |= $?))
 
-  util_cleanup_npm
+  pkg_cleanup_npm
   ((retval |= $?))
 
   return "${retval}"

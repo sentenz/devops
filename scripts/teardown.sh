@@ -109,10 +109,10 @@ cleanup_container() {
 teardown() {
   local -i retval=0
 
-  util_uninstall_apt_packages "${APT_PACKAGES[@]}"
+  pkg_uninstall_apt_list "${APT_PACKAGES[@]}"
   ((retval |= $?))
 
-  util_cleanup_apt
+  pkg_cleanup_apt
   ((retval |= $?))
 
   cleanup_scripts
