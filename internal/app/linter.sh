@@ -12,6 +12,7 @@ set -uo pipefail
 . ./../../scripts/utils/log.sh
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
+. ./../../scripts/utils/util.sh
 
 # Options
 
@@ -33,13 +34,12 @@ readonly -a SCRIPTS=(
   codespell
   remark
   markdown_link_check
-  # markdownlint
+  markdownlint_cli2
   # commitlint
   cppcheck
   cpplint
   clang_tidy
   clang_format
-  # scan_build
   golangci_lint
   dockerfilelint
   licensecheck
@@ -57,7 +57,7 @@ initialize_logs() {
   log_dir="$(git_get_root_dir)/logs/linter"
   local regex_patterns="^.*\.(log)$"
 
-  if ! fs_is_dir_empty "${log_dir}"; then
+  if ! util_empty_dir "${log_dir}"; then
     find "${log_dir}" -type f -regextype posix-egrep -regex "${regex_patterns}" -delete
   fi
 
