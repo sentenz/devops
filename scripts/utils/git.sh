@@ -67,8 +67,8 @@ git_get_local_branch() {
 # Get the staged files by command substitution and, optionally, with path prefix and filtered by a
 # regex pattern.
 # Arguments:
-#   $1 - path-prefix
-#   $2 - regex-pattern
+#   $1 - path-prefix (optional)
+#   $2 - regex-pattern (optional)
 # Returns:
 #   List
 #########################
@@ -86,8 +86,8 @@ git_get_staged_files() {
 # Get the changed files between commits by command substitution and, optionally, with path prefix
 # and filtered by a regex pattern.
 # Arguments:
-#   $1 - path-prefix
-#   $2 - regex-pattern
+#   $1 - path-prefix (optional)
+#   $2 - regex-pattern (optional)
 # Returns:
 #   List
 #########################
@@ -105,8 +105,8 @@ git_get_diff_files() {
 # Get the changed files between commits by command substitution in continuous integration pipeline
 # and, optionally, with path prefix and filtered by a regex pattern.
 # Arguments:
-#   $1 - path-prefix
-#   $2 - regex-pattern
+#   $1 - path-prefix (optional)
+#   $2 - regex-pattern (optional)
 # Returns:
 #   List
 #########################

@@ -9,7 +9,7 @@ set -uo pipefail
 
 # Include libraries
 
-. ./../../scripts/utils/util.sh
+. ./../../scripts/utils/pkg.sh
 
 # Constant variables
 

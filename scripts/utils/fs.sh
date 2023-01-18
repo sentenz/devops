@@ -91,7 +91,7 @@ fs_merge_file() {
 # Ensure a directory exists and, optionally, is owned by the given user.
 # Arguments:
 #   $1 - directory
-#   $2 - owner
+#   $2 - owner (optional)
 # Returns:
 #   None
 #########################

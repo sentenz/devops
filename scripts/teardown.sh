@@ -11,7 +11,7 @@ set -uo pipefail
 
 . ./../scripts/utils/fs.sh
 . ./../scripts/utils/git.sh
-. ./../scripts/utils/util.sh
+. ./../scripts/utils/pkg.sh
 
 # Constant variables
 
@@ -42,7 +42,7 @@ readonly -a SCRIPTS=(
   hook.sh
   log.sh
   os.sh
-  util.sh
+  pkg.sh
 )
 readonly -a PIPELINES=(
   continuous-integration.yml

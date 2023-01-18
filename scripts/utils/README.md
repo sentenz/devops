@@ -1,10 +1,5 @@
 # `/util`
 
-- utils.sh
-  > An internal library for utility actions (e.g. package management).
-  >
-  > NOTE Depends on `log.sh`.
-
 - git.sh
   > An internal library for git actions.
 
@@ -19,3 +14,11 @@
 
 - os.sh
   > An external library for operating system actions from [bash-libraries](https://github.com/juan131/bash-libraries) repository.
+
+- pkg.sh
+  > An internal library for package management actions.
+  >
+  > NOTE Depends on `log.sh`.
+  
+- utils.sh
+  > An internal library for [utility](https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html) actions.

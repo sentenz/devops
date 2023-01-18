@@ -59,7 +59,7 @@ os_create_group() {
 # Create an user in the system if it does not exist already.
 # Arguments:
 #   $1 - user
-#   $2 - group
+#   $2 - group (optional)
 # Returns:
 #   None
 #########################
@@ -106,7 +106,7 @@ os_get_total_memory() {
 #########################
 # Redirects output to /dev/null if debug mode is disabled.
 # Globals:
-#   DEBUG
+#   DEBUG - (default: false)
 # Arguments:
 #   $@ - Command to execute
 # Returns:
@@ -123,9 +123,9 @@ os_debug_execute() {
 ########################
 # Retries a command a given number of times.
 # Arguments:
-#   $1 - cmd (as a string)
-#   $2 - max retries. Default: 12
-#   $3 - sleep between retries (in seconds). Default: 5
+#   $1 - cmd as a string
+#   $2 - max retries (default: 12)
+#   $3 - sleep between retries in seconds (default: 5)
 # Returns:
 #   Boolean
 #########################
