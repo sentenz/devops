@@ -1,3 +1,10 @@
+## [2.1.2](https://github.com/sentenz/devops/compare/v2.1.1...v2.1.2) (2023-01-18)
+
+
+### Bug Fixes
+
+* **scripts:** add missing implementation for `.vscode` ([#75](https://github.com/sentenz/devops/issues/75)) ([ba2ce8e](https://github.com/sentenz/devops/commit/ba2ce8eb5ea803f0a5e56272cf66a9a9ca878868)), closes [#74](https://github.com/sentenz/devops/issues/74)
+
 ## [2.1.1](https://github.com/sentenz/devops/compare/v2.1.0...v2.1.1) (2023-01-18)
 
 
