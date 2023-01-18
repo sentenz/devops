@@ -91,6 +91,11 @@ initialize_container() {
     fs_create_dir "$(git_get_root_dir)/build/container"
     fs_copy_files "$(fs_get_sript_dir)/../build/container" "$(git_get_root_dir)/build"
   fi
+
+  if util_exists_dir "$(fs_get_sript_dir)/../.vscode"; then
+    fs_create_dir "$(git_get_root_dir)/.vscode"
+    fs_copy_files "$(fs_get_sript_dir)/../.vscode" "$(git_get_root_dir).vscode"
+  fi
 }
 
 initialize_merge() {
