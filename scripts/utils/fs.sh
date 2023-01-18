@@ -132,7 +132,7 @@ fs_remove_empty_file() {
 # Returns:
 #   Path
 #########################
-fs_get_sript_dir() {
+fs_sript_dir() {
   local retval
   retval="$(dirname "$(realpath "$0")")"
 

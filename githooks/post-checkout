@@ -34,9 +34,9 @@ readonly NEW_HEAD
 FLAG_CHECKOUT="${3}"
 readonly FLAG_CHECKOUT
 
-LOG_FILE="$(git_get_root_dir)/logs/githooks/post-checkout.log"
+LOG_FILE="$(git_root_dir)/logs/githooks/post-checkout.log"
 readonly LOG_FILE
-LOCAL_BRANCH="$(git_get_local_branch)"
+LOCAL_BRANCH="$(git_local_branch)"
 readonly LOCAL_BRANCH
 readonly -a BASE_BRANCHES=(
   main

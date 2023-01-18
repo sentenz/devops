@@ -30,7 +30,7 @@ set -uo pipefail
 COMMIT_MESSAGE_FILE="${1}"
 readonly COMMIT_MESSAGE_FILE
 
-LOG_FILE="$(git_get_root_dir)/logs/githooks/commit-msg.log"
+LOG_FILE="$(git_root_dir)/logs/githooks/commit-msg.log"
 readonly LOG_FILE
 
 # Internal functions

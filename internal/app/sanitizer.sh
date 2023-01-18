@@ -35,7 +35,7 @@ readonly -a SCRIPTS=(
 
 initialize_logs() {
   local log_dir
-  log_dir="$(git_get_root_dir)/logs/sanitizer"
+  log_dir="$(git_root_dir)/logs/sanitizer"
   local regex_patterns="^.*\.(log)$"
 
   if ! util_empty_dir "${log_dir}"; then
@@ -74,7 +74,7 @@ run_sanitizer() {
   (
     local -i result=0
 
-    cd "$(fs_get_sript_dir)/../sanitizer" || return "${STATUS_ERROR}"
+    cd "$(fs_sript_dir)/../sanitizer" || return "${STATUS_ERROR}"
 
     for script in "${scripts[@]}"; do
       analyze "${script}" "${F_BINARY}"
