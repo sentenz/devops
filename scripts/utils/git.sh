@@ -2,6 +2,8 @@
 #
 # Library for git actions.
 
+source "$(dirname "${BASH_SOURCE[0]}")/util.sh"
+
 ########################
 # Configure ownership in repository.
 # Arguments:
@@ -38,11 +40,7 @@ git_valid_repo() {
   local path
   path="$(git_get_root_dir)"
 
-  if [[ -z "${path}" ]]; then
-    return 1
-  fi
-
-  if [[ ! -d "${path}/.git" ]]; then
+  if ! util_exists_dir "${path}/.git"; then
     return 1
   fi
 

@@ -168,11 +168,11 @@ pkg_install_pip() {
   local -i retval=0
 
   if ! command -v "${package}" &>/dev/null; then
-    if util_isStringEmpty "${version}"; then
-      sudo pip install -q "${package}"
+    if util_is_string "${version}"; then
+      sudo pip install -q "${package}==${version}"
       ((retval = $?))
     else
-      sudo pip install -q "${package}==${version}"
+      sudo pip install -q "${package}"
       ((retval = $?))
     fi
   fi
@@ -184,7 +184,6 @@ pkg_install_pip() {
 # Uninstall pip package dependency.
 # Arguments:
 #   $1 - package
-#   $2 - version
 # Returns:
 #   Boolean
 #########################
@@ -333,13 +332,33 @@ pkg_install_npm() {
   local -i retval=0
 
   if ! npm list "${package}" -g --depth=0 &>/dev/null; then
-    if util_isStringEmpty "${version}"; then
-      sudo npm i --silent -g "${package}"@latest
-      ((retval = $?))
-    else
+    if util_is_string "${version}"; then
       sudo npm i --silent -g "${package}"@"${version}"
       ((retval = $?))
+    else
+      sudo npm i --silent -g "${package}"@latest
+      ((retval = $?))
     fi
+  fi
+
+  return "${retval}"
+}
+
+########################
+# Uninstall npm package dependency.
+# Arguments:
+#   $1 - package
+# Returns:
+#   Boolean
+#########################
+pkg_uninstall_npm() {
+  local package="${1:?package is missing}"
+
+  local -i retval=0
+
+  if ! npm list "${package}" -g --depth=0 &>/dev/null; then
+    sudo npm uninstall --silent -g "${package}"
+    ((retval = $?))
   fi
 
   return "${retval}"

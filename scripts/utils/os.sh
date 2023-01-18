@@ -2,6 +2,8 @@
 #
 # Library for operating system actions.
 
+source "$(dirname "${BASH_SOURCE[0]}")/util.sh"
+
 ########################
 # Get the name of os.
 # Arguments:
@@ -23,7 +25,7 @@ os_get_name() {
 # Returns:
 #   Boolean
 #########################
-os_user_exists() {
+os_exists_user() {
   local user="${1:?user is missing}"
   id "$user" >/dev/null 2>&1
 }
@@ -67,11 +69,12 @@ os_create_user() {
   local user="${1:?user is missing}"
   local group="${2:-}"
 
-  if ! os_user_exists "$user"; then
-    useradd "$user" >/dev/null 2>&1
-    if [[ -n "$group" ]]; then
-      os_create_group "$group"
-      usermod -a -G "$group" "$user" >/dev/null 2>&1
+  if ! os_exists_user "${user}"; then
+    useradd "${user}" >/dev/null 2>&1
+
+    if util_is_string "${group}"; then
+      os_create_group "${group}"
+      usermod -a -G "${group}" "${user}" >/dev/null 2>&1
     fi
   fi
 }
