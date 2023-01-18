@@ -26,7 +26,6 @@ readonly -a APT_PACKAGES=(
   nodejs
   npm
   golang-go
-
   licensecheck
   shellcheck
   cppcheck
@@ -35,13 +34,12 @@ readonly -a APT_PACKAGES=(
   clang-format
   valgrind
 )
-readonly -a PIP_PACKAGES=(
-  scan-build
-  codespell
-  cpplint
-  cmake_format
-  yamllint
-  proselint
+readonly -A PIP_PACKAGES=(
+  ["codespell"]="2.2.2"
+  ["cpplint"]="1.6.1"
+  ["cmake_format"]="0.6.13"
+  ["yamllint"]="1.29.0"
+  ["proselint"]="0.13.0"
 )
 readonly -A NPM_PACKAGES=(
   ["alex"]="10.0.0"
@@ -50,7 +48,7 @@ readonly -A NPM_PACKAGES=(
   ["@commitlint/cli"]="17.2.0"
   ["@commitlint/config-conventional"]="17.2.0"
   ["@commitlint/format"]="17.0.0"
-  ["markdownlint"]="0.32.2"
+  ["markdownlint-cli"]="0.31.1"
   ["markdown-link-check"]="3.10.3"
   ["write-good"]="1.0.8"
   ["remark"]="14.0.2"
@@ -80,8 +78,16 @@ setup_integration() {
   util_install_curl_packages "${CURL_PACKAGES[@]}"
   ((retval |= $?))
 
-  util_install_pip_packages "${PIP_PACKAGES[@]}"
-  ((retval |= $?))
+  # util_install_pip_packages "${PIP_PACKAGES[@]}"
+  # ((retval |= $?))
+  for package in "${!PIP_PACKAGES[@]}"; do
+
+    util_install_pip "${package}" "${PIP_PACKAGES[$package]}"
+    ((result = $?))
+    ((retval |= "${result}"))
+
+    log_message "setup" "${package} : ${PIP_PACKAGES[$package]}" "${result}"
+  done
 
   # HACK(AK) I don't know how to pass key value pairs to function
   # util_install_npm_packages "${NPM_PACKAGES[@]}"

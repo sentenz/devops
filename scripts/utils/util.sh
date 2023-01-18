@@ -156,16 +156,44 @@ util_cleanup_apt() {
 # Install pip package dependency.
 # Arguments:
 #   $1 - package
+#   $2 - version
 # Returns:
 #   Boolean
 #########################
 util_install_pip() {
   local package="${1:?package is missing}"
+  local version="${2:-}"
 
   local -i retval=0
 
   if ! command -v "${package}" &>/dev/null; then
-    sudo pip install -q "${package}"
+    if [[ -n "${version}" ]]; then
+      sudo pip install -q "${package}==${version}"
+      ((retval = $?))
+    else
+      sudo pip install -q "${package}"
+      ((retval = $?))
+    fi
+  fi
+
+  return "${retval}"
+}
+
+########################
+# Uninstall pip package dependency.
+# Arguments:
+#   $1 - package
+#   $2 - version
+# Returns:
+#   Boolean
+#########################
+util_uninstall_pip() {
+  local package="${1:?package is missing}"
+
+  local -i retval=0
+
+  if command -v "${package}" &>/dev/null; then
+    sudo python -m pip uninstall -y -q "${package}"
     ((retval = $?))
   fi
 
@@ -299,13 +327,18 @@ util_install_curl_packages() {
 #########################
 util_install_npm() {
   local package="${1:?package is missing}"
-  local version="${2:?version is missing}"
+  local version="${2:-}"
 
   local -i retval=0
 
   if ! npm list "${package}" -g --depth=0 &>/dev/null; then
-    sudo npm i --silent -g "${package}"@"${version}"
-    ((retval = $?))
+    if [[ -n "${version}" ]]; then
+      sudo npm i --silent -g "${package}"@"${version}"
+      ((retval = $?))
+    else
+      sudo npm i --silent -g "${package}"@latest
+      ((retval = $?))
+    fi
   fi
 
   return "${retval}"

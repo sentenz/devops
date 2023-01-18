@@ -30,6 +30,7 @@ readonly -a HOOKS=(
   commit-msg
   post-checkout
   pre-commit
+  pre-push
   pre-rebase
 )
 readonly -a SCRIPTS=(
