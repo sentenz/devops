@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/sentenz/devops/compare/v2.1.0...v2.1.1) (2023-01-18)
+
+
+### Bug Fixes
+
+* igrate from `markdownlint-cli` to  `markdownlint-cli2` ([#73](https://github.com/sentenz/devops/issues/73)) ([7366a61](https://github.com/sentenz/devops/commit/7366a614546c8be2b6210802f907c6300efe6b5e)), closes [#72](https://github.com/sentenz/devops/issues/72)
+
 # [2.1.0](https://github.com/sentenz/devops/compare/v2.0.0...v2.1.0) (2023-01-13)
 
 
