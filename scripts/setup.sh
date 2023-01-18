@@ -88,13 +88,11 @@ initialize_container() {
   fi
 
   if util_exists_dir "$(fs_sript_dir)/../build/container"; then
-    fs_create_dir "$(git_root_dir)/build/container"
-    fs_copy_files "$(fs_sript_dir)/../build/container" "$(git_root_dir)/build"
+    fs_copy_files "$(fs_sript_dir)/../build/container" "$(git_root_dir)"
   fi
 
   if util_exists_dir "$(fs_sript_dir)/../.vscode"; then
-    fs_create_dir "$(git_root_dir)/.vscode"
-    fs_copy_files "$(fs_sript_dir)/../.vscode" "$(git_root_dir).vscode"
+    fs_copy_files "$(fs_sript_dir)/../.vscode" "$(git_root_dir)"
   fi
 }
 
