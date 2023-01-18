@@ -9,7 +9,7 @@ set -uo pipefail
 
 # Include libraries
 
-. ./../../scripts/utils/util.sh
+. ./../../scripts/utils/pkg.sh
 
 # Constant variables
 
@@ -24,10 +24,10 @@ readonly -a APT_PACKAGES=(
 setup_integration() {
   local -i result=0
 
-  util_install_apt_packages "${APT_PACKAGES[@]}"
+  pkg_install_apt_list "${APT_PACKAGES[@]}"
   ((result |= $?))
 
-  util_cleanup_apt
+  pkg_cleanup_apt
   ((result |= $?))
 
   return "${result}"

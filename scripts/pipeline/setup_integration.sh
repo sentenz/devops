@@ -9,7 +9,7 @@ set -uo pipefail
 
 # Include libraries
 
-. ./../../scripts/utils/util.sh
+. ./../../scripts/utils/pkg.sh
 
 # Constant variables
 
@@ -26,7 +26,6 @@ readonly -a APT_PACKAGES=(
   nodejs
   npm
   golang-go
-
   licensecheck
   shellcheck
   cppcheck
@@ -35,13 +34,12 @@ readonly -a APT_PACKAGES=(
   clang-format
   valgrind
 )
-readonly -a PIP_PACKAGES=(
-  scan-build
-  codespell
-  cpplint
-  cmake_format
-  yamllint
-  proselint
+readonly -A PIP_PACKAGES=(
+  ["codespell"]="2.2.2"
+  ["cpplint"]="1.6.1"
+  ["cmake_format"]="0.6.13"
+  ["yamllint"]="1.29.0"
+  ["proselint"]="0.13.0"
 )
 readonly -A NPM_PACKAGES=(
   ["alex"]="10.0.0"
@@ -50,7 +48,7 @@ readonly -A NPM_PACKAGES=(
   ["@commitlint/cli"]="17.2.0"
   ["@commitlint/config-conventional"]="17.2.0"
   ["@commitlint/format"]="17.0.0"
-  ["markdownlint"]="0.32.2"
+  ["markdownlint-cli2"]="0.4.0"
   ["markdown-link-check"]="3.10.3"
   ["write-good"]="1.0.8"
   ["remark"]="14.0.2"
@@ -71,34 +69,42 @@ setup_integration() {
   local -i retval=0
   local -i result=0
 
-  util_install_apt_packages "${APT_PACKAGES[@]}"
+  pkg_install_apt_list "${APT_PACKAGES[@]}"
   ((retval |= $?))
 
-  util_install_go_packages "${GO_PACKAGES[@]}"
+  pkg_install_go_list "${GO_PACKAGES[@]}"
   ((retval |= $?))
 
-  util_install_curl_packages "${CURL_PACKAGES[@]}"
+  pkg_install_curl_list "${CURL_PACKAGES[@]}"
   ((retval |= $?))
 
-  util_install_pip_packages "${PIP_PACKAGES[@]}"
-  ((retval |= $?))
+  # pkg_install_pip_list "${PIP_PACKAGES[@]}"
+  # ((retval |= $?))
+  for package in "${!PIP_PACKAGES[@]}"; do
+
+    pkg_install_pip "${package}" "${PIP_PACKAGES[$package]}"
+    ((result = $?))
+    ((retval |= "${result}"))
+
+    log_message "setup" "${package} : ${PIP_PACKAGES[$package]}" "${result}"
+  done
 
   # HACK(AK) I don't know how to pass key value pairs to function
-  # util_install_npm_packages "${NPM_PACKAGES[@]}"
+  # pkg_install_npm_list "${NPM_PACKAGES[@]}"
   # ((result |= $?))
   for package in "${!NPM_PACKAGES[@]}"; do
 
-    util_install_npm "${package}" "${NPM_PACKAGES[$package]}"
+    pkg_install_npm "${package}" "${NPM_PACKAGES[$package]}"
     ((result = $?))
     ((retval |= "${result}"))
 
     log_message "setup" "${package} : ${NPM_PACKAGES[$package]}" "${result}"
   done
 
-  util_cleanup_apt
+  pkg_cleanup_apt
   ((retval |= $?))
 
-  util_cleanup_npm
+  pkg_cleanup_npm
   ((retval |= $?))
 
   return "${retval}"

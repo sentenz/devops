@@ -11,6 +11,7 @@ set -uo pipefail
 
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
+. ./../../scripts/utils/util.sh
 
 # Constant variables
 
@@ -38,11 +39,11 @@ analyzer() {
   local -a filepaths
 
   # Get files
-  if [[ "${F_LINT}" == "ci" ]]; then
+  if util_equal_strings "${F_LINT}" "ci"; then
     filepaths=$(git_get_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-  elif [[ "${F_LINT}" == "diff" ]]; then
+  elif util_equal_strings "${F_LINT}" "diff"; then
     filepaths=$(git_get_diff_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
-  elif [[ "${F_LINT}" == "staged" ]]; then
+  elif util_equal_strings "${F_LINT}" "staged"; then
     filepaths=$(git_get_staged_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
   else
     echo "error: unexpected option: ${F_LINT}" &>"${LOG_FILE}"
@@ -50,7 +51,7 @@ analyzer() {
     return "${STATUS_ERROR}"
   fi
 
-  if [[ -z "${filepaths}" ]]; then
+  if ! util_is_string "${filepaths}"; then
     return "${STATUS_SKIP}"
   fi
 
@@ -69,7 +70,7 @@ analyzer() {
 }
 
 logger() {
-  if ! fs_is_file_empty "${LOG_FILE}"; then
+  if ! util_empty_file "${LOG_FILE}"; then
     return "${STATUS_ERROR}"
   fi
 

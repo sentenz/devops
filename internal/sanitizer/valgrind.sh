@@ -11,6 +11,7 @@ set -uo pipefail
 
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
+. ./../../scripts/utils/util.sh
 
 # Constant variables
 
@@ -41,7 +42,7 @@ analyzer() {
 }
 
 logger() {
-  if ! fs_is_file "${LOG_FILE}"; then
+  if ! util_exists_file "${LOG_FILE}"; then
     return "${STATUS_SUCCESS}"
   fi
 

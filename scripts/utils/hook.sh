@@ -2,6 +2,8 @@
 #
 # Library for git hook actions.
 
+source "$(dirname "${BASH_SOURCE[0]}")/util.sh"
+
 ########################
 # Prevent a direct push to the base branches.
 # Arguments:
@@ -15,7 +17,7 @@ hook_prevent_push_to_base_branches() {
   local -a base_branches=("${@:2}")
 
   for branch in "${base_branches[@]}"; do
-    if [[ "${branch}" == "${local_branch}" ]]; then
+    if util_equal_strings "${branch}" "${local_branch}"; then
       cat <<END
 ___________________________________________________________________________________________________
 Branching Strategy
@@ -49,13 +51,13 @@ hook_enforce_naming_convention_of_support_branch() {
   local local_branch="${1:?local branch is missing}"
   local -a support_branches=("${@:2}")
 
-  regex_patterns="^($(
+  pattern="^($(
     IFS=$'|'
     echo "${support_branches[*]}"
   ))\/[0-9]+[-][a-z-]+$"
-  readonly regex_patterns
+  readonly pattern
 
-  if [[ ! "${local_branch}" =~ ${regex_patterns} ]]; then
+  if util_regex_match "${pattern}" "${local_branch}"; then
     cat <<END
 ___________________________________________________________________________________________________
 Branching Strategy
@@ -168,7 +170,7 @@ hook_enforce_checkout_from_base_branches() {
   local flag_checkout="${2:?checkout flag is missing}"
   local -a base_branches=("${@:3}")
 
-  if [[ "${flag_checkout}" == 0 ]]; then
+  if util_is_string "${flag_checkout}" "0"; then
     return 0
   fi
 
@@ -179,12 +181,12 @@ hook_enforce_checkout_from_base_branches() {
     head -n1 |
     sed "s/^.*\[//")"
 
-  if [[ -z "${parant_branch}" ]]; then
+  if util_is_string "${parant_branch}"; then
     return 0
   fi
 
   for branch in "${base_branches[@]}"; do
-    if [[ "${branch}" == "${parant_branch}" ]]; then
+    if util_equal_strings "${branch}" "${parant_branch}"; then
       return 0
     fi
   done

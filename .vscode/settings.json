@@ -32,7 +32,8 @@
     "editor.formatOnSave": true,
     "editor.tabSize": 2,
     "editor.insertSpaces": true,
-    "editor.detectIndentation": true
+    "editor.detectIndentation": true,
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
  },
   "markdown.extension.toc.levels": "2..2",
   "[yaml]": {

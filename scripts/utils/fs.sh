@@ -2,6 +2,8 @@
 #
 # Library for file system actions.
 
+source "$(dirname "${BASH_SOURCE[0]}")/util.sh"
+
 ########################
 # Ensure a file/directory is owned (user and group) but the given user.
 # Arguments:
@@ -15,42 +17,6 @@ fs_owned_by() {
   local owner="${2:?owner is missing}"
 
   chown -R "$owner":"$owner" "$path"
-}
-
-########################
-# Check if a file exists.
-# Arguments:
-#   $1 - filename
-#   $2 - owner
-# Returns:
-#   Boolean
-#########################
-fs_is_file() {
-  local filename="${1:?filename is missing}"
-
-  if [[ ! -f "${filename}" ]]; then
-    return 1
-  fi
-
-  return 0
-}
-
-########################
-# Check if a directory exists.
-# Arguments:
-#   $1 - directory
-#   $2 - owner
-# Returns:
-#   Boolean
-#########################
-fs_is_dir() {
-  local dir="${1:?directory is missing}"
-
-  if [[ ! -d "${dir}" ]]; then
-    return 1
-  fi
-
-  return 0
 }
 
 ########################
@@ -91,7 +57,7 @@ fs_merge_file() {
 # Ensure a directory exists and, optionally, is owned by the given user.
 # Arguments:
 #   $1 - directory
-#   $2 - owner
+#   $2 - owner (optional)
 # Returns:
 #   None
 #########################
@@ -100,8 +66,8 @@ fs_create_dir() {
   local owner="${2:-}"
 
   mkdir -p "${dir}"
-  if [[ -n $owner ]]; then
-    fs_owned_by "$dir" "$owner"
+  if util_is_string "${owner}"; then
+    fs_owned_by "${dir}" "${owner}"
   fi
 }
 
@@ -154,47 +120,9 @@ fs_remove_dir() {
 fs_remove_empty_file() {
   local filename="${1:?filename is missing}"
 
-  if fs_is_file_empty "${filename}"; then
+  if util_empty_file "${filename}"; then
     rm -f "${filename}"
   fi
-}
-
-########################
-# Checks whether a directory is empty or not.
-# Arguments:
-#   $1 - directory
-# Returns:
-#   Boolean
-#########################
-fs_is_dir_empty() {
-  local dir="${1:?directory is missing}"
-
-  if fs_is_dir "${dir}"; then
-    return 1
-  fi
-
-  if [[ -n "$(ls -A "${dir}")" ]]; then
-    return 1
-  fi
-
-  return 0
-}
-
-########################
-# Checks whether a file is empty or not.
-# Arguments:
-#   $1 - filename
-# Returns:
-#   Boolean
-#########################
-fs_is_file_empty() {
-  local filename="${1:?filename is missing}"
-
-  if [[ -f "${filename}" && -s "${filename}" ]]; then
-    return 1
-  fi
-
-  return 0
 }
 
 ########################

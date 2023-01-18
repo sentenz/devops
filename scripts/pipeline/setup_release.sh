@@ -9,7 +9,7 @@ set -uo pipefail
 
 # Include libraries
 
-. ./../../scripts/utils/util.sh
+. ./../../scripts/utils/pkg.sh
 
 # Constant variables
 
@@ -38,25 +38,25 @@ setup_release() {
   local -i retval=0
   local -i result=0
 
-  util_install_apt_packages "${APT_PACKAGES[@]}"
+  pkg_install_apt_list "${APT_PACKAGES[@]}"
   ((retval |= $?))
 
   # HACK(AK) I don't know how to pass key value pairs to function
-  # util_install_npm_packages "${NPM_PACKAGES[@]}"
+  # pkg_install_npm_list "${NPM_PACKAGES[@]}"
   # ((result |= $?))
   for package in "${!NPM_PACKAGES[@]}"; do
 
-    util_install_npm "${package}" "${NPM_PACKAGES[$package]}"
+    pkg_install_npm "${package}" "${NPM_PACKAGES[$package]}"
     ((result = $?))
     ((retval |= "${result}"))
 
     log_message "setup" "${package} : ${NPM_PACKAGES[$package]}" "${result}"
   done
 
-  util_cleanup_apt
+  pkg_cleanup_apt
   ((retval |= $?))
 
-  util_cleanup_npm
+  pkg_cleanup_npm
   ((retval |= $?))
 
   return "${result}"

@@ -1096,7 +1096,6 @@ Example:
 }
 ```
 
-
 ## 19. Alex
 
 [alex](https://github.com/get-alex/alex) catch insensitive, inconsiderate writing.

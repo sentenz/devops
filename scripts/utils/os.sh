@@ -2,6 +2,8 @@
 #
 # Library for operating system actions.
 
+source "$(dirname "${BASH_SOURCE[0]}")/util.sh"
+
 ########################
 # Get the name of os.
 # Arguments:
@@ -23,7 +25,7 @@ os_get_name() {
 # Returns:
 #   Boolean
 #########################
-os_user_exists() {
+os_exists_user() {
   local user="${1:?user is missing}"
   id "$user" >/dev/null 2>&1
 }
@@ -59,7 +61,7 @@ os_create_group() {
 # Create an user in the system if it does not exist already.
 # Arguments:
 #   $1 - user
-#   $2 - group
+#   $2 - group (optional)
 # Returns:
 #   None
 #########################
@@ -67,11 +69,12 @@ os_create_user() {
   local user="${1:?user is missing}"
   local group="${2:-}"
 
-  if ! os_user_exists "$user"; then
-    useradd "$user" >/dev/null 2>&1
-    if [[ -n "$group" ]]; then
-      os_create_group "$group"
-      usermod -a -G "$group" "$user" >/dev/null 2>&1
+  if ! os_exists_user "${user}"; then
+    useradd "${user}" >/dev/null 2>&1
+
+    if util_is_string "${group}"; then
+      os_create_group "${group}"
+      usermod -a -G "${group}" "${user}" >/dev/null 2>&1
     fi
   fi
 }
@@ -106,7 +109,7 @@ os_get_total_memory() {
 #########################
 # Redirects output to /dev/null if debug mode is disabled.
 # Globals:
-#   DEBUG
+#   DEBUG - (default: false)
 # Arguments:
 #   $@ - Command to execute
 # Returns:
@@ -123,9 +126,9 @@ os_debug_execute() {
 ########################
 # Retries a command a given number of times.
 # Arguments:
-#   $1 - cmd (as a string)
-#   $2 - max retries. Default: 12
-#   $3 - sleep between retries (in seconds). Default: 5
+#   $1 - cmd as a string
+#   $2 - max retries (default: 12)
+#   $3 - sleep between retries in seconds (default: 5)
 # Returns:
 #   Boolean
 #########################

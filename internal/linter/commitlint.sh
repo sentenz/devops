@@ -11,6 +11,7 @@ set -uo pipefail
 
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
+. ./../../scripts/utils/util.sh
 
 # Constant variables
 
@@ -36,11 +37,11 @@ analyzer() {
   local -a filepaths
 
   # Get files
-  if [[ "${F_LINT}" == "ci" ]]; then
+  if util_equal_strings "${F_LINT}" "ci"; then
     return "${STATUS_SUCCESS}"
-  elif [[ "${F_LINT}" == "diff" ]]; then
+  elif util_equal_strings "${F_LINT}" "diff"; then
     return "${STATUS_SUCCESS}"
-  elif [[ "${F_LINT}" == "staged" ]]; then
+  elif util_equal_strings "${F_LINT}" "staged"; then
     filepaths="$(git_get_root_dir)/.git/COMMIT_EDITMSG"
   else
     echo "error: unexpected option: ${F_LINT}" &>"${LOG_FILE}"
@@ -48,7 +49,7 @@ analyzer() {
     return "${STATUS_ERROR}"
   fi
 
-  if [[ -z "${filepaths}" ]]; then
+  if ! util_is_string "${filepaths}"; then
     return "${STATUS_SKIP}"
   fi
 
@@ -67,7 +68,7 @@ analyzer() {
 }
 
 logger() {
-  if ! fs_is_file "${LOG_FILE}"; then
+  if ! util_exists_file "${LOG_FILE}"; then
     return "${STATUS_SUCCESS}"
   fi
 
