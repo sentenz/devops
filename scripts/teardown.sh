@@ -59,50 +59,50 @@ readonly -a CONTAINERS=(
 
 cleanup_scripts() {
   for script in "${SCRIPTS[@]}"; do
-    if util_exists_file "$(git_get_root_dir)/scripts/pipeline/${script}"; then
-      fs_remove_file "$(git_get_root_dir)/scripts/pipeline/${script}"
+    if util_exists_file "$(git_root_dir)/scripts/pipeline/${script}"; then
+      fs_remove_file "$(git_root_dir)/scripts/pipeline/${script}"
     fi
   done
 
   for script in "${SCRIPTS[@]}"; do
-    if util_exists_file "$(git_get_root_dir)/scripts/utils/${script}"; then
-      fs_remove_file "$(git_get_root_dir)/scripts/utils/${script}"
+    if util_exists_file "$(git_root_dir)/scripts/utils/${script}"; then
+      fs_remove_file "$(git_root_dir)/scripts/utils/${script}"
     fi
   done
 }
 
 cleanup_githooks() {
   for hook in "${HOOKS[@]}"; do
-    if util_exists_file "$(git_get_root_dir)/githooks/${hook}"; then
-      fs_remove_file "$(git_get_root_dir)/githooks/${hook}"
+    if util_exists_file "$(git_root_dir)/githooks/${hook}"; then
+      fs_remove_file "$(git_root_dir)/githooks/${hook}"
     fi
   done
 }
 
 cleanup_dotfiles() {
-  if util_exists_dir "$(git_get_root_dir)/dotfiles"; then
-    fs_remove_dir "$(git_get_root_dir)/dotfiles"
+  if util_exists_dir "$(git_root_dir)/dotfiles"; then
+    fs_remove_dir "$(git_root_dir)/dotfiles"
   fi
 }
 
 cleanup_pipelines() {
   for pipeline in "${PIPELINES[@]}"; do
-    if util_exists_file "$(git_get_root_dir)/.azure/${pipeline}"; then
-      fs_remove_file "$(git_get_root_dir)/.azure/${pipeline}"
+    if util_exists_file "$(git_root_dir)/.azure/${pipeline}"; then
+      fs_remove_file "$(git_root_dir)/.azure/${pipeline}"
     fi
   done
 
   for pipeline in "${PIPELINES[@]}"; do
-    if util_exists_file "$(git_get_root_dir)/.github/workflows/${pipeline}"; then
-      fs_remove_file "$(git_get_root_dir)/.github/workflows/${pipeline}"
+    if util_exists_file "$(git_root_dir)/.github/workflows/${pipeline}"; then
+      fs_remove_file "$(git_root_dir)/.github/workflows/${pipeline}"
     fi
   done
 }
 
 cleanup_container() {
   for container in "${CONTAINERS[@]}"; do
-    if util_exists_file "$(git_get_root_dir)/build/container/${container}"; then
-      fs_remove_file "$(git_get_root_dir)/build/container/${container}"
+    if util_exists_file "$(git_root_dir)/build/container/${container}"; then
+      fs_remove_file "$(git_root_dir)/build/container/${container}"
     fi
   done
 }

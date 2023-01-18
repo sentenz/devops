@@ -15,7 +15,7 @@ set -uo pipefail
 
 # Constant variables
 
-PATH_ROOT_DIR="$(git_get_root_dir)"
+PATH_ROOT_DIR="$(git_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".remarkrc.json"
 # readonly RC_IGNORE_FILE=".remarkignore"
@@ -40,11 +40,11 @@ analyzer() {
 
   # Get files
   if util_equal_strings "${F_LINT}" "ci"; then
-    filepaths=$(git_get_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+    filepaths=$(git_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
   elif util_equal_strings "${F_LINT}" "diff"; then
-    filepaths=$(git_get_diff_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+    filepaths=$(git_diff_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
   elif util_equal_strings "${F_LINT}" "staged"; then
-    filepaths=$(git_get_staged_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
+    filepaths=$(git_staged_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
   else
     echo "error: unexpected option: ${F_LINT}" &>"${LOG_FILE}"
 

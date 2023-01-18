@@ -15,7 +15,7 @@ set -uo pipefail
 
 # Constant variables
 
-PATH_ROOT_DIR="$(git_get_root_dir)"
+PATH_ROOT_DIR="$(git_root_dir)"
 readonly PATH_ROOT_DIR
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/sanitizer/valgrind.log"
 

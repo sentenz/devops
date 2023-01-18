@@ -12,7 +12,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/util.sh"
 #   None
 #########################
 git_configure_repo_ownership() {
-  git config --global --add safe.directory "$(git_get_root_dir)"
+  git config --global --add safe.directory "$(git_root_dir)"
 }
 
 ########################
@@ -22,7 +22,7 @@ git_configure_repo_ownership() {
 # Returns:
 #   Path
 #########################
-git_get_root_dir() {
+git_root_dir() {
   local retval
   retval="$(git rev-parse --show-superproject-working-tree --show-toplevel | head -1)"
 
@@ -38,7 +38,7 @@ git_get_root_dir() {
 #########################
 git_valid_repo() {
   local path
-  path="$(git_get_root_dir)"
+  path="$(git_root_dir)"
 
   if ! util_exists_dir "${path}/.git"; then
     return 1
@@ -54,7 +54,7 @@ git_valid_repo() {
 # Returns:
 #   Branch
 #########################
-git_get_local_branch() {
+git_local_branch() {
   local retval
   retval="$(git rev-parse --abbrev-ref HEAD)"
 
@@ -70,7 +70,7 @@ git_get_local_branch() {
 # Returns:
 #   List
 #########################
-git_get_staged_files() {
+git_staged_files() {
   local path="${1:-}"
   local regex="${2:-}"
 
@@ -89,7 +89,7 @@ git_get_staged_files() {
 # Returns:
 #   List
 #########################
-git_get_diff_files() {
+git_diff_files() {
   local path="${1:-}"
   local regex="${2:-}"
 
@@ -108,7 +108,7 @@ git_get_diff_files() {
 # Returns:
 #   List
 #########################
-git_get_ci_files() {
+git_ci_files() {
   local path="${1:-}"
   local regex="${2:-}"
 

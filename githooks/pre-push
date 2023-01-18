@@ -40,9 +40,9 @@ readonly REMOTE_BRANCHE
 URL="${2}"
 readonly URL
 
-LOG_FILE="$(git_get_root_dir)/logs/githooks/pre-push.log"
+LOG_FILE="$(git_root_dir)/logs/githooks/pre-push.log"
 readonly LOG_FILE
-LOCAL_BRANCH="$(git_get_local_branch)"
+LOCAL_BRANCH="$(git_local_branch)"
 readonly LOCAL_BRANCH
 readonly -a BASE_BRANCHES=(
   main
