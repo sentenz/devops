@@ -36,21 +36,21 @@ readonly LOG_FILE
 # Internal functions
 
 run_commit_msg() {
-  local -i result=0
+  local -i retval=0
 
   fs_create_file "${LOG_FILE}"
 
   hook_enforce_commit_message_convention "make run-linter-commit" "${COMMIT_MESSAGE_FILE}" &>"${LOG_FILE}"
-  ((result = $?))
-  if ((result == 1)); then
-    log_message "githooks" "pre-push" "${result}"
+  ((retval = $?))
+  if [[ "${retval}" -ne 0 ]]; then
+    log_message "githooks" "pre-push" "${retval}"
 
-    return "${result}"
+    return "${retval}"
   fi
 
   # fs_remove_file "${LOG_FILE}"
 
-  return "${result}"
+  return "${retval}"
 }
 
 # Control flow logic

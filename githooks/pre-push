@@ -56,29 +56,29 @@ readonly -a SUPPORT_BRANCHES=(
 # Internal functions
 
 run_pre_push() {
-  local -i result=0
+  local -i retval=0
 
   fs_create_file "${LOG_FILE}"
 
   hook_prevent_push_to_base_branches "${LOCAL_BRANCH}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
-  ((result = $?))
-  if ((result == 1)); then
-    log_message "githooks" "pre-push" "${result}"
+  ((retval = $?))
+  if [[ "${retval}" -ne 0 ]]; then
+    log_message "githooks" "pre-push" "${retval}"
 
-    return "${result}"
+    return "${retval}"
   fi
 
   hook_enforce_naming_convention_of_support_branch "${LOCAL_BRANCH}" "${SUPPORT_BRANCHES[@]}" &>"${LOG_FILE}"
-  ((result = $?))
-  if ((result == 1)); then
-    log_message "githooks" "pre-push" "${result}"
+  ((retval = $?))
+  if [[ "${retval}" -ne 0 ]]; then
+    log_message "githooks" "pre-push" "${retval}"
 
-    return "${result}"
+    return "${retval}"
   fi
 
   fs_remove_file "${LOG_FILE}"
 
-  return "${result}"
+  return "${retval}"
 }
 
 # Control flow logic
