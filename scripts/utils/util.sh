@@ -124,7 +124,7 @@ util_regex_match() {
   local pattern="${1}"
   local string="${2}"
 
-  if [[ ! "${string}" =~ ${pattern} ]]; then
+  if [[ ! "${string}" =~ $pattern ]]; then
     return 1
   fi
 
