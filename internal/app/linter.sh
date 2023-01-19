@@ -70,19 +70,19 @@ analyze() {
   local script="${1}"
   local f_lint="${2}"
 
-  local -i result=0
+  local -i retval=0
 
   chmod +x "${script}.sh"
   ./"${script}.sh" -l "${f_lint}"
-  ((result = $?))
+  ((retval = $?))
 
-  log_message "linter - ${f_lint}" "${script}" "${result}"
+  log_message "linter - ${f_lint}" "${script}" "${retval}"
 
-  if ((result == STATUS_SKIP)) || ((result == STATUS_WARNING)); then
+  if ((retval == STATUS_SKIP)) || ((retval == STATUS_WARNING)); then
     return "${STATUS_SUCCESS}"
   fi
 
-  return "${result}"
+  return "${retval}"
 }
 
 run_linter() {
@@ -91,16 +91,16 @@ run_linter() {
   initialize_logs
 
   (
-    local -i result=0
+    local -i retval=0
 
     cd "$(fs_sript_dir)/../linter" || return "${STATUS_ERROR}"
 
     for script in "${scripts[@]}"; do
       analyze "${script}" "${F_LINT}"
-      ((result |= $?))
+      ((retval |= $?))
     done
 
-    return "${result}"
+    return "${retval}"
   )
 }
 

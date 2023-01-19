@@ -97,12 +97,12 @@ END
 hook_enforce_coding_standards() {
   local cmd="${1:?executable command is missing}"
 
-  local -i result=0
+  local -i retval=0
 
   bash -c "${cmd}"
-  ((result = $?))
+  ((retval = $?))
 
-  if ((result != 0)); then
+  if ((retval != 0)); then
     cat <<END
 ___________________________________________________________________________________________________
 Static Code Analysis
@@ -114,7 +114,7 @@ ________________________________________________________________________________
 END
   fi
 
-  return "${result}"
+  return "${retval}"
 }
 
 ########################
@@ -129,12 +129,12 @@ hook_enforce_commit_message_convention() {
   local cmd="${1:?executable command is missing}"
   local commit="${2:?commit message file is missing}"
 
-  local -i result=0
+  local -i retval=0
 
   bash -c "${cmd}"
-  ((result = $?))
+  ((retval = $?))
 
-  if ((result != 0)); then
+  if ((retval != 0)); then
     cat <<END
 ___________________________________________________________________________________________________
 Commit Message Convention
@@ -154,7 +154,7 @@ ________________________________________________________________________________
 END
   fi
 
-  return "${result}"
+  return "${retval}"
 }
 
 ########################
