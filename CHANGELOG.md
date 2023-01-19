@@ -1,3 +1,10 @@
+## [2.1.5](https://github.com/sentenz/devops/compare/v2.1.4...v2.1.5) (2023-01-19)
+
+
+### Bug Fixes
+
+* tidy up codebase ([#83](https://github.com/sentenz/devops/issues/83)) ([d4a21c9](https://github.com/sentenz/devops/commit/d4a21c9be701fc42beabd824aaed0f46cfcdc67c)), closes [#82](https://github.com/sentenz/devops/issues/82)
+
 ## [2.1.4](https://github.com/sentenz/devops/compare/v2.1.3...v2.1.4) (2023-01-19)
 
 
