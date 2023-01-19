@@ -1,3 +1,10 @@
+## [2.1.4](https://github.com/sentenz/devops/compare/v2.1.3...v2.1.4) (2023-01-19)
+
+
+### Bug Fixes
+
+* modify minor issues ([#81](https://github.com/sentenz/devops/issues/81)) ([e811293](https://github.com/sentenz/devops/commit/e811293a847a1f4c854337c281b255b05117f7d7)), closes [#80](https://github.com/sentenz/devops/issues/80)
+
 ## [2.1.3](https://github.com/sentenz/devops/compare/v2.1.2...v2.1.3) (2023-01-18)
 
 
