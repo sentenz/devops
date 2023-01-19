@@ -21,19 +21,19 @@ readonly -a APT_PACKAGES=(
 
 # Internal functions
 
-setup_integration() {
-  local -i result=0
+setup_testing() {
+  local -i retval=0
 
   pkg_install_apt_list "${APT_PACKAGES[@]}"
-  ((result |= $?))
+  ((retval |= $?))
 
   pkg_cleanup_apt
-  ((result |= $?))
+  ((retval |= $?))
 
-  return "${result}"
+  return "${retval}"
 }
 
 # Control flow logic
 
-setup_integration
+setup_testing
 exit "${?}"

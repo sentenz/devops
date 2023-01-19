@@ -52,6 +52,7 @@ readonly -a PIPELINES=(
   continuous-testing.yml
 )
 readonly -a CONTAINERS=(
+  devcontainer.json
   devcontainer.dockerfile
 )
 
@@ -101,6 +102,10 @@ cleanup_pipelines() {
 
 cleanup_container() {
   for container in "${CONTAINERS[@]}"; do
+    if util_exists_file "$(git_root_dir)/.devcontainer/${container}"; then
+      fs_remove_file "$(git_root_dir)/.devcontainer/${container}"
+    fi
+
     if util_exists_file "$(git_root_dir)/build/container/${container}"; then
       fs_remove_file "$(git_root_dir)/build/container/${container}"
     fi

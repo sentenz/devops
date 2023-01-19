@@ -91,7 +91,7 @@ setup_integration() {
 
   # HACK(AK) I don't know how to pass key value pairs to function
   # pkg_install_npm_list "${NPM_PACKAGES[@]}"
-  # ((result |= $?))
+  # ((retval |= $?))
   for package in "${!NPM_PACKAGES[@]}"; do
 
     pkg_install_npm "${package}" "${NPM_PACKAGES[$package]}"
