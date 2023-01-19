@@ -36,7 +36,7 @@ run_pre_commit() {
 
   fs_create_file "${LOG_FILE}"
 
-  hook_enforce_coding_standards "make run-linter-staged" &>"${LOG_FILE}"
+  hook_veriy_code_convention "make run-linter-staged" &>"${LOG_FILE}"
   ((retval = $?))
   if ((retval != 0)); then
     log_message "githooks" "pre-push" "${retval}"

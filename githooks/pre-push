@@ -60,7 +60,7 @@ run_pre_push() {
 
   fs_create_file "${LOG_FILE}"
 
-  hook_prevent_push_to_base_branches "${LOCAL_BRANCH}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
+  hook_verify_branch_push "${LOCAL_BRANCH}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
   ((retval = $?))
   if ((retval != 0)); then
     log_message "githooks" "pre-push" "${retval}"
@@ -68,7 +68,7 @@ run_pre_push() {
     return "${retval}"
   fi
 
-  hook_enforce_naming_convention_of_support_branch "${LOCAL_BRANCH}" "${SUPPORT_BRANCHES[@]}" &>"${LOG_FILE}"
+  hook_verify_branch_naming "${LOCAL_BRANCH}" "${SUPPORT_BRANCHES[@]}" &>"${LOG_FILE}"
   ((retval = $?))
   if ((retval != 0)); then
     log_message "githooks" "pre-push" "${retval}"

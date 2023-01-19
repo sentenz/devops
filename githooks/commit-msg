@@ -40,7 +40,7 @@ run_commit_msg() {
 
   fs_create_file "${LOG_FILE}"
 
-  hook_enforce_commit_message_convention "make run-linter-commit" "${COMMIT_MESSAGE_FILE}" &>"${LOG_FILE}"
+  hook_verify_commit_convention "make run-linter-commit" "${COMMIT_MESSAGE_FILE}" &>"${LOG_FILE}"
   ((retval = $?))
   if ((retval != 0)); then
     log_message "githooks" "pre-push" "${retval}"

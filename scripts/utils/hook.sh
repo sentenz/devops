@@ -12,7 +12,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/util.sh"
 # Returns:
 #   Boolean
 #########################
-hook_prevent_push_to_base_branches() {
+hook_verify_branch_push() {
   local local_branch="${1:?local branch is missing}"
   local -a base_branches=("${@:2}")
 
@@ -47,7 +47,7 @@ END
 # Returns:
 #   Boolean
 #########################
-hook_enforce_naming_convention_of_support_branch() {
+hook_verify_branch_naming() {
   local local_branch="${1:?local branch is missing}"
   local -a support_branches=("${@:2}")
 
@@ -94,7 +94,7 @@ END
 # Returns:
 #   Boolean
 #########################
-hook_enforce_coding_standards() {
+hook_veriy_code_convention() {
   local cmd="${1:?executable command is missing}"
 
   local -i retval=0
@@ -125,7 +125,7 @@ END
 # Returns:
 #   Boolean
 #########################
-hook_enforce_commit_message_convention() {
+hook_verify_commit_convention() {
   local cmd="${1:?executable command is missing}"
   local commit="${2:?commit message file is missing}"
 
@@ -158,7 +158,7 @@ END
 }
 
 ########################
-# Enforce to create the support branches from the base branches.
+# Enforce the creation of support branches from the base branches.
 # Arguments:
 #   $1 - local branch
 #   $2 - flag checkout
@@ -166,7 +166,7 @@ END
 # Returns:
 #   Boolean
 #########################
-hook_enforce_checkout_from_base_branches() {
+hook_verify_branch_context() {
   local local_branch="${1:?local branch is missing}"
   local flag_checkout="${2:?checkout flag is missing}"
   local -a base_branches=("${@:3}")
@@ -193,7 +193,6 @@ hook_enforce_checkout_from_base_branches() {
   done
 
   git checkout "${parant_branch}"
-  git branch -d "${local_branch}"
 
   cat <<END
 ___________________________________________________________________________________________________

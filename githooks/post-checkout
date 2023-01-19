@@ -49,7 +49,7 @@ run_post_checkout() {
 
   fs_create_file "${LOG_FILE}"
 
-  hook_enforce_checkout_from_base_branches "${LOCAL_BRANCH}" "${FLAG_CHECKOUT}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
+  hook_verify_branch_context "${LOCAL_BRANCH}" "${FLAG_CHECKOUT}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
   ((retval = $?))
   if ((retval != 0)); then
     log_message "githooks" "pre-push" "${retval}"
