@@ -62,7 +62,7 @@ run_pre_push() {
 
   hook_prevent_push_to_base_branches "${LOCAL_BRANCH}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
   ((retval = $?))
-  if [[ "${retval}" -ne 0 ]]; then
+  if ((retval != 0)); then
     log_message "githooks" "pre-push" "${retval}"
 
     return "${retval}"
@@ -70,7 +70,7 @@ run_pre_push() {
 
   hook_enforce_naming_convention_of_support_branch "${LOCAL_BRANCH}" "${SUPPORT_BRANCHES[@]}" &>"${LOG_FILE}"
   ((retval = $?))
-  if [[ "${retval}" -ne 0 ]]; then
+  if ((retval != 0)); then
     log_message "githooks" "pre-push" "${retval}"
 
     return "${retval}"

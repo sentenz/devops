@@ -51,7 +51,7 @@ run_post_checkout() {
 
   hook_enforce_checkout_from_base_branches "${LOCAL_BRANCH}" "${FLAG_CHECKOUT}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
   ((retval = $?))
-  if [[ "${retval}" -ne 0 ]]; then
+  if ((retval != 0)); then
     log_message "githooks" "pre-push" "${retval}"
 
     return "${retval}"

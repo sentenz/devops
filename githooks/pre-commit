@@ -38,7 +38,7 @@ run_pre_commit() {
 
   hook_enforce_coding_standards "make run-linter-staged" &>"${LOG_FILE}"
   ((retval = $?))
-  if [[ "${retval}" -ne 0 ]]; then
+  if ((retval != 0)); then
     log_message "githooks" "pre-push" "${retval}"
 
     return "${retval}"

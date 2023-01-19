@@ -42,7 +42,7 @@ run_commit_msg() {
 
   hook_enforce_commit_message_convention "make run-linter-commit" "${COMMIT_MESSAGE_FILE}" &>"${LOG_FILE}"
   ((retval = $?))
-  if [[ "${retval}" -ne 0 ]]; then
+  if ((retval != 0)); then
     log_message "githooks" "pre-push" "${retval}"
 
     return "${retval}"
