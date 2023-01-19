@@ -54,7 +54,7 @@ hook_enforce_naming_convention_of_support_branch() {
   pattern="^($(
     IFS=$'|'
     echo "${support_branches[*]}"
-  ))\/[0-9]+[-][a-z-]+$"
+  ))\/\d+[a-z0-9-]+[a-z0-9]+$"
   readonly pattern
 
   # shellcheck disable=SC2086
