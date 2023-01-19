@@ -122,28 +122,28 @@ run_scripts() {
   local -a scripts=("$@")
 
   (
-    local -i result=0
+    local -i retval=0
 
     cd "$(fs_sript_dir)/pipeline" || return "${STATUS_ERROR}"
 
     for script in "${scripts[@]}"; do
       chmod +x "${script}"
       ./"${script}"
-      ((result |= $?))
+      ((retval |= $?))
     done
 
-    return "${result}"
+    return "${retval}"
   )
 }
 
 setup() {
-  local -i result=0
+  local -i retval=0
 
   pkg_install_apt_list "${APT_PACKAGES[@]}"
-  ((result |= $?))
+  ((retval |= $?))
 
   run_scripts "${SCRIPTS[@]}"
-  ((result |= $?))
+  ((retval |= $?))
 
   initialize_repo
   initialize_scripts
@@ -154,9 +154,9 @@ setup() {
   initialize_merge
 
   pkg_cleanup_apt
-  ((result |= $?))
+  ((retval |= $?))
 
-  return "${result}"
+  return "${retval}"
 }
 
 # Control flow logic

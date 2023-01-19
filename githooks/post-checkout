@@ -45,21 +45,21 @@ readonly -a BASE_BRANCHES=(
 # Internal functions
 
 run_post_checkout() {
-  local -i result=0
+  local -i retval=0
 
   fs_create_file "${LOG_FILE}"
 
-  hook_enforce_checkout_from_base_branches "${LOCAL_BRANCH}" "${FLAG_CHECKOUT}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
-  ((result = $?))
-  if ((result == 1)); then
-    log_message "githooks" "pre-push" "${result}"
+  hook_verify_branch_context "${LOCAL_BRANCH}" "${FLAG_CHECKOUT}" "${BASE_BRANCHES[@]}" &>"${LOG_FILE}"
+  ((retval = $?))
+  if ((retval != 0)); then
+    log_message "githooks" "pre-push" "${retval}"
 
-    return "${result}"
+    return "${retval}"
   fi
 
   fs_remove_file "${LOG_FILE}"
 
-  return "${result}"
+  return "${retval}"
 }
 
 # Control flow logic

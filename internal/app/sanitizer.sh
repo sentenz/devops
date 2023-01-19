@@ -51,19 +51,19 @@ analyze() {
   local script="${1:?script is missing}"
   local f_binary="${2:?binary is missing}"
 
-  local -i result=0
+  local -i retval=0
 
   chmod +x "${script}.sh"
   ./"${script}.sh" -b "${f_binary}"
-  ((result = $?))
+  ((retval = $?))
 
-  log_message "sanitizer - ${f_binary}" "${script}" "${result}"
+  log_message "sanitizer - ${f_binary}" "${script}" "${retval}"
 
-  if ((result == STATUS_SKIP)) || ((result == STATUS_WARNING)); then
+  if ((retval == STATUS_SKIP)) || ((retval == STATUS_WARNING)); then
     return "${STATUS_SUCCESS}"
   fi
 
-  return "${result}"
+  return "${retval}"
 }
 
 run_sanitizer() {
@@ -72,16 +72,16 @@ run_sanitizer() {
   initialize_logs
 
   (
-    local -i result=0
+    local -i retval=0
 
     cd "$(fs_sript_dir)/../sanitizer" || return "${STATUS_ERROR}"
 
     for script in "${scripts[@]}"; do
       analyze "${script}" "${F_BINARY}"
-      ((result |= $?))
+      ((retval |= $?))
     done
 
-    return "${result}"
+    return "${retval}"
   )
 }
 

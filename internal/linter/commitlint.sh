@@ -84,15 +84,15 @@ logger() {
 }
 
 run_commitlint() {
-  local -i result=0
+  local -i retval=0
 
   analyzer
-  ((result |= $?))
+  ((retval |= $?))
 
   logger
-  ((result |= $?))
+  ((retval |= $?))
 
-  return "${result}"
+  return "${retval}"
 }
 
 # Control flow logic
