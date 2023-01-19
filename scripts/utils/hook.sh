@@ -54,11 +54,10 @@ hook_verify_branch_naming() {
   pattern="^($(
     IFS=$'|'
     echo "${support_branches[*]}"
-  ))\/\d+[a-z0-9-]+[a-z0-9]+$"
-  readonly pattern
+  ))\/[0-9]+[a-z0-9-]+[a-z0-9]+$"
 
   # shellcheck disable=SC2086
-  if util_regex_match ${pattern} "${local_branch}"; then
+  if ! util_regex_match "${pattern}" "${local_branch}"; then
     cat <<END
 ___________________________________________________________________________________________________
 Branching Strategy
