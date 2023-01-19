@@ -57,7 +57,8 @@ hook_enforce_naming_convention_of_support_branch() {
   ))\/[0-9]+[-][a-z-]+$"
   readonly pattern
 
-  if util_regex_match "${pattern}" "${local_branch}"; then
+  # shellcheck disable=SC2086
+  if util_regex_match ${pattern} "${local_branch}"; then
     cat <<END
 ___________________________________________________________________________________________________
 Branching Strategy

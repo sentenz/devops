@@ -115,8 +115,8 @@ util_empty_file() {
 ########################
 # Perform a regex match against the specified pattern.
 # Arguments:
-#   $1 - string1
-#   $2 - string2
+#   $1 - pattern (must be unquoted)
+#   $2 - string
 # Returns:
 #   Boolean - true if the match
 #########################
