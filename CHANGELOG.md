@@ -1,3 +1,10 @@
+## [2.1.6](https://github.com/sentenz/devops/compare/v2.1.5...v2.1.6) (2023-01-19)
+
+
+### Bug Fixes
+
+* **scripts:** modify git hook function to verify branch naming convention ([#85](https://github.com/sentenz/devops/issues/85)) ([1518600](https://github.com/sentenz/devops/commit/15186001d20a56398c4a393523f66dc06a780532)), closes [#84](https://github.com/sentenz/devops/issues/84)
+
 ## [2.1.5](https://github.com/sentenz/devops/compare/v2.1.4...v2.1.5) (2023-01-19)
 
 
