@@ -170,7 +170,7 @@ hook_verify_branch_context() {
   local flag_checkout="${2:?checkout flag is missing}"
   local -a base_branches=("${@:3}")
 
-  if util_is_string "${flag_checkout}" "0"; then
+  if util_equal_strings "${flag_checkout}" "0"; then
     return 0
   fi
 
@@ -181,7 +181,7 @@ hook_verify_branch_context() {
     head -n1 |
     sed "s/^.*\[//")"
 
-  if util_is_string "${parant_branch}"; then
+  if ! util_is_string "${parant_branch}"; then
     return 0
   fi
 
@@ -191,7 +191,8 @@ hook_verify_branch_context() {
     fi
   done
 
-  git checkout "${parant_branch}"
+  # Skip hook trigger
+  git -c core.hooksPath=/dev/null checkout "${parant_branch}"
 
   cat <<END
 ___________________________________________________________________________________________________
