@@ -1,3 +1,10 @@
+## [2.1.7](https://github.com/sentenz/devops/compare/v2.1.6...v2.1.7) (2023-01-20)
+
+
+### Bug Fixes
+
+* **githooks:** enforce to create the support branches from the base branches ([#87](https://github.com/sentenz/devops/issues/87)) ([cf5d5e5](https://github.com/sentenz/devops/commit/cf5d5e53e0a63b606789093f33aa10fc1a590472)), closes [#86](https://github.com/sentenz/devops/issues/86)
+
 ## [2.1.6](https://github.com/sentenz/devops/compare/v2.1.5...v2.1.6) (2023-01-19)
 
 
