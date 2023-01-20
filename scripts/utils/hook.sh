@@ -191,9 +191,6 @@ hook_verify_branch_context() {
     fi
   done
 
-  # Skip hook trigger
-  git -c core.hooksPath=/dev/null checkout "${parant_branch}"
-
   cat <<END
 ___________________________________________________________________________________________________
 Branching Strategy
@@ -206,6 +203,9 @@ Though, support branches should be created from a base branch, e.g. "${base_bran
 See https://sentenz.github.io/guide/internal/guideline/branching-strategies-guide.html
 ___________________________________________________________________________________________________
 END
+
+  # Skip hook trigger
+  git -c core.hooksPath=/dev/null checkout "${parant_branch}"
 
   return 1
 }
