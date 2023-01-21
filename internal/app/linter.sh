@@ -35,7 +35,7 @@ readonly -a SCRIPTS=(
   remark
   markdown_link_check
   markdownlint_cli2
-  # commitlint
+  commitlint
   cppcheck
   cpplint
   clang_tidy

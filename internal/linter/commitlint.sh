@@ -38,11 +38,11 @@ analyzer() {
 
   # Get files
   if util_equal_strings "${F_LINT}" "ci"; then
-    return "${STATUS_SUCCESS}"
+    filepaths="$(git_local_commit)"
   elif util_equal_strings "${F_LINT}" "diff"; then
-    return "${STATUS_SUCCESS}"
+    return "${STATUS_SKIP}"
   elif util_equal_strings "${F_LINT}" "staged"; then
-    filepaths="$(git_root_dir)/.git/COMMIT_EDITMSG"
+    return "${STATUS_SKIP}"
   else
     echo "error: unexpected option: ${F_LINT}" &>"${LOG_FILE}"
 
