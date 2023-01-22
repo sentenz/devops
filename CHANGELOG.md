@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/sentenz/devops/compare/v2.1.7...v2.2.0) (2023-01-22)
+
+
+### Features
+
+* **internal:** modify the implemented commitlint with git_local_commit() ([#90](https://github.com/sentenz/devops/issues/90)) ([e15c506](https://github.com/sentenz/devops/commit/e15c506cc5afef3a2cb4bbfc2ca98a5c7c1ee41e)), closes [#88](https://github.com/sentenz/devops/issues/88) [#89](https://github.com/sentenz/devops/issues/89)
+
 ## [2.1.7](https://github.com/sentenz/devops/compare/v2.1.6...v2.1.7) (2023-01-20)
 
 
