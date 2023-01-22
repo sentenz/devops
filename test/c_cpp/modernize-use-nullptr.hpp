@@ -5,21 +5,18 @@
 
 namespace tidy {
 
-inline void bar(int*& p)
-{
-    p = NULL;
-}
+  inline void bar(int*& p) {
+    p = nullptr;
+  }
 
-struct T
-{
-    int* p_ = 0;
+  struct T {
+    int* p_ = nullptr;
 
-    void foo(int* p = 0)
-    {
-        bar(p);
+    void foo(int* p = nullptr) {
+      bar(p);
     }
-};
+  };
 
-} // namespace tidy
+}  // namespace tidy
 
 #endif

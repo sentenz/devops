@@ -26,20 +26,20 @@
   "git.ignoreLimitWarning": true,
   "conventionalCommits.gitmoji": false,
   "shellformat.useEditorConfig": true,
-  "[markdown]": {
-    "editor.formatOnSave": true,
-    "editor.tabSize": 2,
-    "editor.insertSpaces": true,
-    "editor.detectIndentation": true,
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
- },
-  "markdown.extension.toc.levels": "2..3",
+ "[markdown]": {
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": true,
+  "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+},
+"markdown.extension.toc.levels": "2..3",
   "[yaml]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
-    "editor.formatOnSave": false,
+    "editor.formatOnSave": true,
     "editor.tabSize": 2,
     "editor.insertSpaces": true,
     "editor.defaultFormatter": "vscode.json-language-features"

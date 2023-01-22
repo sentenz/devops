@@ -55,10 +55,27 @@ git_valid_repo() {
 #   Branch
 #########################
 git_local_branch() {
-  local retval
-  retval="$(git rev-parse --abbrev-ref HEAD)"
+  local branch
+  branch="$(git rev-parse --abbrev-ref HEAD)"
 
-  echo "${retval}"
+  echo "${branch}"
+}
+
+########################
+# Retrieve the commit message file of the edit commit on a local Git repository by command
+# substitution.
+# Arguments:
+#   None
+# Returns:
+#   File
+#########################
+git_local_commit() {
+  local file
+  file="$(git_root_dir)/.git/COMMIT_EDITMSG"
+
+  if util_exists_file "${file}"; then
+    echo "${file}"
+  fi
 }
 
 ########################

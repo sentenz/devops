@@ -12,6 +12,7 @@ set -uo pipefail
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
 . ./../../scripts/utils/util.sh
+. ./../../scripts/utils/cli.sh
 
 # Constant variables
 
@@ -20,7 +21,7 @@ readonly PATH_ROOT_DIR
 # readonly RC_FILE=".prettierrc.json"
 # readonly RC_IGNORE_FILE=".prettierignore"
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/prettier.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(js|jsx|ts|tsx|json|css|scss|md|yml|yaml|html)$"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG\.md)).*\.(js|jsx|ts|tsx|json|css|scss|md|yml|yaml|html)$"
 
 # Options
 
@@ -55,23 +56,23 @@ analyzer() {
     return "${STATUS_SKIP}"
   fi
 
-  # Run linter
-  local -r cmd="prettier -l -w"
-
-  (
-    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
-
-    for filepath in "${filepaths[@]}"; do
-      eval "${cmd}" "${filepath}"
-    done
-  ) &>"${LOG_FILE}"
+  # shellcheck disable=SC2068
+  for filepath in ${filepaths[@]}; do
+    cli_prettier "${filepath}"
+  done &>"${LOG_FILE}"
 
   return "${STATUS_SUCCESS}"
 }
 
 logger() {
-  if ! util_empty_file "${LOG_FILE}"; then
-    return "${STATUS_ERROR}"
+  if ! util_exists_file "${LOG_FILE}"; then
+    return "${STATUS_SUCCESS}"
+  fi
+
+  local -i errors=0
+  errors=$(grep -i -c -E '[error]|[warn]' "${LOG_FILE}" || true)
+  if ((errors != 0)); then
+    return "${STATUS_WARNING}"
   fi
 
   fs_remove_file "${LOG_FILE}"

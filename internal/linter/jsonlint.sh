@@ -12,6 +12,7 @@ set -uo pipefail
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
 . ./../../scripts/utils/util.sh
+. ./../../scripts/utils/cli.sh
 
 # Constant variables
 
@@ -19,7 +20,7 @@ PATH_ROOT_DIR="$(git_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".editorconfig"
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/jsonlint.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(json)$"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG\.md)).*\.(json)$"
 
 # Options
 
@@ -54,23 +55,17 @@ analyzer() {
     return "${STATUS_SKIP}"
   fi
 
-  # Run linter
-  local -r cmd="jsonlint -q -c"
-
-  (
-    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
-
-    for filepath in "${filepaths[@]}"; do
-      eval "${cmd}" "${filepath}"
-    done
-  ) &>"${LOG_FILE}"
+  # shellcheck disable=SC2068
+  for filepath in ${filepaths[@]}; do
+    cli_jsonlint "${filepath}"
+  done &>"${LOG_FILE}"
 
   return "${STATUS_SUCCESS}"
 }
 
 logger() {
   if ! util_empty_file "${LOG_FILE}"; then
-    return "${STATUS_ERROR}"
+    return "${STATUS_WARNING}"
   fi
 
   fs_remove_file "${LOG_FILE}"

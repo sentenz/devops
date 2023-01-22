@@ -12,6 +12,7 @@ set -uo pipefail
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
 . ./../../scripts/utils/util.sh
+. ./../../scripts/utils/cli.sh
 
 # Constant variables
 
@@ -36,13 +37,12 @@ readonly F_LINT
 analyzer() {
   local -a filepaths
 
-  # Get files
   if util_equal_strings "${F_LINT}" "ci"; then
-    return "${STATUS_SUCCESS}"
+    filepaths="$(git_local_commit)"
   elif util_equal_strings "${F_LINT}" "diff"; then
-    return "${STATUS_SUCCESS}"
+    return "${STATUS_SKIP}"
   elif util_equal_strings "${F_LINT}" "staged"; then
-    filepaths="$(git_root_dir)/.git/COMMIT_EDITMSG"
+    filepaths="$(git_local_commit)"
   else
     echo "error: unexpected option: ${F_LINT}" &>"${LOG_FILE}"
 
@@ -53,16 +53,10 @@ analyzer() {
     return "${STATUS_SKIP}"
   fi
 
-  # Run linter
-  local -r cmd="commitlint --edit"
-
-  (
-    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
-
-    for filepath in "${filepaths[@]}"; do
-      eval "${cmd}" "${filepath}"
-    done
-  ) &>"${LOG_FILE}"
+  # shellcheck disable=SC2068
+  for filepath in ${filepaths[@]}; do
+    cli_commitlint "${filepath}"
+  done &>"${LOG_FILE}"
 
   return "${STATUS_SUCCESS}"
 }

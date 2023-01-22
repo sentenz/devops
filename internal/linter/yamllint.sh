@@ -12,6 +12,7 @@ set -uo pipefail
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
 . ./../../scripts/utils/util.sh
+. ./../../scripts/utils/cli.sh
 
 # Constant variables
 
@@ -19,7 +20,7 @@ PATH_ROOT_DIR="$(git_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".yamllint.yml"
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/yamllint.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(yml|yaml)$"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG\.md)).*\.(yml|yaml)$"
 
 # Options
 
@@ -54,16 +55,10 @@ analyzer() {
     return "${STATUS_SKIP}"
   fi
 
-  # Run linter
-  local -r cmd="yamllint --no-warnings"
-
-  (
-    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
-
-    for filepath in "${filepaths[@]}"; do
-      eval "${cmd}" "${filepath}"
-    done
-  ) &>"${LOG_FILE}"
+  # shellcheck disable=SC2068
+  for filepath in ${filepaths[@]}; do
+    cli_yamllint "${filepath}"
+  done &>"${LOG_FILE}"
 
   return "${STATUS_SUCCESS}"
 }
@@ -76,7 +71,7 @@ logger() {
   local -i errors=0
   errors=$(grep -i -c -E 'error|warning' "${LOG_FILE}" || true)
   if ((errors != 0)); then
-    return "${STATUS_ERROR}"
+    return "${STATUS_WARNING}"
   fi
 
   fs_remove_file "${LOG_FILE}"

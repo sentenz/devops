@@ -12,6 +12,7 @@ set -uo pipefail
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
 . ./../../scripts/utils/util.sh
+. ./../../scripts/utils/cli.sh
 
 # Constant variables
 
@@ -20,7 +21,7 @@ readonly PATH_ROOT_DIR
 # readonly RC_FILE=".clang-format"
 # readonly RC_IGNORE_FILE=".clang-format-ignore"
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/clang-format.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(h|hpp|hxx|c|cc|cpp|cxx)$"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG\.md)).*\.(h|hpp|hxx|c|cc|cpp|cxx)$"
 
 # Options
 
@@ -55,16 +56,10 @@ analyzer() {
     return "${STATUS_SKIP}"
   fi
 
-  # Run linter
-  local -r cmd="clang-format -i"
-
-  (
-    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
-
-    for filepath in "${filepaths[@]}"; do
-      eval "${cmd}" "${filepath}"
-    done
-  ) &>"${LOG_FILE}"
+  # shellcheck disable=SC2068
+  for filepath in ${filepaths[@]}; do
+    cli_clang_format "${filepath}"
+  done &>"${LOG_FILE}"
 
   return "${STATUS_SUCCESS}"
 }

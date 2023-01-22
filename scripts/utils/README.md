@@ -1,5 +1,8 @@
 # `/util`
 
+- cli.sh
+  > An internal library for linter cli tools.
+
 - utils.sh
   > An internal library for [utility](https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html) actions.
 

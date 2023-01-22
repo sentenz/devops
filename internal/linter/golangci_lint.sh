@@ -12,6 +12,7 @@ set -uo pipefail
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
 . ./../../scripts/utils/util.sh
+. ./../../scripts/utils/cli.sh
 
 # Constant variables
 
@@ -20,7 +21,7 @@ readonly PATH_ROOT_DIR
 # readonly RC_FILE=".golangci.yml"
 # readonly FILE_RC_LICENSE=".golangci-licenses"
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/golangci-lint.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(go)$"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG\.md)).*\.(go)$"
 
 # Options
 
@@ -55,19 +56,10 @@ analyzer() {
     return "${STATUS_SKIP}"
   fi
 
-  # Run linter
-  local -r cmd="golangci-lint run --fast"
-
-  # FIXME(AK) https://github.com/actions/setup-go/issues/14
-  export PATH="${HOME}"/go/bin:/usr/local/go/bin:"${PATH}"
-
-  (
-    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
-
-    for filepath in "${filepaths[@]}"; do
-      eval "${cmd}" "${filepath}"
-    done
-  ) &>"${LOG_FILE}"
+  # shellcheck disable=SC2068
+  for filepath in ${filepaths[@]}; do
+    cli_golangci_lint "${filepath}"
+  done &>"${LOG_FILE}"
 
   return "${STATUS_SUCCESS}"
 }

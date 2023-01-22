@@ -12,6 +12,7 @@ set -uo pipefail
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
 . ./../../scripts/utils/util.sh
+. ./../../scripts/utils/cli.sh
 
 # Constant variables
 
@@ -19,8 +20,8 @@ PATH_ROOT_DIR="$(git_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".markdownlint.json"
 # readonly RC_IGNORE_FILE=".markdownlintignore"
-readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/markdownlint.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(md)$"
+readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/markdownlint-cli2.log"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG\.md)).*\.(md)$"
 
 # Options
 
@@ -55,16 +56,10 @@ analyzer() {
     return "${STATUS_SKIP}"
   fi
 
-  # Run linter
-  local -r cmd="markdownlint-cli2"
-
-  (
-    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
-
-    for filepath in "${filepaths[@]}"; do
-      eval "${cmd}" "${filepath}"
-    done
-  ) &>"${LOG_FILE}"
+  # shellcheck disable=SC2068
+  for filepath in ${filepaths[@]}; do
+    cli_markdownlint_cli2 "${filepath}"
+  done &>"${LOG_FILE}"
 
   return "${STATUS_SUCCESS}"
 }
@@ -75,8 +70,8 @@ logger() {
   fi
 
   local -i errors=0
-  errors=$(grep -i -c -E '0 error' "${LOG_FILE}" || true)
-  if ((errors == 0)); then
+  errors=$(grep -i -c -E '[1-9]+ error' "${LOG_FILE}" || true)
+  if ((errors != 0)); then
     return "${STATUS_WARNING}"
   fi
 

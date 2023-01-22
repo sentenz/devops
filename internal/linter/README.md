@@ -24,7 +24,7 @@
 
 ## 1. Clang-Tidy
 
-[clang-tidy](https://clang.llvm.org/extra/clang-tidy/) is a clang-based C++ **linter** tool. Its purpose is to provide an extendable framework for diagnosing and fixing typical programming errors, like style violations, interface misuse, or bugs that can be derived via static analysis. clang-tidy is modular and provides a convenient interface for writing new checks.
+[clang-tidy](https://clang.llvm.org/extra/clang-tidy/) is a clang-based C++ linter tool. Its purpose is to provide an extendable framework for diagnosing and fixing typical programming errors, like style violations, interface misuse, or bugs that can be derived via static analysis. clang-tidy is modular and provides a convenient interface for writing new checks.
 
 ### 1.1. Requirements
 
@@ -38,7 +38,7 @@ sudo apt install -y clang-tidy
 
 ### 1.3. Usage
 
-clang-tidy is a LibTooling-based tool, and it’s easier to work with if you set up a compile command database for your project (for an example of how to do this see [How To Setup Tooling For LLVM](https://clang.llvm.org/docs/HowToSetupToolingForLLVM.html)). You can also specify compilation options on the command line after `--`:
+clang-tidy is a LibTooling-based tool, and it’s easier to work with a setup of a compile command database for the project (for an example of how to do this see [How To Setup Tooling For LLVM](https://clang.llvm.org/docs/HowToSetupToolingForLLVM.html)). Also specify compilation options on the command line after `--`:
 
 ```bash
 clang-tidy test.cpp -- -Imy_project/include -DMY_DEFINES ...
