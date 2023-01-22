@@ -51,13 +51,10 @@ readonly -A NPM_PACKAGES=(
   ["markdownlint-cli2"]="0.4.0"
   ["markdown-link-check"]="3.10.3"
   ["write-good"]="1.0.8"
-  ["remark"]="14.0.2"
-  ["remark-preset-lint-markdown-style-guide"]="5.1.2"
-  ["remark-preset-lint-recommended"]="6.1.2"
-  ["remark-preset-lint-consistent"]="5.1.1"
+  ["dockerfilelint"]="1.8.0"
 )
 readonly -a GO_PACKAGES=(
-  github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+  github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
 )
 readonly -a CURL_PACKAGES=(
   "https://webinstall.dev/shfmt"
