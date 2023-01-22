@@ -12,6 +12,7 @@ set -uo pipefail
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
 . ./../../scripts/utils/util.sh
+. ./../../scripts/utils/cli.sh
 
 # Constant variables
 
@@ -19,7 +20,7 @@ PATH_ROOT_DIR="$(git_root_dir)"
 readonly PATH_ROOT_DIR
 # readonly RC_FILE=".alexrc.yml"
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/alex.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(md)$"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG\.md)).*\.(md)$"
 
 # Options
 
@@ -35,9 +36,8 @@ readonly F_LINT
 # Internal functions
 
 analyzer() {
-  local -a filepaths='NULL'
+  local -a filepaths
 
-  # Get files
   if util_equal_strings "${F_LINT}" "ci"; then
     filepaths=$(git_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
   elif util_equal_strings "${F_LINT}" "diff"; then
@@ -54,16 +54,10 @@ analyzer() {
     return "${STATUS_SKIP}"
   fi
 
-  # Run linter
-  local -r cmd="alex -q"
-
-  (
-    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
-
-    for filepath in "${filepaths[@]}"; do
-      eval "${cmd}" "${filepath}"
-    done
-  ) &>"${LOG_FILE}"
+  # shellcheck disable=SC2068
+  for filepath in ${filepaths[@]}; do
+    cli_alex "${filepath}"
+  done &>"${LOG_FILE}"
 
   return "${STATUS_SUCCESS}"
 }

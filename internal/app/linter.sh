@@ -32,7 +32,6 @@ readonly -a SCRIPTS=(
   write_good
   proselint
   codespell
-  remark
   markdown_link_check
   markdownlint_cli2
   commitlint

@@ -12,6 +12,7 @@ set -uo pipefail
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
 . ./../../scripts/utils/util.sh
+. ./../../scripts/utils/cli.sh
 
 # Constant variables
 
@@ -19,7 +20,7 @@ PATH_ROOT_DIR="$(git_root_dir)"
 readonly PATH_ROOT_DIR
 readonly RC_FILE="${PATH_ROOT_DIR}/.cppcheck-suppressions"
 readonly LOG_FILE="${PATH_ROOT_DIR}/logs/linter/cppcheck.log"
-readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG.md)).*\.(h|hpp|hxx|c|cc|cpp|cxx)$"
+readonly REGEX_PATTERNS="^(?!.*\/?!*(\.git|vendor|external|CHANGELOG\.md)).*\.(h|hpp|hxx|c|cc|cpp|cxx)$"
 
 # Options
 
@@ -54,16 +55,10 @@ analyzer() {
     return "${STATUS_SKIP}"
   fi
 
-  # Run linter
-  local -r cmd="cppcheck --enable=warning --suppressions-list=${RC_FILE} --template='[{file}:{line}]:({severity}),{id},{message}' --force -q"
-
-  (
-    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
-
-    for filepath in "${filepaths[@]}"; do
-      eval "${cmd}" "${filepath}"
-    done
-  ) &>"${LOG_FILE}"
+  # shellcheck disable=SC2068
+  for filepath in ${filepaths[@]}; do
+    cli_cppcheck "${filepath}" "${RC_FILE}"
+  done &>"${LOG_FILE}"
 
   return "${STATUS_SUCCESS}"
 }

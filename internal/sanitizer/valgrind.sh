@@ -12,6 +12,7 @@ set -uo pipefail
 . ./../../scripts/utils/fs.sh
 . ./../../scripts/utils/git.sh
 . ./../../scripts/utils/util.sh
+. ./../../scripts/utils/cli.sh
 
 # Constant variables
 
@@ -31,14 +32,7 @@ readonly F_BINARY
 # Internal functions
 
 analyzer() {
-  local -r cmd="valgrind --log-file=${LOG_FILE} ./${F_BINARY}"
-
-  (
-    cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
-
-    eval "${cmd}"
-  )
-
+  cli_valgrind "${PATH_ROOT_DIR}/${F_BINARY}" "${LOG_FILE}"
 }
 
 logger() {
