@@ -75,6 +75,7 @@ setup_integration() {
   pkg_install_curl_list "${CURL_PACKAGES[@]}"
   ((retval |= $?))
 
+  # HACK(AK) I don't know how to pass key value pairs to function
   # pkg_install_pip_list "${PIP_PACKAGES[@]}"
   # ((retval |= $?))
   for package in "${!PIP_PACKAGES[@]}"; do

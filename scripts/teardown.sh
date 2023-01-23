@@ -44,6 +44,8 @@ readonly -a SCRIPTS=(
   log.sh
   os.sh
   pkg.sh
+  util.sh
+  cli.sh
 )
 readonly -a PIPELINES=(
   continuous-integration.yml
@@ -63,9 +65,7 @@ cleanup_scripts() {
     if util_exists_file "$(git_root_dir)/scripts/pipeline/${script}"; then
       fs_remove_file "$(git_root_dir)/scripts/pipeline/${script}"
     fi
-  done
 
-  for script in "${SCRIPTS[@]}"; do
     if util_exists_file "$(git_root_dir)/scripts/utils/${script}"; then
       fs_remove_file "$(git_root_dir)/scripts/utils/${script}"
     fi
