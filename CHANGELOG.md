@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/sentenz/devops/compare/v2.2.0...v2.2.1) (2023-01-23)
+
+
+### Bug Fixes
+
+* obligatory change directory to the top level of a project ([#94](https://github.com/sentenz/devops/issues/94)) ([4c7ff01](https://github.com/sentenz/devops/commit/4c7ff01c7e19e3bed6b32d6bdce5b0cc34712b4e)), closes [#93](https://github.com/sentenz/devops/issues/93)
+
 # [2.2.0](https://github.com/sentenz/devops/compare/v2.1.7...v2.2.0) (2023-01-22)
 
 
