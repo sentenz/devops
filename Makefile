@@ -22,7 +22,6 @@ setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
 .PHONY: setup-devcontainer
 
 teardown-devops: ## Teardown dependencies and tools for the devops service
-	$(MAKE) update-submodule
 	cd scripts && chmod +x teardown.sh && ./teardown.sh
 .PHONY: teardown-devops
 
@@ -116,4 +115,4 @@ update-submodule: ## Update git submodules
 
 teardown-submodule: ## Remove git submodules
 	# TODO(AK)
-.PHONY: update-submodule
+.PHONY: teardown-submodule
