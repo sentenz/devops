@@ -36,6 +36,8 @@ readonly F_LINT
 # Internal functions
 
 analyzer() {
+  cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
+
   local -a filepaths
 
   # Get files

@@ -32,7 +32,9 @@ readonly F_BINARY
 # Internal functions
 
 analyzer() {
-  cli_valgrind "${PATH_ROOT_DIR}/${F_BINARY}" "${LOG_FILE}"
+  cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
+
+  cli_valgrind "${F_BINARY}" "${LOG_FILE}"
 }
 
 logger() {
