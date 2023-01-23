@@ -3,6 +3,10 @@ ifneq (,$(wildcard ./.env))
 	export
 endif
 
+PATH_DEVOPS := .
+PATH_BINARY_APP := ./test/bin/passes-binary
+PATH_BINARY_TEST := ./test/bin/fails-binary
+
 # See https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Display help screen
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-30s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
@@ -13,7 +17,7 @@ setup: ## Setup dependencies and tools
 .PHONY: setup
 
 setup-devops: ## Setup dependencies and tools for the devops service
-	cd scripts && chmod +x setup.sh && ./setup.sh
+	cd $(PATH_DEVOPS)/scripts && chmod +x setup.sh && ./setup.sh
 .PHONY: setup-devops
 
 setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
@@ -22,7 +26,7 @@ setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
 .PHONY: setup-devcontainer
 
 teardown-devops: ## Teardown dependencies and tools for the devops service
-	cd scripts && chmod +x teardown.sh && ./teardown.sh
+	cd $(PATH_DEVOPS)/scripts && chmod +x teardown.sh && ./teardown.sh
 .PHONY: teardown-devops
 
 update-devops: ## Update dependencies and tools for the devops service
@@ -36,15 +40,15 @@ setup-integration: ## Setup dependencies and tools for the integration service
 .PHONY: setup-integration
 
 run-linter-staged: ## Perform analysis of local staged files
-	cd cmd/app && chmod +x sast.sh && ./sast.sh -l staged
+	cd $(PATH_DEVOPS)/cmd/app && chmod +x sast.sh && ./sast.sh -l staged
 .PHONY: run-linter-staged
 
 run-linter-diff: ## Perform analysis of local modified files
-	cd cmd/app && chmod +x sast.sh && ./sast.sh -l diff
+	cd $(PATH_DEVOPS)/cmd/app && chmod +x sast.sh && ./sast.sh -l diff
 .PHONY: run-linter-diff
 
 run-linter-ci: ## Perform analysis of modified files in continuous integration pipeline
-	cd cmd/app && chmod +x sast.sh && ./sast.sh -l ci
+	cd $(PATH_DEVOPS)/cmd/app && chmod +x sast.sh && ./sast.sh -l ci
 .PHONY: run-linter-ci
 
 run-linter-commit: ## Perform analysis of the commit message
@@ -52,11 +56,11 @@ run-linter-commit: ## Perform analysis of the commit message
 .PHONY: run-linter-commit
 
 run-sanitizer-app: ## Perform analysis of the application binary file
-	cd cmd/app && chmod +x dast.sh && ./dast.sh -b $(@D)/cmd/bin/*-app
+	cd $(PATH_DEVOPS)/cmd/app && chmod +x dast.sh && ./dast.sh -b $(PATH_BINARY_APP)
 .PHONY: run-sanitizer-app
 
 run-sanitizer-test: ## Perform analysis of the test binary file
-	cd cmd/app && chmod +x dast.sh && ./dast.sh -b $(@D)/cmd/bin/*-test
+	cd $(PATH_DEVOPS)/cmd/app && chmod +x dast.sh && ./dast.sh -b $(PATH_BINARY_TEST)
 .PHONY: run-sanitizer-test
 
 setup-testing: ## Setup dependencies and tools for the testing service
