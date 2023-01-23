@@ -32,5 +32,6 @@
     "jgclark.vscode-todo-highlight",
     "gruntfuggly.todo-tree",
     "bierner.markdown-mermaid"
-  ]
+  ],
+	"unwantedRecommendations": []
 }

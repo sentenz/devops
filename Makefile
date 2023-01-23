@@ -9,14 +9,21 @@ help: ## Display help screen
 .PHONY: help
 
 setup: ## Setup dependencies and tools
+	$(MAKE) update-submodule
 	cd $(@D)/scripts && chmod +x setup.sh && ./setup.sh
 .PHONY: setup
 
 setup-devops: ## Setup dependencies and tools for the devops service
+	$(MAKE) update-submodule
 	cd scripts && chmod +x setup.sh && ./setup.sh
 .PHONY: setup-devops
 
+setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
+	$(MAKE) setup
+.PHONY: setup-devcontainer
+
 teardown-devops: ## Teardown dependencies and tools for the devops service
+	$(MAKE) update-submodule
 	cd scripts && chmod +x teardown.sh && ./teardown.sh
 .PHONY: teardown-devops
 
@@ -26,6 +33,7 @@ update-devops: ## Update dependencies and tools for the devops service
 .PHONY: update-devops
 
 setup-integration: ## Setup dependencies and tools for the integration service
+	$(MAKE) update-submodule
 	cd $(@D)/scripts/pipeline && chmod +x setup_integration.sh && ./setup_integration.sh
 .PHONY: setup-integration
 
@@ -54,20 +62,18 @@ run-sanitizer-test: ## Perform analysis of the test binary file
 .PHONY: run-sanitizer-test
 
 setup-testing: ## Setup dependencies and tools for the testing service
+	$(MAKE) update-submodule
 	cd $(@D)/scripts/pipeline && chmod +x setup_integration.sh && ./setup_integration.sh
 .PHONY: setup-testing
 
 setup-release: ## Setup dependencies and tools for the release service
+	$(MAKE) update-submodule
 	cd $(@D)/scripts/pipeline && chmod +x setup_release.sh && ./setup_release.sh
 .PHONY: setup-release
 
 run-release: ## Perform release service task
 	npx semantic-release
 .PHONY: run-release
-
-setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
-	$(MAKE) setup
-.PHONY: setup-devcontainer
 
 setup-continuous-integration: ## Setup dependencies and tools for the continuous integration pipeline
 	$(MAKE) setup-integration
@@ -96,3 +102,19 @@ run-continuous-release: ## Perform task in continuous release pipeline
 install-extensions: ## Install recommended VS Code extensions
 	code --list-extensions | xargs -L 1 code --install-extension
 .PHONY: install-extensions
+
+setup-submodule-devops: ## Setup git submodule devops service
+	git submodule add https://github.com/sentenz/devops.git $(@D)/tools/devops
+.PHONY: setup-submodule-devops
+
+setup-submodule: ## Setup git submodules
+	$(MAKE) setup-submodule-devops
+.PHONY: setup-submodule
+
+update-submodule: ## Update git submodules
+	git submodule update --remote --recursive --merge
+.PHONY: update-submodule
+
+teardown-submodule: ## Remove git submodules
+	# TODO(AK)
+.PHONY: update-submodule
