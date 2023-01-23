@@ -19,7 +19,6 @@ set -uo pipefail
 readonly -a APT_PACKAGES=(
   software-properties-common
   build-essential
-  git
   automake
   python3
   python-is-python3

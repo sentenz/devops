@@ -35,6 +35,8 @@ readonly F_LINT
 # Internal functions
 
 analyzer() {
+  cd "${PATH_ROOT_DIR}" || return "${STATUS_ERROR}"
+
   local -a filepaths
 
   if util_equal_strings "${F_LINT}" "ci"; then

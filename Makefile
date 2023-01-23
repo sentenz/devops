@@ -9,16 +9,15 @@ help: ## Display help screen
 .PHONY: help
 
 setup: ## Setup dependencies and tools
-	$(MAKE) update-submodule
 	cd $(@D)/scripts && chmod +x setup.sh && ./setup.sh
 .PHONY: setup
 
 setup-devops: ## Setup dependencies and tools for the devops service
-	$(MAKE) update-submodule
 	cd scripts && chmod +x setup.sh && ./setup.sh
 .PHONY: setup-devops
 
 setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
+	$(MAKE) update-submodule
 	$(MAKE) setup
 .PHONY: setup-devcontainer
 
@@ -28,12 +27,12 @@ teardown-devops: ## Teardown dependencies and tools for the devops service
 .PHONY: teardown-devops
 
 update-devops: ## Update dependencies and tools for the devops service
+	$(MAKE) update-submodule
 	$(MAKE) teardown-devops
 	$(MAKE) setup-devops
 .PHONY: update-devops
 
 setup-integration: ## Setup dependencies and tools for the integration service
-	$(MAKE) update-submodule
 	cd $(@D)/scripts/pipeline && chmod +x setup_integration.sh && ./setup_integration.sh
 .PHONY: setup-integration
 
@@ -54,20 +53,18 @@ run-linter-commit: ## Perform analysis of the commit message
 .PHONY: run-linter-commit
 
 run-sanitizer-app: ## Perform analysis of the application binary file
-	cd cmd/app && chmod +x dast.sh && ./dast.sh -b cmd/bin/*-app
+	cd cmd/app && chmod +x dast.sh && ./dast.sh -b $(@D)/cmd/bin/*-app
 .PHONY: run-sanitizer-app
 
 run-sanitizer-test: ## Perform analysis of the test binary file
-	cd cmd/app && chmod +x dast.sh && ./dast.sh -b cmd/bin/*-test
+	cd cmd/app && chmod +x dast.sh && ./dast.sh -b $(@D)/cmd/bin/*-test
 .PHONY: run-sanitizer-test
 
 setup-testing: ## Setup dependencies and tools for the testing service
-	$(MAKE) update-submodule
 	cd $(@D)/scripts/pipeline && chmod +x setup_integration.sh && ./setup_integration.sh
 .PHONY: setup-testing
 
 setup-release: ## Setup dependencies and tools for the release service
-	$(MAKE) update-submodule
 	cd $(@D)/scripts/pipeline && chmod +x setup_release.sh && ./setup_release.sh
 .PHONY: setup-release
 
@@ -76,6 +73,7 @@ run-release: ## Perform release service task
 .PHONY: run-release
 
 setup-continuous-integration: ## Setup dependencies and tools for the continuous integration pipeline
+	$(MAKE) update-submodule
 	$(MAKE) setup-integration
 .PHONY: setup-continuous-integration
 
@@ -92,6 +90,7 @@ run-continuous-testing: ## Perform task in continuous testing pipeline
 .PHONY: run-continuous-testing
 
 setup-continuous-release: ## Setup dependencies and tools for the continuous release pipeline
+	$(MAKE) update-submodule
 	$(MAKE) setup-release
 .PHONY: setup-continuous-release
 
@@ -112,7 +111,7 @@ setup-submodule: ## Setup git submodules
 .PHONY: setup-submodule
 
 update-submodule: ## Update git submodules
-	git submodule update --remote --recursive --merge
+	git submodule update --remote --recursive --merge --init
 .PHONY: update-submodule
 
 teardown-submodule: ## Remove git submodules

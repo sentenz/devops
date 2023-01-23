@@ -277,8 +277,10 @@ cli_valgrind() {
   local log="${2:-}"
 
   if util_is_string "${log}"; then
-    valgrind --log-file="${log}" "${binary}"
+    # shellcheck disable=SC2086
+    valgrind --log-file="${log}" ${binary}
   else
-    valgrind "${binary}"
+    # shellcheck disable=SC2086
+    valgrind ${binary}
   fi
 }
