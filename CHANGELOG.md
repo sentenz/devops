@@ -1,3 +1,10 @@
+## [2.2.2](https://github.com/sentenz/devops/compare/v2.2.1...v2.2.2) (2023-01-24)
+
+
+### Bug Fixes
+
+* tidy up Makefile ([#104](https://github.com/sentenz/devops/issues/104)) ([c60c47b](https://github.com/sentenz/devops/commit/c60c47b3b9936006a9a74dceffe05f2f182d66e6)), closes [#103](https://github.com/sentenz/devops/issues/103)
+
 ## [2.2.1](https://github.com/sentenz/devops/compare/v2.2.0...v2.2.1) (2023-01-23)
 
 
