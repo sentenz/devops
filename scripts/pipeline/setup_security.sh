@@ -1,0 +1,54 @@
+#!/bin/bash
+#
+# Perform dependency setup for continuous security pipeline.
+
+# -x: print a trace (debug)
+# -u: treat unset variables
+# -o pipefail: return value of a pipeline
+set -uo pipefail
+
+# Include libraries
+
+. ./../../scripts/utils/pkg.sh
+
+# Constant variables
+
+readonly -a APT_INIT_PACKAGES=(
+  wget
+  apt-transport-https
+  gnupg
+  lsb-release
+)
+
+readonly -a APT_PACKAGES=(
+  trivy
+)
+
+# Internal functions
+
+setup_trivy() {
+  wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg >/dev/null
+  echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+}
+
+setup_security() {
+  local -i retval=0
+
+  pkg_install_apt_list "${APT_INIT_PACKAGES[@]}"
+  ((retval |= $?))
+
+  setup_trivy
+
+  pkg_install_apt_list "${APT_PACKAGES[@]}"
+  ((retval |= $?))
+
+  pkg_cleanup_apt
+  ((retval |= $?))
+
+  return "${retval}"
+}
+
+# Control flow logic
+
+setup_security
+exit "${?}"

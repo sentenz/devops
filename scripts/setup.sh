@@ -29,6 +29,7 @@ readonly -a APT_PACKAGES=(
   dirmngr
 )
 readonly -a SCRIPTS=(
+  setup_security.sh
   setup_integration.sh
 )
 readonly -a PIPELINES=(

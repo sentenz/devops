@@ -26,6 +26,10 @@ setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
 	$(MAKE) setup
 .PHONY: setup-devcontainer
 
+setup-security: ## Setup dependencies and tools for the security service
+	cd $(@D)/scripts/pipeline && chmod +x setup_security.sh && ./setup_security.sh
+.PHONY: setup-security
+
 setup-integration: ## Setup dependencies and tools for the integration service
 	cd $(@D)/scripts/pipeline && chmod +x setup_integration.sh && ./setup_integration.sh
 .PHONY: setup-integration
