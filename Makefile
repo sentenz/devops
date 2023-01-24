@@ -3,6 +3,7 @@ ifneq (,$(wildcard ./.env))
 	export
 endif
 
+URL_DEVOPS := https://github.com/sentenz/devops.git
 PATH_DEVOPS := .
 PATH_BINARY_APP := ./test/bin/passes-binary
 PATH_BINARY_TEST := ./test/bin/fails-binary
@@ -25,19 +26,49 @@ setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
 	$(MAKE) setup
 .PHONY: setup-devcontainer
 
+setup-integration: ## Setup dependencies and tools for the integration service
+	cd $(@D)/scripts/pipeline && chmod +x setup_integration.sh && ./setup_integration.sh
+.PHONY: setup-integration
+
+setup-build: ## Setup dependencies and tools for the build service
+	# TODO(AK)
+	# cd $(@D)/scripts/pipeline && chmod +x setup_build.sh && ./setup_build.sh
+.PHONY: setup-build
+
+setup-testing: ## Setup dependencies and tools for the testing service
+	cd $(@D)/scripts/pipeline && chmod +x setup_testing.sh && ./setup_testing.sh
+.PHONY: setup-testing
+
+setup-release: ## Setup dependencies and tools for the release service
+	cd $(@D)/scripts/pipeline && chmod +x setup_release.sh && ./setup_release.sh
+.PHONY: setup-release
+
+setup-continuous-integration: ## Setup dependencies and tools for the continuous integration pipeline
+	$(MAKE) update-submodule
+	$(MAKE) setup-integration
+.PHONY: setup-continuous-integration
+
+setup-continuous-build: ## Setup dependencies and tools for the continuous build pipeline
+	$(MAKE) setup-build
+.PHONY: setup-continuous-build
+
+setup-continuous-testing: ## Setup dependencies and tools for the continuous testing pipeline
+	$(MAKE) setup-testing
+.PHONY: setup-continuous-testing
+
+setup-continuous-release: ## Setup dependencies and tools for the continuous release pipeline
+	$(MAKE) setup-release
+.PHONY: setup-continuous-release
+
 teardown-devops: ## Teardown dependencies and tools for the devops service
 	cd $(PATH_DEVOPS)/scripts && chmod +x teardown.sh && ./teardown.sh
 .PHONY: teardown-devops
 
 update-devops: ## Update dependencies and tools for the devops service
-	$(MAKE) update-submodule
 	$(MAKE) teardown-devops
+	$(MAKE) update-submodule
 	$(MAKE) setup-devops
 .PHONY: update-devops
-
-setup-integration: ## Setup dependencies and tools for the integration service
-	cd $(@D)/scripts/pipeline && chmod +x setup_integration.sh && ./setup_integration.sh
-.PHONY: setup-integration
 
 run-linter-staged: ## Perform analysis of local staged files
 	cd $(PATH_DEVOPS)/cmd/app && chmod +x sast.sh && ./sast.sh -l staged
@@ -63,50 +94,28 @@ run-sanitizer-test: ## Perform analysis of the test binary file
 	cd $(PATH_DEVOPS)/cmd/app && chmod +x dast.sh && ./dast.sh -b $(PATH_BINARY_TEST)
 .PHONY: run-sanitizer-test
 
-setup-testing: ## Setup dependencies and tools for the testing service
-	cd $(@D)/scripts/pipeline && chmod +x setup_integration.sh && ./setup_integration.sh
-.PHONY: setup-testing
-
-setup-release: ## Setup dependencies and tools for the release service
-	cd $(@D)/scripts/pipeline && chmod +x setup_release.sh && ./setup_release.sh
-.PHONY: setup-release
-
 run-release: ## Perform release service task
 	npx semantic-release
 .PHONY: run-release
-
-setup-continuous-integration: ## Setup dependencies and tools for the continuous integration pipeline
-	$(MAKE) update-submodule
-	$(MAKE) setup-integration
-.PHONY: setup-continuous-integration
 
 run-continuous-integration: ## Perform task in continuous integration pipeline
 	$(MAKE) run-linter-ci
 .PHONY: run-continuous-integration
 
-setup-continuous-testing: ## Setup dependencies and tools for the continuous testing pipeline
-	$(MAKE) setup-testing
-.PHONY: setup-continuous-testing
+run-continuous-build: ## Perform task in continuous build pipeline
+	# TODO(AK)
+.PHONY: run-continuous-build
 
 run-continuous-testing: ## Perform task in continuous testing pipeline
 	# TODO(AK)
 .PHONY: run-continuous-testing
 
-setup-continuous-release: ## Setup dependencies and tools for the continuous release pipeline
-	$(MAKE) update-submodule
-	$(MAKE) setup-release
-.PHONY: setup-continuous-release
-
 run-continuous-release: ## Perform task in continuous release pipeline
 	$(MAKE) run-release
 .PHONY: run-continuous-release
 
-install-extensions: ## Install recommended VS Code extensions
-	code --list-extensions | xargs -L 1 code --install-extension
-.PHONY: install-extensions
-
 setup-submodule-devops: ## Setup git submodule devops service
-	git submodule add https://github.com/sentenz/devops.git $(@D)/tools/devops
+	git submodule add $(URL_DEVOPS) $(PATH_DEVOPS)
 .PHONY: setup-submodule-devops
 
 setup-submodule: ## Setup git submodules
@@ -120,3 +129,7 @@ update-submodule: ## Update git submodules
 teardown-submodule: ## Remove git submodules
 	# TODO(AK)
 .PHONY: teardown-submodule
+
+install-extensions: ## Install recommended VS Code extensions
+	code --list-extensions | xargs -L 1 code --install-extension
+.PHONY: install-extensions
