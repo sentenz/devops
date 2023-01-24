@@ -282,3 +282,49 @@ cli_valgrind() {
     valgrind "${binary}"
   fi
 }
+
+########################
+# Find OS packages and software dependencies with SBOM in containers, Kubernetes, code
+# repositories, and clouds.
+# Arguments:
+#   $1 - path
+#   $2 - log
+# Returns:
+#   Result
+#########################
+cli_trivy_sbom() {
+  local path="${1:?path is missing}"
+  local log="${2:-}"
+
+  trivy fs --format spdx -o "${log}" "${path}"
+}
+
+########################
+# Scans for license files and offers an opinionated view on the risk associated with the license.
+# Arguments:
+#   $1 - path
+#   $2 - log
+# Returns:
+#   Result
+#########################
+cli_trivy_license() {
+  local path="${1:?path is missing}"
+  local log="${2:-}"
+
+  trivy fs --security-checks license --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL --license-full -f json -o "${log}" "${path}"
+}
+
+########################
+# Find vulnerabilities in software projects.
+# Arguments:
+#   $1 - path
+#   $2 - log
+# Returns:
+#   Result
+#########################
+cli_trivy_vulnerability() {
+  local path="${1:?path is missing}"
+  local log="${2:-}"
+
+  trivy fs --security-checks vuln,secret,config -f json -o "${log}" "${path}"
+}
