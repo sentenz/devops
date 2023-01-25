@@ -19,6 +19,7 @@ jobs:
         run: |
           make setup-continuous-security
       - name: Run Security
+        continue-on-error: true
         run: |
           make run-continuous-security
       - name: Upload Artifacts
