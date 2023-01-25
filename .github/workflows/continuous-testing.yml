@@ -21,7 +21,6 @@ jobs:
         run: |
           make setup-continuous-testing
       - name: Run Testing
-        continue-on-error: true
         run: |
           make run-continuous-testing
       - name: Upload Artifacts
