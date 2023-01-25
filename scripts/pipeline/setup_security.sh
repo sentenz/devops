@@ -10,6 +10,7 @@ set -uo pipefail
 # Include libraries
 
 . ./../../scripts/utils/pkg.sh
+. ./../../scripts/utils/util.sh
 
 # Constant variables
 
@@ -19,7 +20,6 @@ readonly -a APT_INIT_PACKAGES=(
   gnupg
   lsb-release
 )
-
 readonly -a APT_PACKAGES=(
   trivy
 )
@@ -27,8 +27,10 @@ readonly -a APT_PACKAGES=(
 # Internal functions
 
 setup_trivy() {
-  wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg >/dev/null
-  echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+  if ! util_exists_file "/etc/apt/sources.list.d/trivy.list"; then
+    wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg >/dev/null
+    echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+  fi
 }
 
 setup_security() {

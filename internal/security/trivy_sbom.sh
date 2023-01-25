@@ -39,16 +39,8 @@ analyzer() {
 
 logger() {
   if ! util_exists_file "${LOG_FILE}"; then
-    return "${STATUS_SUCCESS}"
-  fi
-
-  local -i errors=0
-  errors=$(grep -i -c -E 'ERROR SUMMARY: [^0]+' "${LOG_FILE}" || true)
-  if ((errors != 0)); then
     return "${STATUS_ERROR}"
   fi
-
-  # fs_remove_file "${LOG_FILE}"
 
   return "${STATUS_SUCCESS}"
 }

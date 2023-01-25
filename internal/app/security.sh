@@ -59,7 +59,7 @@ analyze() {
   ./"${script}.sh" -p "${f_path}"
   ((retval = $?))
 
-  log_message "security" "${script}" "${retval}"
+  log_message "security - scan" "${script}" "${retval}"
 
   if ((retval == STATUS_SKIP)) || ((retval == STATUS_WARNING)); then
     return "${STATUS_SUCCESS}"

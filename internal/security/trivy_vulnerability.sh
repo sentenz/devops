@@ -42,13 +42,22 @@ logger() {
     return "${STATUS_SUCCESS}"
   fi
 
-  local -i errors=0
-  errors=$(grep -i -c -E 'ERROR SUMMARY: [^0]+' "${LOG_FILE}" || true)
-  if ((errors != 0)); then
+  local -i severity=0
+
+  severity=$(grep -c -E 'UNKNOWN|HIGH|CRITICAL' "${LOG_FILE}" || true)
+  if ((severity != 0)); then
     return "${STATUS_ERROR}"
   fi
 
-  # fs_remove_file "${LOG_FILE}"
+  severity=$(grep -c -E 'MEDIUM' "${LOG_FILE}" || true)
+  if ((severity != 0)); then
+    return "${STATUS_WARNING}"
+  fi
+
+  severity=$(grep -c -E 'LOW' "${LOG_FILE}" || true)
+  if ((severity != 0)); then
+    return "${STATUS_SUCCESS}"
+  fi
 
   return "${STATUS_SUCCESS}"
 }
