@@ -19,10 +19,10 @@ jobs:
         run: |
           make setup-continuous-security
       - name: Run Security
-        continue-on-error: true
         run: |
           make run-continuous-security
       - name: Upload Artifacts
+        if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
           name: continuous-security-artifact

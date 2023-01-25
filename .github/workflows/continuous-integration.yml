@@ -21,10 +21,10 @@ jobs:
         run: |
           make setup-continuous-integration
       - name: Run Integration
-        continue-on-error: true
         run: |
           make run-continuous-integration
       - name: Upload Artifacts
+        if: success() || failure()
         uses: actions/upload-artifact@v3
         with:
           name: continuous-integration-artifact
