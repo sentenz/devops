@@ -209,7 +209,7 @@ cli_markdownlint_cli2() {
 cli_prettier() {
   local file="${1:?file is missing}"
 
-  prettier -c "${file}"
+  prettier -l "${file}"
 }
 
 ########################
