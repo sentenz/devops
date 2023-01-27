@@ -65,7 +65,7 @@ Integrate the DevOps service as a `git submodule` dependency in a base repositor
 Run the following command to setup the DevOps service in a base repository:
 
 ```bash
-make setup
+make setup-devops
 ```
 
 ## 3. Usage
