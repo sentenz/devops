@@ -2,12 +2,12 @@
 
 A service for DevOps operations.
 
-- [1. Setup](#1-setup)
-- [2. Install](#2-install)
-- [2. Usage](#2-usage)
-  - [2.1. Git Hooks](#21-git-hooks)
-  - [2.2. Continuous Pipelines](#22-continuous-pipelines)
-  - [2.3. Code Analysis](#23-code-analysis)
+- [1. Install](#1-install)
+- [2. Setup](#2-setup)
+- [3. Usage](#3-usage)
+  - [3.1. Git Hooks](#31-git-hooks)
+  - [3.2. Continuous Pipelines](#32-continuous-pipelines)
+  - [3.3. Code Analysis](#33-code-analysis)
 
 Supported operations:
 
@@ -33,23 +33,11 @@ Supported operations:
 - [x] Makefile
   > Collection of [make targets](Makefile) used for this DevOps service repository.
 
-## 1. Setup
+## 1. Install
 
-Integrate the DevOps service repository into a base repository with `git submodule` dependency or any other appropriate method.
+Integrate the DevOps service as a `git submodule` dependency in a base repository.
 
-Run the following command to setup the DevOps service into the base repository:
-
-```bash
-cd path/to/devops/scripts 
-chmod +x setup.sh
-./setup.sh
-```
-
-## 2. Install
-
-Add, update or remove DevOps service as Git submodule.
-
-> NOTE Modify the [Makefile](Makefile) to meet the requirements of a base repository:
+> NOTE Copy and modify the [Makefile](Makefile) in a base repository:
 >
 > - URL_DEVOPS := `<url>`
 > - PATH_DEVOPS := `<relative-path>`
@@ -72,22 +60,30 @@ Add, update or remove DevOps service as Git submodule.
    make teardown-submodule
    ```
 
-## 2. Usage
+## 2. Setup
+
+Run the following command to setup the DevOps service in a base repository:
+
+```bash
+make setup
+```
+
+## 3. Usage
 
 The commands of the initialized DevOps service are available as `make <target>` in the Makefile of a base repository. Run `make help` in the terminal to see the full list of supported commands.
 
 > NOTE Modify the [Makefile](Makefile) to meet the requirements of a base repository.
 
-### 2.1. Git Hooks
+### 3.1. Git Hooks
 
   Triggers custom scripts in `/githooks` when certain Git actions occur.
 
-### 2.2. Continuous Pipelines
+### 3.2. Continuous Pipelines
 
 - In Azure the pipelines in `/.azure` need to be added in Azure Pipelines service.
 - In GitHub the `/.github/workflows` is a automated process that will run as configured on Pull Request (PR).
 
-### 2.3. Code Analysis
+### 3.3. Code Analysis
 
 See the [options](cmd/app/README.md) description for more information.
 
