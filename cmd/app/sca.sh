@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform interactive application security testing (IAST).
+# Perform software composition analysis (sca).
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -41,7 +41,7 @@ security() {
   )
 }
 
-run_iast() {
+run_sca() {
   local -i result=0
 
   security "${F_PATH}"
@@ -52,5 +52,5 @@ run_iast() {
 
 # Control flow logic
 
-run_iast
+run_sca
 exit "${?}"

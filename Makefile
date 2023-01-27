@@ -104,7 +104,7 @@ run-sanitizer-test: ## Perform analysis of the test binary file
 .PHONY: run-sanitizer-test
 
 run-security-scan: ## Perform security analysis of local project
-	cd $(PATH_DEVOPS)/cmd/app && chmod +x iast.sh && ./iast.sh -p $(@D)
+	cd $(PATH_DEVOPS)/cmd/app && chmod +x sca.sh && ./sca.sh -p $(@D)
 .PHONY: run-security-scan
 
 run-release: ## Perform release service task
