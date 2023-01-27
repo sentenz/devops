@@ -3,7 +3,11 @@
 A service for DevOps operations.
 
 - [1. Setup](#1-setup)
+- [2. Install](#2-install)
 - [2. Usage](#2-usage)
+  - [2.1. Git Hooks](#21-git-hooks)
+  - [2.2. Continuous Pipelines](#22-continuous-pipelines)
+  - [2.3. Code Analysis](#23-code-analysis)
 
 Supported operations:
 
@@ -41,91 +45,84 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-<!-- TODO(AK) Check toe correct usage of `git submodule`
 ## 2. Install
 
-1. Add a Git Submodule
+Add, update or remove DevOps service as Git submodule.
+
+> NOTE Modify the [Makefile](Makefile) to meet the requirements of a base repository:
+>
+> - URL_DEVOPS := `<url>`
+> - PATH_DEVOPS := `<relative-path>`
+
+- Add Git submodule
 
    ```bash
-   clone --sparse --filter=blob:none --no-checkout --depth 1 -b <branch> <remote-respoitory-url> <relativ-local-folder-path>
-   git submodule add -b <branch> <remote-respoitory-url> <relativ-local-folder-path>
+   make setup-submodule
    ```
 
-   Example:
+- Update Git submodules
 
    ```bash
-   git clone --sparse --filter=blob:none --no-checkout --depth 1 -b scripts/validate https://github.com/sentenz/essay.git scripts/validate
-   git submodule add -b scripts/validate https://github.com/sentenz/essay.git scripts/validate
+   make update-submodule
    ```
 
-   Modify `.git/modules/scripts/validate/info/sparse-checkout`.
+- Remove Git submodules
 
    ```bash
-   git submodule absorbgitdirs
-   git -C scripts/validate config core.sparseCheckout true
-   echo 'validate/*' >> .git/modules/scripts/validate/info/sparse-checkout
-   git submodule update --force --checkout scripts/validate
+   make teardown-submodule
    ```
-
-2. Pull a Git Submodule
-
-   ```bash
-   git submodule update --init --recursive
-   ```
-
-3. Status of a Git Submodule
-
-   Check the status of a submodule:
-
-   ```bash
-   git submodule status
-   ```
-
-   The output should look like below:
-
-   ```bash
-   <sha> scripts/validate (heads/scripts/validate)
-   ```
-
-   If the output is empty, start from the beginning.
-
-## 3. Uninstall
-
-1. Remove a Git Submodule
-
-   ```bash
-   git submodule deinit scripts/validate
-   git rm --cached scripts/validate
-   ```
-
-## 4. Update
-
-1. Update a Git Submodule
-
-   ```bash
-   git submodule update --remote --recursive --merge
-   ```
--->
 
 ## 2. Usage
 
-The commands of the initialized DevOps service are available as `make <target>` in the Makefile of a base repository.
+The commands of the initialized DevOps service are available as `make <target>` in the Makefile of a base repository. Run `make help` in the terminal to see the full list of supported commands.
 
-Run `make help` in the terminal to see the full list of commands.
+> NOTE Modify the [Makefile](Makefile) to meet the requirements of a base repository.
 
-- Code Analysis
+### 2.1. Git Hooks
 
-  To perform analysis of local staged files run the following command:
+  Triggers custom scripts in `/githooks` when certain Git actions occur.
+
+### 2.2. Continuous Pipelines
+
+- In Azure the pipelines in `/.azure` need to be added in Azure Pipelines service.
+- In GitHub the `/.github/workflows` is a automated process that will run as configured on Pull Request (PR).
+
+### 2.3. Code Analysis
+
+See the [options](cmd/app/README.md) description for more information.
+
+- Static Application Security Testing (SAST)
+
+  Perform analysis of local staged files:
 
   ```bash
   make run-linter-staged
   ```
 
-- Git Hooks
+  Perform analysis of local modified files:
 
-  Triggers custom scripts in `/githooks` when certain Git actions occur.
+  ```bash
+  make run-linter-diff
+  ```
 
-- Continuous Pipelines
+  Perform analysis of modified files in continuous integration pipeline:
 
-  - In Azure the pipelines in `/.azure` need to be added in Azure Pipelines service.
-  - In GitHub the `/.github/workflows` is a automated process that will run as configured on Pull Request (PR).
+  ```bash
+  make run-linter-ci
+  ```
+
+- Dynamic Application Security Testing (DAST)
+
+  Perform analysis of the application binary file:
+
+  ```bash
+  make run-sanitizer-app
+  ```
+
+- Software Composition Analysis (SCA)
+
+  Perform security analysis of local project:
+
+  ```bash
+  make run-security-scan
+  ```
