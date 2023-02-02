@@ -108,7 +108,7 @@ Static Code Analysis
 
 Enforce coding standards and static analysis through linting and code style checks.
 
-See https://sentenz.github.io/https://sentenz.github.io/guide/internal/about/code-analysis.html
+See https://sentenz.github.io/https://sentenz.github.io/guide/internal/about/software-analysis.html
 ___________________________________________________________________________________________________
 END
   fi
