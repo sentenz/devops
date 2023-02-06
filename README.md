@@ -1,6 +1,6 @@
 # DevOps
 
-A service for DevOps operations.
+A service for [DevOps/DevSecOps](https://sentenz.github.io/guide/internal/about/xops.html) operations.
 
 - [1. Install](#1-install)
 - [2. Setup](#2-setup)
