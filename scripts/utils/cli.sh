@@ -311,7 +311,7 @@ cli_trivy_license() {
   local path="${1:?path is missing}"
   local log="${2:?log is missing}"
 
-  trivy -q fs --security-checks license --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL --license-full -f json -o "${log}" "${path}"
+  trivy -q fs --scanners license --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL --license-full -f json -o "${log}" "${path}"
 }
 
 ########################
@@ -326,5 +326,5 @@ cli_trivy_vulnerability() {
   local path="${1:?path is missing}"
   local log="${2:?log is missing}"
 
-  trivy -q fs --security-checks vuln,secret,config -f json -o "${log}" "${path}"
+  trivy -q fs --scanners vuln,secret,config -f json -o "${log}" "${path}"
 }

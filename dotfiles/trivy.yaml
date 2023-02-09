@@ -298,4 +298,4 @@ repository:
 #     endpoint: https://my.custom.aws.endpoint
 
 #     # the aws account to use (this will be determined from your environment when not set)
-#     account: 123456789012
+#     account: *********
