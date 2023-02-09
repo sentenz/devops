@@ -36,7 +36,15 @@ run_pre_commit() {
 
   fs_create_file "${LOG_FILE}"
 
-  hook_veriy_code_convention "make run-linter-staged" &>"${LOG_FILE}"
+  hook_composition_analysis "make run-security-scan" &>"${LOG_FILE}"
+  ((retval = $?))
+  if ((retval != 0)); then
+    log_message "githooks" "pre-push" "${retval}"
+
+    return "${retval}"
+  fi
+
+  hook_code_analysis "make run-linter-staged" &>"${LOG_FILE}"
   ((retval = $?))
   if ((retval != 0)); then
     log_message "githooks" "pre-push" "${retval}"

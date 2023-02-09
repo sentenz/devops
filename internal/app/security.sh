@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform sanitizer calls.
+# Perform security calls.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
