@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/sentenz/devops/compare/v2.2.2...v2.3.0) (2023-02-10)
+
+
+### Features
+
+* add `trivy` to scan licenses, vulnerabilities and SBOM ([#105](https://github.com/sentenz/devops/issues/105)) ([ab77174](https://github.com/sentenz/devops/commit/ab77174c99791019f6f8e338f9d2a004b9e3171c)), closes [#52](https://github.com/sentenz/devops/issues/52)
+
 ## [2.2.2](https://github.com/sentenz/devops/compare/v2.2.1...v2.2.2) (2023-01-24)
 
 
