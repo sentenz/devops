@@ -31,7 +31,8 @@
     "ms-azuretools.vscode-docker",
     "jgclark.vscode-todo-highlight",
     "gruntfuggly.todo-tree",
-    "bierner.markdown-mermaid"
+    "bierner.markdown-mermaid",
+    "aquasecurityofficial.trivy-vulnerability-scanner"
   ],
 	"unwantedRecommendations": []
 }

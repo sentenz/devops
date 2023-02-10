@@ -38,7 +38,7 @@ initialize_logs() {
   log_dir="$(git_root_dir)/logs/sanitizer"
   local regex_patterns="^.*\.(log)$"
 
-  if ! util_empty_dir "${log_dir}"; then
+  if util_exists_dir "${log_dir}"; then
     find "${log_dir}" -type f -regextype posix-egrep -regex "${regex_patterns}" -delete
   fi
 

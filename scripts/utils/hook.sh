@@ -93,7 +93,7 @@ END
 # Returns:
 #   Boolean
 #########################
-hook_veriy_code_convention() {
+hook_code_analysis() {
   local cmd="${1:?executable command is missing}"
 
   local -i retval=0
@@ -104,11 +104,41 @@ hook_veriy_code_convention() {
   if ((retval != 0)); then
     cat <<END
 ___________________________________________________________________________________________________
-Static Code Analysis
+Code Analysis
 
 Enforce coding standards and static analysis through linting and code style checks.
 
-See https://sentenz.github.io/https://sentenz.github.io/guide/internal/about/code-analysis.html
+See https://sentenz.github.io/https://sentenz.github.io/guide/internal/about/software-analysis.html
+___________________________________________________________________________________________________
+END
+  fi
+
+  return "${retval}"
+}
+
+########################
+# Perform software composition analysis (sca).
+# Arguments:
+#   $1 - executable command
+# Returns:
+#   Boolean
+#########################
+hook_composition_analysis() {
+  local cmd="${1:?executable command is missing}"
+
+  local -i retval=0
+
+  bash -c "${cmd}"
+  ((retval = $?))
+
+  if ((retval != 0)); then
+    cat <<END
+___________________________________________________________________________________________________
+Software Composition Analysis
+
+Identifying and managing the open-source and third-party components used in software applications.
+
+See https://sentenz.github.io/https://sentenz.github.io/guide/internal/about/software-analysis.html
 ___________________________________________________________________________________________________
 END
   fi

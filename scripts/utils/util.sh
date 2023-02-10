@@ -67,10 +67,6 @@ util_exists_dir() {
 util_empty_dir() {
   local dir="${1:?directory is missing}"
 
-  if [[ ! -d "${dir}" ]]; then
-    return 1
-  fi
-
   if [[ -n "$(ls -A "${dir}")" ]]; then
     return 1
   fi

@@ -1,4 +1,5 @@
 {
+  "files.encoding": "utf8",
   "files.eol": "\n",
   "files.watcherExclude": {
     "**/.git/objects/**": true,
@@ -32,8 +33,8 @@
   "editor.insertSpaces": true,
   "editor.detectIndentation": true,
   "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
-},
-"markdown.extension.toc.levels": "2..3",
+  },
+  "markdown.extension.toc.levels": "2..3",
   "[yaml]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -57,9 +58,11 @@
     "editor.defaultFormatter": "xaver.clang-format"
   },
   "[dockerfile]": {
+    "editor.formatOnSave": true,
     "editor.defaultFormatter": "ms-azuretools.vscode-docker"
   },
   "[javascript]": {
+    "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "go.gotoSymbol.includeGoroot": true,

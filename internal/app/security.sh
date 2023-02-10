@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Perform linter calls.
+# Perform security calls.
 
 # -x: print a trace (debug)
 # -u: treat unset variables
@@ -16,44 +16,28 @@ set -uo pipefail
 
 # Options
 
-F_LINT="NULL"
-while getopts 'l:' flag; do
+F_PATH="NULL"
+while getopts 'p:' flag; do
   case "${flag}" in
-    l) F_LINT="${OPTARG}" ;;
+    p) F_PATH="${OPTARG}" ;;
     *) ;;
   esac
 done
-readonly F_LINT
+readonly F_PATH
 
 # Constant variables
 
 readonly -a SCRIPTS=(
-  alex
-  write_good
-  proselint
-  codespell
-  markdown_link_check
-  markdownlint_cli2
-  commitlint
-  cppcheck
-  cpplint
-  clang_tidy
-  clang_format
-  golangci_lint
-  dockerfilelint
-  licensecheck
-  shellcheck
-  shfmt
-  prettier
-  jsonlint
-  yamllint
+  trivy_sbom
+  trivy_license
+  trivy_vulnerability
 )
 
 # Internal functions
 
 initialize_logs() {
   local log_dir
-  log_dir="$(git_root_dir)/logs/linter"
+  log_dir="$(git_root_dir)/logs/security"
   local regex_patterns="^.*\.(log)$"
 
   if util_exists_dir "${log_dir}"; then
@@ -66,16 +50,16 @@ initialize_logs() {
 }
 
 analyze() {
-  local script="${1}"
-  local f_lint="${2}"
+  local script="${1:?script is missing}"
+  local f_path="${2:?path is missing}"
 
   local -i retval=0
 
   chmod +x "${script}.sh"
-  ./"${script}.sh" -l "${f_lint}"
+  ./"${script}.sh" -p "${f_path}"
   ((retval = $?))
 
-  log_message "linter - ${f_lint}" "${script}" "${retval}"
+  log_message "security - scan" "${script}" "${retval}"
 
   if ((retval == STATUS_SKIP)) || ((retval == STATUS_WARNING)); then
     return "${STATUS_SUCCESS}"
@@ -84,7 +68,7 @@ analyze() {
   return "${retval}"
 }
 
-run_linter() {
+run_security() {
   local -a scripts=("$@")
 
   initialize_logs
@@ -92,10 +76,10 @@ run_linter() {
   (
     local -i retval=0
 
-    cd "$(fs_sript_dir)/../linter" || return "${STATUS_ERROR}"
+    cd "$(fs_sript_dir)/../security" || return "${STATUS_ERROR}"
 
     for script in "${scripts[@]}"; do
-      analyze "${script}" "${F_LINT}"
+      analyze "${script}" "${F_PATH}"
       ((retval |= $?))
     done
 
@@ -105,5 +89,5 @@ run_linter() {
 
 # Control flow logic
 
-run_linter "${SCRIPTS[@]}"
+run_security "${SCRIPTS[@]}"
 exit "${?}"

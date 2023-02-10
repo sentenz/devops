@@ -26,6 +26,10 @@ setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
 	$(MAKE) setup
 .PHONY: setup-devcontainer
 
+setup-security: ## Setup dependencies and tools for the security service
+	cd $(@D)/scripts/pipeline && chmod +x setup_security.sh && ./setup_security.sh
+.PHONY: setup-security
+
 setup-integration: ## Setup dependencies and tools for the integration service
 	cd $(@D)/scripts/pipeline && chmod +x setup_integration.sh && ./setup_integration.sh
 .PHONY: setup-integration
@@ -42,6 +46,11 @@ setup-testing: ## Setup dependencies and tools for the testing service
 setup-release: ## Setup dependencies and tools for the release service
 	cd $(@D)/scripts/pipeline && chmod +x setup_release.sh && ./setup_release.sh
 .PHONY: setup-release
+
+setup-continuous-security: ## Setup dependencies and tools for the continuous security pipeline
+	$(MAKE) update-submodule
+	$(MAKE) setup-security
+.PHONY: setup-continuous-security
 
 setup-continuous-integration: ## Setup dependencies and tools for the continuous integration pipeline
 	$(MAKE) update-submodule
@@ -94,9 +103,17 @@ run-sanitizer-test: ## Perform analysis of the test binary file
 	cd $(PATH_DEVOPS)/cmd/app && chmod +x dast.sh && ./dast.sh -b $(PATH_BINARY_TEST)
 .PHONY: run-sanitizer-test
 
+run-security-scan: ## Perform security analysis of local project
+	cd $(PATH_DEVOPS)/cmd/app && chmod +x sca.sh && ./sca.sh -p $(@D)
+.PHONY: run-security-scan
+
 run-release: ## Perform release service task
 	npx semantic-release
 .PHONY: run-release
+
+run-continuous-security: ## Perform task in continuous security pipeline
+	$(MAKE) run-security-scan
+.PHONY: run-continuous-security
 
 run-continuous-integration: ## Perform task in continuous integration pipeline
 	$(MAKE) run-linter-ci

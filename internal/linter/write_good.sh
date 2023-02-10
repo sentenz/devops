@@ -39,7 +39,6 @@ analyzer() {
 
   local -a filepaths
 
-  # Get files
   if util_equal_strings "${F_LINT}" "ci"; then
     filepaths=$(git_ci_files "${PATH_ROOT_DIR}" "${REGEX_PATTERNS}")
   elif util_equal_strings "${F_LINT}" "diff"; then

@@ -1,9 +1,13 @@
 # DevOps
 
-A service for DevOps operations.
+A service for [DevOps/DevSecOps](https://sentenz.github.io/guide/internal/about/xops.html) operations.
 
-- [1. Setup](#1-setup)
-- [2. Usage](#2-usage)
+- [1. Install](#1-install)
+- [2. Setup](#2-setup)
+- [3. Usage](#3-usage)
+  - [3.1. Git Hooks](#31-git-hooks)
+  - [3.2. Continuous Pipelines](#32-continuous-pipelines)
+  - [3.3. Code Analysis](#33-code-analysis)
 
 Supported operations:
 
@@ -29,103 +33,92 @@ Supported operations:
 - [x] Makefile
   > Collection of [make targets](Makefile) used for this DevOps service repository.
 
-## 1. Setup
+## 1. Install
 
-Integrate the DevOps service repository into a base repository with `git submodule` dependency or any other appropriate method.
+Integrate the DevOps service as a `git submodule` dependency in a base repository.
 
-Run the following command to setup the DevOps service into the base repository:
+> NOTE Copy and modify the [Makefile](Makefile) in a base repository:
+>
+> - URL_DEVOPS := `<url>`
+> - PATH_DEVOPS := `<relative-path>`
+
+- Add Git submodule
+
+   ```bash
+   make setup-submodule
+   ```
+
+- Update Git submodules
+
+   ```bash
+   make update-submodule
+   ```
+
+- Remove Git submodules
+
+   ```bash
+   make teardown-submodule
+   ```
+
+## 2. Setup
+
+Run the following command to setup the DevOps service in a base repository:
 
 ```bash
-cd path/to/devops/scripts 
-chmod +x setup.sh
-./setup.sh
+make setup-devops
 ```
 
-<!-- TODO(AK) Check toe correct usage of `git submodule`
-## 2. Install
+## 3. Usage
 
-1. Add a Git Submodule
+The commands of the initialized DevOps service are available as `make <target>` in the Makefile of a base repository. Run `make help` in the terminal to see the full list of supported commands.
 
-   ```bash
-   clone --sparse --filter=blob:none --no-checkout --depth 1 -b <branch> <remote-respoitory-url> <relativ-local-folder-path>
-   git submodule add -b <branch> <remote-respoitory-url> <relativ-local-folder-path>
-   ```
+> NOTE Modify the [Makefile](Makefile) to meet the requirements of a base repository.
 
-   Example:
+### 3.1. Git Hooks
 
-   ```bash
-   git clone --sparse --filter=blob:none --no-checkout --depth 1 -b scripts/validate https://github.com/sentenz/essay.git scripts/validate
-   git submodule add -b scripts/validate https://github.com/sentenz/essay.git scripts/validate
-   ```
+  Triggers custom scripts in `/githooks` when certain Git actions occur.
 
-   Modify `.git/modules/scripts/validate/info/sparse-checkout`.
+### 3.2. Continuous Pipelines
 
-   ```bash
-   git submodule absorbgitdirs
-   git -C scripts/validate config core.sparseCheckout true
-   echo 'validate/*' >> .git/modules/scripts/validate/info/sparse-checkout
-   git submodule update --force --checkout scripts/validate
-   ```
+- In Azure the pipelines in `/.azure` need to be added in Azure Pipelines service.
+- In GitHub the `/.github/workflows` is a automated process that will run as configured on Pull Request (PR).
 
-2. Pull a Git Submodule
+### 3.3. Code Analysis
 
-   ```bash
-   git submodule update --init --recursive
-   ```
+See the [options](cmd/app/README.md) description for more information.
 
-3. Status of a Git Submodule
+- Static Application Security Testing (SAST)
 
-   Check the status of a submodule:
-
-   ```bash
-   git submodule status
-   ```
-
-   The output should look like below:
-
-   ```bash
-   <sha> scripts/validate (heads/scripts/validate)
-   ```
-
-   If the output is empty, start from the beginning.
-
-## 3. Uninstall
-
-1. Remove a Git Submodule
-
-   ```bash
-   git submodule deinit scripts/validate
-   git rm --cached scripts/validate
-   ```
-
-## 4. Update
-
-1. Update a Git Submodule
-
-   ```bash
-   git submodule update --remote --recursive --merge
-   ```
--->
-
-## 2. Usage
-
-The commands of the initialized DevOps service are available as `make <target>` in the Makefile of a base repository.
-
-Run `make help` in the terminal to see the full list of commands.
-
-- Code Analysis
-
-  To perform analysis of local staged files run the following command:
+  Perform analysis of local staged files:
 
   ```bash
   make run-linter-staged
   ```
 
-- Git Hooks
+  Perform analysis of local modified files:
 
-  Triggers custom scripts in `/githooks` when certain Git actions occur.
+  ```bash
+  make run-linter-diff
+  ```
 
-- Continuous Pipelines
+  Perform analysis of modified files in continuous integration pipeline:
 
-  - In Azure the pipelines in `/.azure` need to be added in Azure Pipelines service.
-  - In GitHub the `/.github/workflows` is a automated process that will run as configured on Pull Request (PR).
+  ```bash
+  make run-linter-ci
+  ```
+
+- Dynamic Application Security Testing (DAST)
+
+  Perform analysis of the application binary file:
+
+  ```bash
+  make run-sanitizer-app
+  ```
+
+- Software Composition Analysis (SCA)
+
+  Perform security analysis of local project:
+
+  ```bash
+  make run-security-scan
+  ```

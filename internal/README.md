@@ -1,4 +1,4 @@
-## `/internal`
+# `/internal`
 
 Perform various analysis, test or release operations.
 
@@ -15,15 +15,14 @@ Perform various analysis, test or release operations.
 - [x] golangci-lint
 - [x] jsonlint
 - [x] markdown-link-check
-- [x] markdownlint
+- [x] markdownlint-cli2
 - [x] [prettier](https://github.com/prettier/prettier)
 - [x] proselint
-- [ ] remark
-- [ ] clang-analyzer (scan-build)
 - [x] shellcheck
 - [x] shfmt
 - [x] write-good
-- [ ] yallint
+- [x] yamllint
+- [ ] remark
 - [ ] [hodalint](https://github.com/hadolint/hadolint)
 - [ ] [dotenv-linter](https://dotenv-linter.github.io/#/)
 - [ ] [jscpd](https://github.com/kucherenko/jscpd/tree/master/packages/jscpd)
@@ -38,7 +37,10 @@ Perform various analysis, test or release operations.
 
 ## `/security`
 
-- [ ] [trivy](https://github.com/aquasecurity/trivy)
+- [x] [trivy](https://github.com/aquasecurity/trivy)
+  - SBOM
+  - License scan
+  - Vulnerablility scan
 - [ ] [secretlint](https://github.com/secretlint/secretlint)
 - [ ] [licensing](https://code.tools/man/1/licensing)
 - [ ] [golicense](https://github.com/mitchellh/golicense)

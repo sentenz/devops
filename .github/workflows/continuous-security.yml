@@ -10,6 +10,21 @@ jobs:
     name: continuous-security
     runs-on: ubuntu-22.04
     steps:
-      - name: Verify Contributor
+      - name: Checkout Codebase
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+          fetch-depth: 0
+      - name: Setup Security
         run: |
-          echo ${{ github.event.pull_request.user.login }}
+          make setup-continuous-security
+      - name: Run Security
+        run: |
+          make run-continuous-security
+      - name: Upload Artifacts
+        if: success() || failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: continuous-security-artifact
+          path: logs/**/*.log
+          retention-days: 1
