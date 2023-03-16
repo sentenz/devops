@@ -20,11 +20,11 @@
     }
   },
   "runArgs": [
-    "--name", "dev-app",
-    "-v", "dev-app:/app/data"
+    "--name", "dev-devops",
+    "-v", "dev-devops:/app/data"
   ],
   "forwardPorts": [],
   "onCreateCommand": "",
-  "postCreateCommand": "",
+  "postCreateCommand": "make setup-devcontainer",
   "remoteUser": "vscode"
 }
