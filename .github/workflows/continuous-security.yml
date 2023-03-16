@@ -8,6 +8,10 @@ jobs:
   security:
     if: ${{ github.event_name == 'pull_request' }}
     name: continuous-security
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Codebase
@@ -27,4 +31,3 @@ jobs:
         with:
           name: continuous-security-artifact
           path: logs/**/*.log
-          retention-days: 1
