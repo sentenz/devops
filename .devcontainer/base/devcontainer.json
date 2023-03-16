@@ -21,7 +21,7 @@
   },
   "runArgs": [
     "--name", "dev-app",
-    "-v", "dev-app:/app/data"
+    "-v", "dev-data:/app/data"
   ],
   "forwardPorts": [],
   "onCreateCommand": "",
