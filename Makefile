@@ -1,12 +1,7 @@
-ifneq (,$(wildcard ./.env))
+ifneq (,$(wildcard .env))
 	include .env
 	export
 endif
-
-URL_DEVOPS := https://github.com/sentenz/devops.git
-PATH_DEVOPS := .
-PATH_BINARY_APP := ./test/bin/passes-binary
-PATH_BINARY_TEST := ./test/bin/fails-binary
 
 # See https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 help: ## Display help screen
@@ -18,7 +13,7 @@ setup: ## Setup dependencies and tools
 .PHONY: setup
 
 setup-devops: ## Setup dependencies and tools for the devops service
-	cd $(PATH_DEVOPS)/scripts && chmod +x setup.sh && ./setup.sh
+	cd $(DEVOPS_PATH)/scripts && chmod +x setup.sh && ./setup.sh
 .PHONY: setup-devops
 
 setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
@@ -70,7 +65,7 @@ setup-continuous-release: ## Setup dependencies and tools for the continuous rel
 .PHONY: setup-continuous-release
 
 teardown-devops: ## Teardown dependencies and tools for the devops service
-	cd $(PATH_DEVOPS)/scripts && chmod +x teardown.sh && ./teardown.sh
+	cd $(DEVOPS_PATH)/scripts && chmod +x teardown.sh && ./teardown.sh
 .PHONY: teardown-devops
 
 update-devops: ## Update dependencies and tools for the devops service
@@ -80,15 +75,15 @@ update-devops: ## Update dependencies and tools for the devops service
 .PHONY: update-devops
 
 run-linter-staged: ## Perform analysis of local staged files
-	cd $(PATH_DEVOPS)/cmd/app && chmod +x sast.sh && ./sast.sh -l staged
+	cd $(DEVOPS_PATH)/cmd/app && chmod +x sast.sh && ./sast.sh -l staged
 .PHONY: run-linter-staged
 
 run-linter-diff: ## Perform analysis of local modified files
-	cd $(PATH_DEVOPS)/cmd/app && chmod +x sast.sh && ./sast.sh -l diff
+	cd $(DEVOPS_PATH)/cmd/app && chmod +x sast.sh && ./sast.sh -l diff
 .PHONY: run-linter-diff
 
 run-linter-ci: ## Perform analysis of modified files in continuous integration pipeline
-	cd $(PATH_DEVOPS)/cmd/app && chmod +x sast.sh && ./sast.sh -l ci
+	cd $(DEVOPS_PATH)/cmd/app && chmod +x sast.sh && ./sast.sh -l ci
 .PHONY: run-linter-ci
 
 run-linter-commit: ## Perform analysis of the commit message
@@ -96,15 +91,15 @@ run-linter-commit: ## Perform analysis of the commit message
 .PHONY: run-linter-commit
 
 run-sanitizer-app: ## Perform analysis of the application binary file
-	cd $(PATH_DEVOPS)/cmd/app && chmod +x dast.sh && ./dast.sh -b $(PATH_BINARY_APP)
+	cd $(DEVOPS_PATH)/cmd/app && chmod +x dast.sh && ./dast.sh -b $(PATH_BINARY_APP)
 .PHONY: run-sanitizer-app
 
 run-sanitizer-test: ## Perform analysis of the test binary file
-	cd $(PATH_DEVOPS)/cmd/app && chmod +x dast.sh && ./dast.sh -b $(PATH_BINARY_TEST)
+	cd $(DEVOPS_PATH)/cmd/app && chmod +x dast.sh && ./dast.sh -b $(PATH_BINARY_TEST)
 .PHONY: run-sanitizer-test
 
 run-security-scan: ## Perform security analysis of local project
-	cd $(PATH_DEVOPS)/cmd/app && chmod +x sca.sh && ./sca.sh -p $(@D)
+	cd $(DEVOPS_PATH)/cmd/app && chmod +x sca.sh && ./sca.sh -p $(@D)
 .PHONY: run-security-scan
 
 run-release: ## Perform release service task
@@ -132,7 +127,7 @@ run-continuous-release: ## Perform task in continuous release pipeline
 .PHONY: run-continuous-release
 
 setup-submodule-devops: ## Setup git submodule devops service
-	git submodule add $(URL_DEVOPS) $(PATH_DEVOPS)
+	git submodule add --name $(DEVOPS_NAME) $(DEVOPS_URL) $(DEVOPS_PATH)
 .PHONY: setup-submodule-devops
 
 setup-submodule: ## Setup git submodules
