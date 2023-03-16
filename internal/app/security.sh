@@ -28,6 +28,8 @@ readonly F_PATH
 # Constant variables
 
 readonly -a SCRIPTS=(
+  syft
+  grype
   trivy_sbom
   trivy_license
   trivy_vulnerability

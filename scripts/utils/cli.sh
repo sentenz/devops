@@ -284,8 +284,53 @@ cli_valgrind() {
 }
 
 ########################
+# Generating a SBOM from container images and filesystems.
+# Arguments:
+#   $1 - path
+#   $2 - log
+# Returns:
+#   Result
+#########################
+cli_syft() {
+  local path="${1:?path is missing}"
+  local log="${2:?log is missing}"
+
+  syft -q -o spdx="${log}" "${path}"
+}
+
+########################
+# A SBOM vulnerability scanner for container images and filesystems.
+# Arguments:
+#   $1 - path
+#   $2 - log
+# Returns:
+#   Result
+#########################
+cli_grype() {
+  local path="${1:?path is missing}"
+  local log="${2:?log is missing}"
+
+  grype -q --file "${log}" sbom:"${path}"
+}
+
+########################
 # Find OS packages and software dependencies with SBOM in containers, Kubernetes, code
 # repositories, and clouds.
+# Arguments:
+#   $1 - path
+#   $2 - log
+# Returns:
+#   Result
+#########################
+cli_trivy() {
+  local path="${1:?path is missing}"
+  local log="${2:?log is missing}"
+
+  trivy -q fs --format spdx -o "${log}" "${path}"
+}
+
+########################
+# Scan SBOM for vulnerabilities.
 # Arguments:
 #   $1 - path
 #   $2 - log
@@ -296,7 +341,7 @@ cli_trivy_sbom() {
   local path="${1:?path is missing}"
   local log="${2:?log is missing}"
 
-  trivy -q fs --format spdx -o "${log}" "${path}"
+  trivy -q sbom -o "${log}" "${path}"
 }
 
 ########################
@@ -311,7 +356,7 @@ cli_trivy_license() {
   local path="${1:?path is missing}"
   local log="${2:?log is missing}"
 
-  trivy -q fs --scanners license --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL --license-full -f json -o "${log}" "${path}"
+  trivy -q fs --scanners license --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL --license-full --format json -o "${log}" "${path}"
 }
 
 ########################
@@ -326,5 +371,5 @@ cli_trivy_vulnerability() {
   local path="${1:?path is missing}"
   local log="${2:?log is missing}"
 
-  trivy -q fs --scanners vuln,secret,config -f json -o "${log}" "${path}"
+  trivy -q fs --scanners vuln,secret,config --format json -o "${log}" "${path}"
 }
