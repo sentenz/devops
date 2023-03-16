@@ -27,11 +27,11 @@ readonly -a APT_PACKAGES=(
 # Internal functions
 
 setup_syft() {
-  sudo curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin v0.74.1
+  curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sudo sh -s -- -b /usr/local/bin v0.74.1
 }
 
 setup_grype() {
-  sudo curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin v0.59.1
+  curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sudo sh -s -- -b /usr/local/bin v0.59.1
 }
 
 setup_trivy() {
