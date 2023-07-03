@@ -7,6 +7,10 @@ on:
 jobs:
   release:
     name: continuous-release
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Codebase

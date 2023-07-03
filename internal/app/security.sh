@@ -28,7 +28,10 @@ readonly F_PATH
 # Constant variables
 
 readonly -a SCRIPTS=(
-  trivy_sbom
+  syft
+  grype
+  # FIXME Create SBOM and support vulnerability scan
+  # trivy_sbom
   trivy_license
   trivy_vulnerability
 )

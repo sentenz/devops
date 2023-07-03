@@ -1,3 +1,4 @@
+---
 # Global Options
 
 # Same as '--quiet'
@@ -170,7 +171,7 @@ vulnerability:
 secret:
   # Same as '--secret-config'
   # Default is 'trivy-secret.yaml'
-  config: config/trivy/secret.yaml
+  config: trivy-secret.yaml
 
 # Rego Options
 
@@ -219,7 +220,7 @@ secret:
 #     set-string:
 #       - name=true
 
-#   # terraform tfvars overrrides
+#   # terraform tfvars overrides
 #   terraform:
 #     vars:
 #       - dev-terraform.tfvars

@@ -26,6 +26,14 @@ readonly -a APT_PACKAGES=(
 
 # Internal functions
 
+setup_syft() {
+  curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sudo sh -s -- -b /usr/local/bin v0.74.1
+}
+
+setup_grype() {
+  curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sudo sh -s -- -b /usr/local/bin v0.59.1
+}
+
 setup_trivy() {
   if ! util_exists_file "/etc/apt/sources.list.d/trivy.list"; then
     wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg >/dev/null
@@ -39,6 +47,8 @@ setup_security() {
   pkg_install_apt_list "${APT_INIT_PACKAGES[@]}"
   ((retval |= $?))
 
+  setup_syft
+  setup_grype
   setup_trivy
 
   pkg_install_apt_list "${APT_PACKAGES[@]}"
