@@ -35,7 +35,7 @@
   "editor.detectIndentation": true,
   "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   },
-  "markdown.extension.toc.levels": "2..3",
+  "markdown.extension.toc.levels": "2..6",
   "[yaml]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -66,9 +66,6 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "go.gotoSymbol.includeGoroot": true,
-  "go.gotoSymbol.includeImports": true,
-  "go.autocompleteUnimportedPackages": true,
   "go.coverOnSingleTest": true,
   "go.lintOnSave": "package",
   "go.lintTool": "golangci-lint",

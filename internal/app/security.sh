@@ -30,7 +30,8 @@ readonly F_PATH
 readonly -a SCRIPTS=(
   syft
   grype
-  trivy_sbom
+  # FIXME Create SBOM and support vulnerability scan
+  # trivy_sbom
   trivy_license
   trivy_vulnerability
 )
