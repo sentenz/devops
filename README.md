@@ -45,19 +45,19 @@ Integrate the DevOps service as a `git submodule` dependency in a base repositor
 - Add Git submodule
 
    ```bash
-   make setup-submodule
+   make submodule-setup
    ```
 
 - Update Git submodules
 
    ```bash
-   make update-submodule
+   make submodule-update
    ```
 
 - Remove Git submodules
 
    ```bash
-   make teardown-submodule
+   make submodule-teardown
    ```
 
 ## 2. Setup
@@ -65,7 +65,7 @@ Integrate the DevOps service as a `git submodule` dependency in a base repositor
 Run the following command to setup the DevOps service in a base repository:
 
 ```bash
-make setup-devops
+make devops-setup
 ```
 
 ## 3. Usage

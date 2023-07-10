@@ -12,12 +12,8 @@ setup: ## Setup dependencies and tools
 	cd $(@D)/scripts && chmod +x setup.sh && ./setup.sh
 .PHONY: setup
 
-setup-devops: ## Setup dependencies and tools for the devops service
-	cd $(DEVOPS_PATH)/scripts && chmod +x setup.sh && ./setup.sh
-.PHONY: setup-devops
-
 setup-devcontainer: ## Setup dependencies and tools for the vscode devcontainer
-	$(MAKE) update-submodule
+	$(MAKE) submodule-update
 	$(MAKE) setup
 .PHONY: setup-devcontainer
 
@@ -30,8 +26,7 @@ setup-integration: ## Setup dependencies and tools for the integration service
 .PHONY: setup-integration
 
 setup-build: ## Setup dependencies and tools for the build service
-	# TODO(AK)
-	# cd $(@D)/scripts/pipeline && chmod +x setup_build.sh && ./setup_build.sh
+	cd $(@D)/scripts/pipeline && chmod +x setup_build.sh && ./setup_build.sh
 .PHONY: setup-build
 
 setup-testing: ## Setup dependencies and tools for the testing service
@@ -43,12 +38,12 @@ setup-release: ## Setup dependencies and tools for the release service
 .PHONY: setup-release
 
 setup-continuous-security: ## Setup dependencies and tools for the continuous security pipeline
-	$(MAKE) update-submodule
+	$(MAKE) submodule-update
 	$(MAKE) setup-security
 .PHONY: setup-continuous-security
 
 setup-continuous-integration: ## Setup dependencies and tools for the continuous integration pipeline
-	$(MAKE) update-submodule
+	$(MAKE) submodule-update
 	$(MAKE) setup-integration
 .PHONY: setup-continuous-integration
 
@@ -64,15 +59,41 @@ setup-continuous-release: ## Setup dependencies and tools for the continuous rel
 	$(MAKE) setup-release
 .PHONY: setup-continuous-release
 
-teardown-devops: ## Teardown dependencies and tools for the devops service
-	cd $(DEVOPS_PATH)/scripts && chmod +x teardown.sh && ./teardown.sh
-.PHONY: teardown-devops
+run-continuous-security: ## Perform task in continuous security pipeline
+	$(MAKE) run-security-scan
+.PHONY: run-continuous-security
 
-update-devops: ## Update dependencies and tools for the devops service
-	$(MAKE) teardown-devops
-	$(MAKE) update-submodule
-	$(MAKE) setup-devops
-.PHONY: update-devops
+run-continuous-integration: ## Perform task in continuous integration pipeline
+	$(MAKE) run-linter-ci
+.PHONY: run-continuous-integration
+
+run-continuous-build: ## Perform task in continuous build pipeline
+	$(MAKE) app-build
+	$(MAKE) app-run
+.PHONY: run-continuous-build
+
+run-continuous-testing: ## Perform task in continuous testing pipeline
+	$(MAKE) test-unit
+	$(MAKE) test-cover
+.PHONY: run-continuous-testing
+
+run-continuous-release: ## Perform task in continuous release pipeline
+	$(MAKE) run-release
+.PHONY: run-continuous-release
+
+devops-setup: ## Setup dependencies and tools for the devops service
+	cd $(DEVOPS_PATH)/scripts && chmod +x setup.sh && ./setup.sh
+.PHONY: devops-setup
+
+devops-teardown: ## Teardown dependencies and tools for the devops service
+	cd $(DEVOPS_PATH)/scripts && chmod +x teardown.sh && ./teardown.sh
+.PHONY: devops-teardown
+
+devops-update: ## Update dependencies and tools for the devops service
+	$(MAKE) devops-teardown
+	$(MAKE) submodule-update
+	$(MAKE) devops-setup
+.PHONY: devops-update
 
 run-linter-staged: ## Perform analysis of local staged files
 	cd $(DEVOPS_PATH)/cmd/app && chmod +x sast.sh && ./sast.sh -l staged
@@ -106,42 +127,57 @@ run-release: ## Perform release service task
 	npx semantic-release
 .PHONY: run-release
 
-run-continuous-security: ## Perform task in continuous security pipeline
-	$(MAKE) run-security-scan
-.PHONY: run-continuous-security
+submodule-setup-devops: ## Setup git submodule devops service
+	git submodule add -f --name $(DEVOPS_NAME) $(DEVOPS_URL) $(DEVOPS_PATH)
+.PHONY: submodule-setup-devops
 
-run-continuous-integration: ## Perform task in continuous integration pipeline
-	$(MAKE) run-linter-ci
-.PHONY: run-continuous-integration
+submodule-teardown-devops: ## Teardown git submodule devops service
+	git submodule deinit -f $(DEVOPS_PATH)
+	rm -rf .git/modules/$(DEVOPS_NAME)
+	git rm -rf $(DEVOPS_PATH)
+.PHONY: submodule-teardown-devops
 
-run-continuous-build: ## Perform task in continuous build pipeline
-	# TODO(AK)
-.PHONY: run-continuous-build
+submodule-setup: ## Setup git submodules
+	$(MAKE) submodule-setup-devops
+.PHONY: submodule-setup
 
-run-continuous-testing: ## Perform task in continuous testing pipeline
-	# TODO(AK)
-.PHONY: run-continuous-testing
-
-run-continuous-release: ## Perform task in continuous release pipeline
-	$(MAKE) run-release
-.PHONY: run-continuous-release
-
-setup-submodule-devops: ## Setup git submodule devops service
-	git submodule add --name $(DEVOPS_NAME) $(DEVOPS_URL) $(DEVOPS_PATH)
-.PHONY: setup-submodule-devops
-
-setup-submodule: ## Setup git submodules
-	$(MAKE) setup-submodule-devops
-.PHONY: setup-submodule
-
-update-submodule: ## Update git submodules
+submodule-update: ## Update git submodules
 	git submodule update --remote --recursive --merge --init
-.PHONY: update-submodule
+.PHONY: submodule-update
 
-teardown-submodule: ## Remove git submodules
+submodule-teardown: ## Remove git submodules
+	$(MAKE) submodule-teardown-devops
+.PHONY: submodule-teardown
+
+app-build: ## Perform application build
+	mkdir -p $(@D)/cmd/bin
 	# TODO(AK)
-.PHONY: teardown-submodule
+.PHONY: app-build
 
-install-extensions: ## Install recommended VS Code extensions
-	code --list-extensions | xargs -L 1 code --install-extension
-.PHONY: install-extensions
+app-run: ## Perform application run
+	# TODO(AK)
+.PHONY: app-run
+
+app-audit: ## Perform application audit
+	mkdir -p $(@D)/logs/audit
+	# TODO(AK)
+.PHONY: app-audit
+
+test-unit: ## Perform unit test
+	mkdir -p $(@D)/logs/test
+	# TODO(AK)
+.PHONY: app-test
+
+test-fuzz: ## ## Perform fuzz test
+	# TODO(AK)
+.PHONY: test-fuzz
+
+test-bench: ## Perform benchmark test
+	mkdir -p $(@D)/logs/test
+	# TODO(AK)
+.PHONY: test-bench
+
+test-cover: ## Perform code coverage
+	mkdir -p $(@D)/logs/test
+	# TODO(AK)
+.PHONY: test-cover
