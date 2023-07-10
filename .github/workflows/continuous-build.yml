@@ -1,15 +1,15 @@
 ---
-name: Continuous-Integration
+name: Continuous-Build
 on:
   workflow_run:
     workflows:
-      - Continuous-Security
+      - Continuous-Integration
     types:
       - completed
 jobs:
-  integration:
+  build:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    name: continuous-integration
+    name: continuous-build
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Codebase
@@ -17,15 +17,15 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 0
-      - name: Setup Integration
+      - name: Setup Build
         run: |
-          make setup-continuous-integration
-      - name: Run Integration
+          make setup-continuous-build
+      - name: Run Build
         run: |
-          make run-continuous-integration
+          make run-continuous-build
       - name: Upload Artifacts
-        if: success() || failure()
+        if: success()
         uses: actions/upload-artifact@v3
         with:
-          name: continuous-integration-artifact
-          path: logs/**/*.log
+          name: continuous-build-artifact
+          path: cmd/**/*

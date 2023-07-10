@@ -3,17 +3,13 @@ name: Continuous-Testing
 on:
   workflow_run:
     workflows:
-      - Continuous-Security
+      - Continuous-Build
     types:
       - completed
 jobs:
   testing:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: continuous-testing
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Codebase

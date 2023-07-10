@@ -10,10 +10,15 @@
   >
   > The actions in the continuous integration pipeline, performs [code analysis](https://sentenz.github.io/guide/internal/about/software-analysis.html) to the `changed` files of a support repository.
 
+- continuous-build.yml
+  > An yaml file containing actions for continuous testing pipeline, triggered upon the completion of another pipeline.
+  >
+  > The actions in the continuous build pipeline, performs build tasks such as `build` and `run`.
+
 - continuous-testing.yml
   > An yaml file containing actions for continuous testing pipeline, triggered upon the completion of another pipeline.
   >
-  > The actions in the continuous testing pipeline, performs [software testing](https://sentenz.github.io/guide/internal/about/software-testing.html) tasks such as `build` and `unit tests`.
+  > The actions in the continuous testing pipeline, performs [software testing](https://sentenz.github.io/guide/internal/about/software-testing.html) tasks such as `unit tests`, `fuzz tests` and `code coverage`.
 
 - continuous-release.yml
   > An yaml file containing actions for continuous release pipeline, triggered from base branch.

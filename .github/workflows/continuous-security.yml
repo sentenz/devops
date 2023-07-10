@@ -8,10 +8,6 @@ jobs:
   security:
     if: ${{ github.event_name == 'pull_request' }}
     name: continuous-security
-    permissions:
-      contents: read
-      security-events: write
-      actions: read
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Codebase
