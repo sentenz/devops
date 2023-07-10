@@ -20,9 +20,6 @@ readonly -a APT_PACKAGES=(
   software-properties-common
   build-essential
   automake
-  python3
-  python-is-python3
-  python3-pip
   cmake
   dirmngr
 )

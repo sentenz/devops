@@ -54,7 +54,7 @@ readonly -A NPM_PACKAGES=(
   ["dockerfilelint"]="1.8.0"
 )
 readonly -a GO_PACKAGES=(
-  github.com/golangci/golangci-lint/cmd/golangci-lint@v1.50.1
+  github.com/golangci/golangci-lint/cmd/golangci-lint@v1.53.3
 )
 readonly -a CURL_PACKAGES=(
   "https://webinstall.dev/shfmt"

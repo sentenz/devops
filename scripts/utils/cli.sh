@@ -143,7 +143,7 @@ cli_golangci_lint() {
   # FIXME(AK) https://github.com/actions/setup-go/issues/14
   export PATH="${HOME}"/go/bin:/usr/local/go/bin:"${PATH}"
 
-  golangci-lint run --fast "${file}"
+  golangci-lint run "${file}"
 }
 
 ########################

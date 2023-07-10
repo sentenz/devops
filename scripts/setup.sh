@@ -21,12 +21,10 @@ readonly -a APT_PACKAGES=(
   build-essential
   git
   automake
-  python3
-  python-is-python3
-  python3-pip
   cmake
   make
   dirmngr
+  ansible
 )
 readonly -a SCRIPTS=(
   setup_security.sh
