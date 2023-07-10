@@ -82,6 +82,7 @@ scan:
     - usr/local/
     - etc/
     - test/
+    - tools/
 
   # Same as '--skip-files'
   # Default is empty
@@ -92,9 +93,9 @@ scan:
   # Default is false
   offline-scan: false
 
-  # Same as '--scanners'
+  # Same as '--security-checks'
   # Default depends on subcommand
-  scanners:
+  security-checks:
     - vuln
     - config
     - secret

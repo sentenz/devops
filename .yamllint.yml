@@ -4,6 +4,7 @@ extends: default
 locale: en_US.UTF-8
 ignore: |
   vendor/ |
+  test/ |
   node_modules/ |
   *.template.yaml
 rules:
