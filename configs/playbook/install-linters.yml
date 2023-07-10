@@ -1,0 +1,129 @@
+---
+- name: Install Linter Tools
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+      become: true
+
+    - name: Install required packages
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+      become: true
+      loop:
+        - licensecheck
+        - shellcheck
+        - shfmt
+        - cppcheck
+        - clang-tools
+        - clang-tidy
+        - clang-format
+        - valgrind
+
+    - name: Install codespell
+      ansible.builtin.pip:
+        name: codespell
+        version: 2.2.2
+        state: present
+
+    - name: Install cpplint
+      ansible.builtin.pip:
+        name: cpplint
+        version: 1.6.1
+        state: present
+
+    - name: Install cmake_format
+      ansible.builtin.pip:
+        name: cmake_format
+        version: 0.6.13
+        state: present
+
+    - name: Install yamllint
+      ansible.builtin.pip:
+        name: yamllint
+        version: 1.29.0
+        state: present
+
+    - name: Install proselint
+      ansible.builtin.pip:
+        name: proselint
+        version: 0.13.0
+        state: present
+
+    - name: Install alex
+      community.general.npm:
+        name: alex
+        version: 10.0.0
+        global: true
+      become: true
+
+    - name: Install prettier
+      community.general.npm:
+        name: prettier
+        version: 2.7.1
+        global: true
+      become: true
+
+    - name: Install jsonlint
+      community.general.npm:
+        name: jsonlint
+        version: 1.6.3
+        global: true
+      become: true
+
+    - name: Install @commitlint/cli
+      community.general.npm:
+        name: "@commitlint/cli"
+        version: 16.3.0
+        global: true
+      become: true
+
+    - name: Install @commitlint/config-conventional
+      community.general.npm:
+        name: "@commitlint/config-conventional"
+        version: 16.2.4
+        global: true
+      become: true
+
+    - name: Install @commitlint/format
+      community.general.npm:
+        name: "@commitlint/format"
+        version: 16.2.1
+        global: true
+      become: true
+
+    - name: Install markdownlint-cli2
+      community.general.npm:
+        name: markdownlint-cli2
+        version: 0.4.0
+        global: true
+      become: true
+
+    - name: Install markdown-link-check
+      community.general.npm:
+        name: markdown-link-check
+        version: 3.10.3
+        global: true
+      become: true
+
+    - name: Install write-good
+      community.general.npm:
+        name: write-good
+        version: 1.0.8
+        global: true
+      become: true
+
+    - name: Install dockerfilelint
+      community.general.npm:
+        name: dockerfilelint
+        version: 1.8.0
+        global: true
+      become: true
+
+    - name: Install golangci-lint
+      ansible.builtin.shell: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.53.3
+      become: true

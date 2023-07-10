@@ -1,0 +1,126 @@
+---
+- name: Uninstall Linter Tools
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Uninstall required packages
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: absent
+      become: true
+      loop:
+        - licensecheck
+        - shellcheck
+        - shfmt
+        - cppcheck
+        - clang-tools
+        - clang-tidy
+        - clang-format
+        - valgrind
+
+    - name: Uninstall codespell
+      ansible.builtin.pip:
+        name: codespell
+        state: absent
+      become: true
+
+    - name: Uninstall cpplint
+      ansible.builtin.pip:
+        name: cpplint
+        state: absent
+      become: true
+
+    - name: Uninstall cmake_format
+      ansible.builtin.pip:
+        name: cmake_format
+        state: absent
+      become: true
+
+    - name: Uninstall yamllint
+      ansible.builtin.pip:
+        name: yamllint
+        state: absent
+      become: true
+
+    - name: Uninstall proselint
+      ansible.builtin.pip:
+        name: proselint
+        state: absent
+      become: true
+
+    - name: Uninstall alex
+      community.general.npm:
+        name: alex
+        state: absent
+        global: true
+      become: true
+
+    - name: Uninstall prettier
+      community.general.npm:
+        name: prettier
+        state: absent
+        global: true
+      become: true
+
+    - name: Uninstall jsonlint
+      community.general.npm:
+        name: jsonlint
+        state: absent
+        global: true
+      become: true
+
+    - name: Uninstall @commitlint/cli
+      community.general.npm:
+        name: "@commitlint/cli"
+        state: absent
+        global: true
+      become: true
+
+    - name: Uninstall @commitlint/config-conventional
+      community.general.npm:
+        name: "@commitlint/config-conventional"
+        state: absent
+        global: true
+      become: true
+
+    - name: Uninstall @commitlint/format
+      community.general.npm:
+        name: "@commitlint/format"
+        state: absent
+        global: true
+      become: true
+
+    - name: Uninstall markdownlint-cli2
+      community.general.npm:
+        name: markdownlint-cli2
+        state: absent
+        global: true
+      become: true
+
+    - name: Uninstall markdown-link-check
+      community.general.npm:
+        name: markdown-link-check
+        state: absent
+        global: true
+      become: true
+
+    - name: Uninstall write-good
+      community.general.npm:
+        name: write-good
+        state: absent
+        global: true
+      become: true
+
+    - name: Uninstall dockerfilelint
+      community.general.npm:
+        name: dockerfilelint
+        state: absent
+        global: true
+      become: true
+
+    - name: Uninstall golangci-lint
+      ansible.builtin.file:
+        path: "{{ lookup('env', 'GOPATH') }}/bin/golangci-lint"
+        state: absent
+      become: true
