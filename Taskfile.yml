@@ -1,0 +1,49 @@
+version: '3'
+
+tasks:
+  default:
+    desc: Print task list.
+    cmds:
+      - task -a
+    silent: true
+
+  install-package-managers:
+    desc: Install package managers.
+    run: once
+    cmds:
+      - ansible-playbook ./configs/playbook/install-package-managers.yml
+    silent: true
+
+  uninstall-package-managers:
+    desc: Uninstall package managers.
+    cmds:
+      - ansible-playbook ./configs/playbook/uninstall-package-managers.yml
+    silent: true
+
+  install-tools:
+    desc: Install tools.
+    deps:
+      - task: install-package-managers
+    cmds:
+      - ansible-playbook ./configs/playbook/install-tools.yml
+    silent: true
+
+  uninstall-tools:
+    desc: Uninstall tools.
+    cmds:
+      - ansible-playbook ./configs/playbook/uninstall-tools.yml
+    silent: true
+
+  install-linters:
+    desc: Install linters.
+    deps:
+      - task: install-package-managers
+    cmds:
+      - ansible-playbook ./configs/playbook/install-linters.yml
+    silent: true
+
+  uninstall-linters:
+    desc: Uninstall linters.
+    cmds:
+      - ansible-playbook ./configs/playbook/uninstall-linters.yml
+    silent: true

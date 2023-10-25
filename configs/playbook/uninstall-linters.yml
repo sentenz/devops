@@ -4,7 +4,7 @@
   gather_facts: false
 
   tasks:
-    - name: Uninstall required packages
+    - name: Uninstall linters
       ansible.builtin.apt:
         name: "{{ item }}"
         state: absent
@@ -18,6 +18,12 @@
         - clang-tidy
         - clang-format
         - valgrind
+
+    - name: Uninstall ansible-lint
+      ansible.builtin.pip:
+        name: ansible-lint
+        state: absent
+      become: true
 
     - name: Uninstall codespell
       ansible.builtin.pip:

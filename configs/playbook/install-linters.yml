@@ -4,15 +4,11 @@
   gather_facts: false
 
   tasks:
-    - name: Update apt cache
-      ansible.builtin.apt:
-        update_cache: true
-      become: true
-
-    - name: Install required packages
+    - name: Install linters
       ansible.builtin.apt:
         name: "{{ item }}"
         state: present
+        update_cache: true
       become: true
       loop:
         - licensecheck
@@ -23,6 +19,12 @@
         - clang-tidy
         - clang-format
         - valgrind
+
+    - name: Install ansible-lint
+      ansible.builtin.pip:
+        name: ansible-lint
+        version: 6.17.2
+        state: present
 
     - name: Install codespell
       ansible.builtin.pip:
@@ -125,5 +127,8 @@
       become: true
 
     - name: Install golangci-lint
-      ansible.builtin.shell: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.53.3
+      ansible.builtin.shell:
+        cmd: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /usr/local/bin {{ version }}
+      vars:
+        version: v1.53.3
       become: true

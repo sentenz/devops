@@ -95,6 +95,14 @@ devops-update: ## Update dependencies and tools for the devops service
 	$(MAKE) devops-setup
 .PHONY: devops-update
 
+install-linters: ## Install linters for static code analysis
+	ansible-playbook $(@D)/configs/playbook/install-linters.yml
+.PHONY: install-linters
+
+uninstall-linters: ## Uninstall linters for static code analysis
+	ansible-playbook $(@D)/configs/playbook/uninstall-linters.yml
+.PHONY: install-linters
+
 run-linter-staged: ## Perform analysis of local staged files
 	cd $(DEVOPS_PATH)/cmd/app && chmod +x sast.sh && ./sast.sh -l staged
 .PHONY: run-linter-staged

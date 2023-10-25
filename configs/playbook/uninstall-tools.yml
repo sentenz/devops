@@ -1,0 +1,10 @@
+---
+- name: Uninstall Tools
+  hosts: localhost
+  become: true
+
+  tasks:
+    - name: Uninstall task
+      ansible.builtin.shell:
+        cmd: rm /usr/local/bin/task
+      changed_when: false

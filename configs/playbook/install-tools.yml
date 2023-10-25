@@ -1,0 +1,14 @@
+---
+- name: Install Tools
+  hosts: localhost
+  become: true
+
+  tasks:
+    - name: Install task
+      ansible.builtin.shell:
+        cmd: sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin {{ version }}
+      vars:
+        version: v3.27.1
+      environment:
+        PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+      changed_when: false

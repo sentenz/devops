@@ -1,0 +1,38 @@
+---
+- name: Install Go
+  hosts: localhost
+  become: true
+
+  vars:
+    go_version: "1.20.6"
+    go_archive: "go{{ go_version }}.linux-amd64.tar.gz"
+    go_url: "https://golang.org/dl/{{ go_archive }}"
+
+  tasks:
+    - name: Remove previous Go installation
+      ansible.builtin.file:
+        path: "/usr/local/go"
+        state: absent
+
+    - name: Download Go archive
+      ansible.builtin.get_url:
+        url: "{{ go_url }}"
+        dest: "/tmp/{{ go_archive }}"
+        mode: '0644'
+
+    - name: Extract Go archive
+      ansible.builtin.unarchive:
+        src: "/tmp/{{ go_archive }}"
+        dest: "/usr/local"
+        remote_src: true
+        creates: "/usr/local/go"
+
+    - name: Add Go to PATH
+      ansible.builtin.lineinfile:
+        path: "{{ item }}"
+        line: "export PATH=$PATH:/usr/local/go/bin"
+        create: true
+        mode: '0644'
+      with_items:
+        - "/etc/profile"
+        - "$HOME/.profile"
